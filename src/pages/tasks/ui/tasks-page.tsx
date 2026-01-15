@@ -71,13 +71,8 @@ export const mockTasks: Task[] = [
 
 export const TasksPage: FC = () => {
   const {t} = useTranslation();
-  const [selectedProgramId, setSelectedProgramId] = useState<string>('');
   const tabs = ['All tasks', 'My tasks'];
   const [activeTab, setActiveTab] = useState(tabs[0]);
-
-  // const filteredTasks = tasks.filter(task =>
-  //   activeTab === 'My tasks' ? task.assignedVolunteerId !== null : true
-  // );
 
 
   const {data: programs = [], isLoading: isLoadingPrograms} = useQuery({
