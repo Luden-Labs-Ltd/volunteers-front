@@ -1,18 +1,14 @@
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from '@tanstack/react-query';
 import { TaskList } from '@/widgets/task-list';
 import { Header } from '@/shared/ui';
-import { programApi } from '@/entities/program';
+import { useGetPrograms } from '@/entities/program/hook/useGetPrograms';
 
 export const TasksPage: FC = () => {
   const { t } = useTranslation();
   const [selectedProgramId, setSelectedProgramId] = useState<string>('');
 
-  const { data: programs = [], isLoading: isLoadingPrograms } = useQuery({
-    queryKey: ['programs'],
-    queryFn: () => programApi.getPrograms(),
-  });
+  const { data: programs = [], isLoading: isLoadingPrograms } = useGetPrograms();
 
   return (
     <div className="min-h-screen bg-gray-50">
