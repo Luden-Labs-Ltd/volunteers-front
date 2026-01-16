@@ -31,7 +31,7 @@ export const TaskCard: FC<TaskCardProps> = ({ task }) => {
           {task.points}
         </p>
 
-        <p className="font-sans font-normal text-[#004573] text-[14px]">
+        <p className="font-sans font-normal text-deepBlue text-[14px]">
           {new Date(task.createdAt).toLocaleDateString()}
         </p>
       </div>
