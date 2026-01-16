@@ -7,7 +7,7 @@ interface TaskCardProps {
 
 export const TaskCard: FC<TaskCardProps> = ({ task }) => {
   return (
-    <div className="bg-white rounded-2xl border border-[#E6F0FF] shadow-sm p-4 flex justify-between gap-3 active:scale-[0.98] transition">
+    <div className='flex items-center justify-between border border-[#e0e7ff] rounded-2xl p-4 shadow-[2px_2px_0_0_#e0e7ff] bg-white'>
 
       <div className="flex flex-col justify-between">
 
@@ -20,14 +20,15 @@ export const TaskCard: FC<TaskCardProps> = ({ task }) => {
             ${task.status === 'cancelled' && 'bg-red-100 text-red-700'}
           `}
         >
+          {task.status}
         </span>
 
-        <h3 className="text-[15px] font-semibold text-gray-900 leading-snug">
+        <h3 className="font-sans font-medium text-lg text-[#000]">
           {task.title}
         </h3>
 
         <p className="text-xs text-gray-500 mt-1">
-          {task}
+          {task.points}
         </p>
 
         <p className="text-xs text-blue-600 font-medium mt-1">
