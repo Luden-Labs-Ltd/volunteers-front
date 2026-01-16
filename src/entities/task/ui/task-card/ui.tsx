@@ -27,7 +27,7 @@ export const TaskCard: FC<TaskCardProps> = ({ task }) => {
         </h3>
 
         <p className="text-xs text-gray-500 mt-1">
-          {task.address}
+          {task}
         </p>
 
         <p className="text-xs text-blue-600 font-medium mt-1">

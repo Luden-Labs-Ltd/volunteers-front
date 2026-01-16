@@ -3,6 +3,7 @@ import {useTranslation} from 'react-i18next';
 import {TaskList} from '@/widgets/task-list';
 import {Header} from '@/shared/ui';
 import {useGetTasks} from "@/entities/task/hook";
+import {Tabs} from "@/shared/ui/tabs";
 
 export const TasksPage: FC = () => {
   const {t} = useTranslation();
@@ -10,9 +11,7 @@ export const TasksPage: FC = () => {
   const [activeTab, setActiveTab] = useState(tabs[0]);
 
 
-  const { data: tasks = [], isLoading: isLoading } = useGetTasks();
-
-
+  const {data: tasks = [], isLoading: isLoading} = useGetTasks();
 
 
   return (
@@ -21,9 +20,9 @@ export const TasksPage: FC = () => {
         title={t('tasks.title')}
         // rightActions={}
       />
-      {/*<Tabs tabs={tabs} onChange={setActiveTab}/>*/}
+      <Tabs tabs={tabs} onChange={setActiveTab}/>
       <div className="px-4 py-6">
-        <TaskList tasks={tasks} />
+        <TaskList tasks={tasks}/>
       </div>
     </div>
   );
