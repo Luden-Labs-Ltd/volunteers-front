@@ -1,1 +1,1 @@
-export { TasksPage } from './tasks-page';
+export { TasksPage } from './tasks-page.tsx';
