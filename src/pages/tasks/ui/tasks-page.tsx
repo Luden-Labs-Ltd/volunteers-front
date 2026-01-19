@@ -16,30 +16,32 @@ export const TasksPage: FC = () => {
 
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header
-        title={t('tasks.title')}
-        rightActions={[
-          <IconButton
-            className="w-8 h-8 rounded-lg drop-shadow-[2px_2px_0_#004573]"
-            key="profile"
-            variant="ghost"
-            aria-label={t('common.profile')}
-            icon={
-              <img
-                src={userIcon}
-                alt={t('common.profile')}
-                className={"w-full h-full object-cover"}
-              />
-            }
-            onClick={() => console.log('Клик!')}
-          />
-        ]}
-      />
-      <Tabs tabs={tabs} onChange={setActiveTab}/>
-      <div className="px-4 py-6">
-        <TaskList tasks={tasks}/>
+    <section className={'mb-12'}>
+      <div className="min-h-screen bg-gray-50">
+        <Header
+          title={t('tasks.title')}
+          rightActions={[
+            <IconButton
+              className="w-8 h-8 rounded-lg drop-shadow-[2px_2px_0_#004573]"
+              key="profile"
+              variant="ghost"
+              aria-label={t('common.profile')}
+              icon={
+                <img
+                  src={userIcon}
+                  alt={t('common.profile')}
+                  className={"w-full h-full object-cover"}
+                />
+              }
+              onClick={() => console.log('Клик!')}
+            />
+          ]}
+        />
+        <Tabs tabs={tabs} onChange={setActiveTab}/>
+        <div className="px-4 py-6">
+          <TaskList tasks={tasks}/>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };

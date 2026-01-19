@@ -7,6 +7,7 @@ import { OnboardingPage } from '@/pages/volunteer-onboarding/ui';
 import { LeaderboardPage } from '@/pages/leaderboard/ui';
 import { PrivateRoute } from './private-route';
 import { RoleRedirect } from './role-redirect';
+import { TaskPreviewPage } from '@/pages/tasks/ui';
 
 export const Router: FC = () => {
   return (
@@ -59,6 +60,8 @@ export const Router: FC = () => {
             </PrivateRoute>
           }
         />
+
+        <Route path="/dev/task-preview" element={<TaskPreviewPage />} />
 
         {/* Роуты для нуждающихся */}
         <Route
