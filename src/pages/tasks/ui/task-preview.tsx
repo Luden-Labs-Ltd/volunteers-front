@@ -30,7 +30,7 @@ export const TaskPreviewPage = () => {
         <Button size={'lg'} fullWidth={true} variant={'secondary'} onClick={onClickHandler}>
           View task details
         </Button>
-        <Button size={'lg'} fullWidth={true} variant={'outline'} onClick={onClickHandler} className="bg-white hover:bg-gray-50">
+        <Button size={'lg'} fullWidth={true} variant={'white'} onClick={onClickHandler}>
           Later
         </Button>
       </div>
