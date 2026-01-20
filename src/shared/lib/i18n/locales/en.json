@@ -141,5 +141,18 @@
       "step2": "Look for 'Install' or 'Add to Home Screen' option",
       "step3": "Follow the on-screen instructions"
     }
+  },
+  "notifications": {
+    "enable": "Enable Notifications",
+    "disable": "Disable Notifications",
+    "permissionRequest": "Allow notifications to stay updated about new tasks and responses",
+    "permissionDenied": "Notifications are blocked. Please enable them in your browser settings.",
+    "notSupported": "Push notifications are not supported in your browser",
+    "newTask": "New Task Available",
+    "taskResponse": "New Response to Your Task",
+    "responseApproved": "Response Approved",
+    "responseRejected": "Response Rejected",
+    "assignmentCancelled": "Task Assignment Cancelled",
+    "taskStatusUpdated": "Task Status Updated"
   }
 }
