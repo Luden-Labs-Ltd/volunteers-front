@@ -63,7 +63,7 @@ export default defineConfig({
         ],
       },
       devOptions: {
-        enabled: true,
+        enabled: false, // Отключаем service worker в dev режиме для избежания ошибок
         type: "classic",
         navigateFallback: "index.html",
       },

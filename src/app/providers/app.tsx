@@ -6,6 +6,7 @@ import { InstallPWAModal } from '@/features/install-pwa/ui';
 import { usePWAInstall } from '@/shared/lib/hooks/use-pwa-install';
 import { usePushSubscription } from '@/shared/lib/hooks/use-push-subscription';
 import { subscribeToPushNotifications } from '@/entities/notification/api';
+import { getToken } from '@/shared/lib/auth/token';
 import '@/shared/lib/i18n';
 
 interface AppProviderProps {
@@ -39,26 +40,57 @@ export const App: FC<AppProviderProps> = ({ children }) => {
 
   // Автоматический запрос разрешения и подписка на push-уведомления после авторизации
   useEffect(() => {
-    if (!isSupported || typeof window === 'undefined') {
+    if (typeof window === 'undefined') {
       return;
     }
 
-    const token = safeLocalStorage.getItem('token');
+    const token = getToken();
     if (!token) {
+      if (import.meta.env.DEV) {
+        console.log('🔔 Push: Нет токена, подписка отложена');
+      }
       return;
+    }
+
+    if (!isSupported) {
+      if (import.meta.env.DEV) {
+        console.log('🔔 Push: Не поддерживается браузером');
+      }
+      return;
+    }
+
+    if (import.meta.env.DEV) {
+      console.log('🔔 Push: Состояние', {
+        isSupported,
+        permission,
+        isSubscribed,
+        permissionRequested,
+      });
     }
 
     // Если разрешение еще не запрошено, запрашиваем его
     if (permission === 'default' && !permissionRequested) {
+      if (import.meta.env.DEV) {
+        console.log('🔔 Push: Запрашиваем разрешение...');
+      }
       setPermissionRequested(true);
       requestPermission().then((granted) => {
+        if (import.meta.env.DEV) {
+          console.log('🔔 Push: Разрешение получено:', granted);
+        }
         if (granted && !isSubscribed) {
           subscribe().then(async (subscription) => {
             if (subscription) {
+              if (import.meta.env.DEV) {
+                console.log('🔔 Push: Подписка создана, отправляем на сервер...');
+              }
               try {
                 await subscribeToPushNotifications(subscription);
+                if (import.meta.env.DEV) {
+                  console.log('✅ Push: Подписка успешно зарегистрирована');
+                }
               } catch (error) {
-                console.error('Failed to register push subscription:', error);
+                console.error('❌ Push: Ошибка регистрации подписки:', error);
               }
             }
           });
@@ -69,12 +101,21 @@ export const App: FC<AppProviderProps> = ({ children }) => {
 
     // Если разрешение уже получено, подписываемся
     if (permission === 'granted' && !isSubscribed) {
+      if (import.meta.env.DEV) {
+        console.log('🔔 Push: Разрешение есть, создаем подписку...');
+      }
       subscribe().then(async (subscription) => {
         if (subscription) {
+          if (import.meta.env.DEV) {
+            console.log('🔔 Push: Подписка создана, отправляем на сервер...');
+          }
           try {
             await subscribeToPushNotifications(subscription);
+            if (import.meta.env.DEV) {
+              console.log('✅ Push: Подписка успешно зарегистрирована');
+            }
           } catch (error) {
-            console.error('Failed to register push subscription:', error);
+            console.error('❌ Push: Ошибка регистрации подписки:', error);
           }
         }
       });

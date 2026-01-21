@@ -8,6 +8,17 @@ import { NetworkFirst, CacheFirst, StaleWhileRevalidate } from 'workbox-strategi
 
 declare const self: ServiceWorkerGlobalScope;
 
+// Логирование при активации service worker
+self.addEventListener('activate', (event) => {
+  console.log('[SW] ✅ Service Worker activated');
+  event.waitUntil(clientsClaim());
+});
+
+// Логирование при установке
+self.addEventListener('install', (event) => {
+  console.log('[SW] 📦 Service Worker installing');
+});
+
 // Управление версией кеша
 clientsClaim();
 
@@ -68,76 +79,111 @@ registerRoute(
 
 // Обработка push-уведомлений
 self.addEventListener('push', (event: PushEvent) => {
-  console.log('[SW] Push event received', {
+  console.log('[SW] 🔔 Push event received', {
     hasData: !!event.data,
     dataType: event.data?.type,
+    timestamp: new Date().toISOString(),
   });
 
   if (!event.data) {
-    console.warn('[SW] Push event received without data');
-    return;
-  }
-
-  let notificationData: {
-    title: string;
-    body: string;
-    icon?: string;
-    badge?: string;
-    data?: Record<string, any>;
-    tag?: string;
-  };
-
-  try {
-    notificationData = event.data.json();
-    console.log('[SW] Parsed notification data:', {
-      title: notificationData.title,
-      hasBody: !!notificationData.body,
-      hasData: !!notificationData.data,
-    });
-  } catch (error) {
-    console.error('[SW] Failed to parse push notification data:', {
-      error: error instanceof Error ? error.message : String(error),
-      hasData: !!event.data,
-    });
-    // Попытка прочитать данные асинхронно для отладки
-    if (event.data && event.data.text) {
-      event.data.text().then((text) => {
-        console.error('[SW] Push event data as text:', text);
-      }).catch(() => {
-        console.error('[SW] Unable to read push event data as text');
-      });
-    }
-    return;
-  }
-
-  // Валидация обязательных полей
-  if (!notificationData.title || !notificationData.body) {
-    console.error('[SW] Invalid notification data: missing title or body', notificationData);
-    return;
-  }
-
-  const options: NotificationOptions = {
-    body: notificationData.body,
-    icon: notificationData.icon || '/pwa-192x192.png',
-    badge: notificationData.badge || '/pwa-192x192.png',
-    data: notificationData.data || {},
-    tag: notificationData.tag,
-    requireInteraction: false,
-    vibrate: [200, 100, 200],
-  };
-
-  event.waitUntil(
-    self.registration
-      .showNotification(notificationData.title, options)
-      .then(() => {
-        console.log('[SW] Notification shown successfully:', notificationData.title);
+    console.warn('[SW] ⚠️ Push event received without data');
+    // Показываем уведомление даже без данных
+    event.waitUntil(
+      self.registration.showNotification('Новое уведомление', {
+        body: 'У вас новое уведомление',
+        icon: '/pwa-192x192.png',
+        badge: '/pwa-192x192.png',
       })
-      .catch((error) => {
-        console.error('[SW] Failed to show notification:', {
+    );
+    return;
+  }
+
+  // Обрабатываем push событие
+  event.waitUntil(
+    (async () => {
+      try {
+        let text: string;
+        try {
+          text = await event.data.text();
+          console.log('[SW] 📦 Push data as text:', text);
+        } catch (textError) {
+          console.error('[SW] ❌ Failed to read push data as text:', textError);
+          // Показываем уведомление с дефолтными данными
+          await self.registration.showNotification('Новое уведомление', {
+            body: 'У вас новое уведомление',
+            icon: '/pwa-192x192.png',
+            badge: '/pwa-192x192.png',
+          });
+          return;
+        }
+
+        let notificationData: {
+          title: string;
+          body: string;
+          icon?: string;
+          badge?: string;
+          data?: Record<string, any>;
+          tag?: string;
+        };
+
+        try {
+          notificationData = JSON.parse(text);
+          console.log('[SW] ✅ Parsed notification data:', {
+            title: notificationData.title,
+            hasBody: !!notificationData.body,
+            hasData: !!notificationData.data,
+          });
+        } catch (parseError) {
+          console.error('[SW] ❌ Failed to parse JSON:', parseError);
+          // Показываем уведомление с текстом данных
+          await self.registration.showNotification('Новое уведомление', {
+            body: text || 'У вас новое уведомление',
+            icon: '/pwa-192x192.png',
+            badge: '/pwa-192x192.png',
+          });
+          return;
+        }
+
+        // Валидация обязательных полей
+        if (!notificationData.title || !notificationData.body) {
+          console.error('[SW] ❌ Invalid notification data: missing title or body', notificationData);
+          await self.registration.showNotification('Новое уведомление', {
+            body: notificationData.body || text || 'У вас новое уведомление',
+            icon: notificationData.icon || '/pwa-192x192.png',
+            badge: notificationData.badge || '/pwa-192x192.png',
+          });
+          return;
+        }
+
+        const options: NotificationOptions = {
+          body: notificationData.body,
+          icon: notificationData.icon || '/pwa-192x192.png',
+          badge: notificationData.badge || '/pwa-192x192.png',
+          data: notificationData.data || {},
+          tag: notificationData.tag,
+          requireInteraction: false,
+          vibrate: [200, 100, 200],
+        };
+
+        await self.registration.showNotification(notificationData.title, options);
+        console.log('[SW] ✅ Notification shown successfully:', notificationData.title);
+      } catch (error) {
+        console.error('[SW] ❌ Failed to process push notification:', {
           error: error instanceof Error ? error.message : String(error),
-          title: notificationData.title,
+          stack: error instanceof Error ? error.stack : undefined,
         });
-      }),
+        // Показываем уведомление с ошибкой для отладки
+        try {
+          await self.registration.showNotification('Ошибка уведомления', {
+            body: error instanceof Error ? error.message : String(error),
+            icon: '/pwa-192x192.png',
+            badge: '/pwa-192x192.png',
+          });
+        } catch (showError) {
+          console.error('[SW] ❌ Failed to show error notification:', showError);
+        }
+      }
+    })()
   );
 });
 
