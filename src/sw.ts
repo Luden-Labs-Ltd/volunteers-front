@@ -8,31 +8,17 @@ import { NetworkFirst, CacheFirst, StaleWhileRevalidate } from 'workbox-strategi
 
 declare const self: ServiceWorkerGlobalScope;
 
-// Логирование при активации Service Worker
-self.addEventListener('activate', (event) => {
-  console.log('🔔 [SW] Service Worker activated');
-  event.waitUntil(self.clients.claim());
-});
-
 // Логирование при установке Service Worker
-self.addEventListener('install', (event) => {
-  console.log('🔔 [SW] Service Worker installing');
+self.addEventListener('install', () => {
+  console.log('[SW] 📦 Service Worker installing');
   self.skipWaiting();
 });
 
-// Логирование при активации service worker
-self.addEventListener('activate', (event) => {
+// Логирование при активации Service Worker
+self.addEventListener('activate', () => {
   console.log('[SW] ✅ Service Worker activated');
-  event.waitUntil(clientsClaim());
+  clientsClaim();
 });
-
-// Логирование при установке
-self.addEventListener('install', (event) => {
-  console.log('[SW] 📦 Service Worker installing');
-});
-
-// Управление версией кеша
-clientsClaim();
 
 // Предкэширование ресурсов
 precacheAndRoute(self.__WB_MANIFEST);
@@ -93,7 +79,6 @@ registerRoute(
 self.addEventListener('push', (event: PushEvent) => {
   console.log('[SW] 🔔 Push event received', {
     hasData: !!event.data,
-    dataType: event.data?.type,
     timestamp: new Date().toISOString(),
   });
 
@@ -116,6 +101,9 @@ self.addEventListener('push', (event: PushEvent) => {
       try {
         let text: string;
         try {
+          if (!event.data) {
+            throw new Error('Push event has no data');
+          }
           text = await event.data.text();
           console.log('[SW] 📦 Push data as text:', text);
         } catch (textError) {
@@ -174,7 +162,6 @@ self.addEventListener('push', (event: PushEvent) => {
           data: notificationData.data || {},
           tag: notificationData.tag,
           requireInteraction: false,
-          vibrate: [200, 100, 200],
         };
 
         await self.registration.showNotification(notificationData.title, options);

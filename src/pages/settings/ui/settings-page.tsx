@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Header, Card, Button, Divider } from '@/shared/ui';
+import { Header, Card } from '@/shared/ui';
 import { PushNotificationsSettings } from '@/features/push-notifications-settings/ui';
 
 export const SettingsPage: FC = () => {
