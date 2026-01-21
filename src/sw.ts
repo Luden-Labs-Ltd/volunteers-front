@@ -68,7 +68,13 @@ registerRoute(
 
 // Обработка push-уведомлений
 self.addEventListener('push', (event: PushEvent) => {
+  console.log('[SW] Push event received', {
+    hasData: !!event.data,
+    dataType: event.data?.type,
+  });
+
   if (!event.data) {
+    console.warn('[SW] Push event received without data');
     return;
   }
 
@@ -83,8 +89,22 @@ self.addEventListener('push', (event: PushEvent) => {
 
   try {
     notificationData = event.data.json();
+    console.log('[SW] Parsed notification data:', {
+      title: notificationData.title,
+      hasBody: !!notificationData.body,
+      hasData: !!notificationData.data,
+    });
   } catch (error) {
-    console.error('Failed to parse push notification data:', error);
+    console.error('[SW] Failed to parse push notification data:', {
+      error: error instanceof Error ? error.message : String(error),
+      data: event.data.text ? await event.data.text() : 'Unable to read data',
+    });
+    return;
+  }
+
+  // Валидация обязательных полей
+  if (!notificationData.title || !notificationData.body) {
+    console.error('[SW] Invalid notification data: missing title or body', notificationData);
     return;
   }
 
@@ -99,12 +119,27 @@ self.addEventListener('push', (event: PushEvent) => {
   };
 
   event.waitUntil(
-    self.registration.showNotification(notificationData.title, options),
+    self.registration
+      .showNotification(notificationData.title, options)
+      .then(() => {
+        console.log('[SW] Notification shown successfully:', notificationData.title);
+      })
+      .catch((error) => {
+        console.error('[SW] Failed to show notification:', {
+          error: error instanceof Error ? error.message : String(error),
+          title: notificationData.title,
+        });
+      }),
   );
 });
 
 // Обработка кликов по уведомлениям
 self.addEventListener('notificationclick', (event: NotificationEvent) => {
+  console.log('[SW] Notification clicked:', {
+    tag: event.notification.tag,
+    data: event.notification.data,
+  });
+
   event.notification.close();
 
   const notificationData = event.notification.data;
@@ -119,16 +154,33 @@ self.addEventListener('notificationclick', (event: NotificationEvent) => {
         includeUncontrolled: true,
       })
       .then((clientList) => {
+        console.log('[SW] Found clients:', clientList.length);
+
         // Если окно уже открыто, фокусируемся на нем
         for (const client of clientList) {
-          if (client.url === urlToOpen && 'focus' in client) {
+          if (client.url.includes(urlToOpen) && 'focus' in client) {
+            console.log('[SW] Focusing existing client:', client.url);
             return client.focus();
           }
         }
+
         // Иначе открываем новое окно
         if (self.clients.openWindow) {
-          return self.clients.openWindow(urlToOpen);
+          console.log('[SW] Opening new window:', urlToOpen);
+          return self.clients.openWindow(urlToOpen).catch((error) => {
+            console.error('[SW] Failed to open window:', {
+              error: error instanceof Error ? error.message : String(error),
+              url: urlToOpen,
+            });
+          });
+        } else {
+          console.warn('[SW] openWindow is not available');
         }
+      })
+      .catch((error) => {
+        console.error('[SW] Error handling notification click:', {
+          error: error instanceof Error ? error.message : String(error),
+        });
       }),
   );
 });

@@ -14,31 +14,53 @@ interface AppProviderProps {
 
 export const App: FC<AppProviderProps> = ({ children }) => {
   const { isInstallable, isInstalled } = usePWAInstall();
-  const { subscribe, isSubscribed, isSupported, permission } = usePushSubscription();
+  const { subscribe, isSubscribed, isSupported, permission, requestPermission } = usePushSubscription();
   const [showInstallModal, setShowInstallModal] = useState(false);
+  const [permissionRequested, setPermissionRequested] = useState(false);
 
-  // Автоматическая подписка на push-уведомления после авторизации
+  // Автоматический запрос разрешения и подписка на push-уведомления после авторизации
   useEffect(() => {
-    if (
-      isSupported &&
-      permission === 'granted' &&
-      !isSubscribed &&
-      typeof window !== 'undefined'
-    ) {
-      const token = localStorage.getItem('token');
-      if (token) {
-        subscribe().then(async (subscription) => {
-          if (subscription) {
-            try {
-              await subscribeToPushNotifications(subscription);
-            } catch (error) {
-              console.error('Failed to register push subscription:', error);
-            }
-          }
-        });
-      }
+    if (!isSupported || typeof window === 'undefined') {
+      return;
     }
-  }, [isSupported, permission, isSubscribed, subscribe]);
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return;
+    }
+
+    // Если разрешение еще не запрошено, запрашиваем его
+    if (permission === 'default' && !permissionRequested) {
+      setPermissionRequested(true);
+      requestPermission().then((granted) => {
+        if (granted && !isSubscribed) {
+          subscribe().then(async (subscription) => {
+            if (subscription) {
+              try {
+                await subscribeToPushNotifications(subscription);
+              } catch (error) {
+                console.error('Failed to register push subscription:', error);
+              }
+            }
+          });
+        }
+      });
+      return;
+    }
+
+    // Если разрешение уже получено, подписываемся
+    if (permission === 'granted' && !isSubscribed) {
+      subscribe().then(async (subscription) => {
+        if (subscription) {
+          try {
+            await subscribeToPushNotifications(subscription);
+          } catch (error) {
+            console.error('Failed to register push subscription:', error);
+          }
+        }
+      });
+    }
+  }, [isSupported, permission, isSubscribed, subscribe, requestPermission, permissionRequested]);
 
   useEffect(() => {
     if (!isInstalled) {
