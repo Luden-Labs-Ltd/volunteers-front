@@ -67,71 +67,134 @@ registerRoute(
 );
 
 // Обработка push-уведомлений
+// self.addEventListener('push', (event: PushEvent) => {
+//   console.log('[SW] Push event received', {
+//     hasData: !!event.data,
+//     dataType: event.data?.type,
+//   });
+//
+//   if (!event.data) {
+//     console.warn('[SW] Push event received without data');
+//     return;
+//   }
+//
+//   let notificationData: {
+//     title: string;
+//     body: string;
+//     icon?: string;
+//     badge?: string;
+//     data?: Record<string, any>;
+//     tag?: string;
+//   };
+//
+//   try {
+//     notificationData = event.data.json();
+//     console.log('[SW] Parsed notification data:', {
+//       title: notificationData.title,
+//       hasBody: !!notificationData.body,
+//       hasData: !!notificationData.data,
+//     });
+//   } catch (error) {
+//     console.error('[SW] Failed to parse push notification data:', {
+//       error: error instanceof Error ? error.message : String(error),
+//       data: event.data.text ? await event.data.text() : 'Unable to read data',
+//     });
+//     return;
+//   }
+//
+//   // Валидация обязательных полей
+//   if (!notificationData.title || !notificationData.body) {
+//     console.error('[SW] Invalid notification data: missing title or body', notificationData);
+//     return;
+//   }
+//
+//   const options: NotificationOptions = {
+//     body: notificationData.body,
+//     icon: notificationData.icon || '/pwa-192x192.png',
+//     badge: notificationData.badge || '/pwa-192x192.png',
+//     data: notificationData.data || {},
+//     tag: notificationData.tag,
+//     requireInteraction: false,
+//     vibrate: [200, 100, 200],
+//   };
+//
+//   event.waitUntil(
+//     self.registration
+//       .showNotification(notificationData.title, options)
+//       .then(() => {
+//         console.log('[SW] Notification shown successfully:', notificationData.title);
+//       })
+//       .catch((error) => {
+//         console.error('[SW] Failed to show notification:', {
+//           error: error instanceof Error ? error.message : String(error),
+//           title: notificationData.title,
+//         });
+//       }),
+//   );
+// });
 self.addEventListener('push', (event: PushEvent) => {
-  console.log('[SW] Push event received', {
-    hasData: !!event.data,
-    dataType: event.data?.type,
-  });
-
-  if (!event.data) {
-    console.warn('[SW] Push event received without data');
-    return;
-  }
-
-  let notificationData: {
-    title: string;
-    body: string;
-    icon?: string;
-    badge?: string;
-    data?: Record<string, any>;
-    tag?: string;
-  };
-
-  try {
-    notificationData = event.data.json();
-    console.log('[SW] Parsed notification data:', {
-      title: notificationData.title,
-      hasBody: !!notificationData.body,
-      hasData: !!notificationData.data,
+  event.waitUntil((async () => {
+    console.log('[SW] Push event received', {
+      hasData: !!event.data,
+      dataType: event.data?.type,
     });
-  } catch (error) {
-    console.error('[SW] Failed to parse push notification data:', {
-      error: error instanceof Error ? error.message : String(error),
-      data: event.data.text ? await event.data.text() : 'Unable to read data',
-    });
-    return;
-  }
 
-  // Валидация обязательных полей
-  if (!notificationData.title || !notificationData.body) {
-    console.error('[SW] Invalid notification data: missing title or body', notificationData);
-    return;
-  }
+    if (!event.data) {
+      console.warn('[SW] Push event received without data');
+      return;
+    }
 
-  const options: NotificationOptions = {
-    body: notificationData.body,
-    icon: notificationData.icon || '/pwa-192x192.png',
-    badge: notificationData.badge || '/pwa-192x192.png',
-    data: notificationData.data || {},
-    tag: notificationData.tag,
-    requireInteraction: false,
-    vibrate: [200, 100, 200],
-  };
+    let notificationData: {
+      title: string;
+      body: string;
+      icon?: string;
+      badge?: string;
+      data?: Record<string, any>;
+      tag?: string;
+    };
 
-  event.waitUntil(
-    self.registration
-      .showNotification(notificationData.title, options)
-      .then(() => {
-        console.log('[SW] Notification shown successfully:', notificationData.title);
-      })
-      .catch((error) => {
-        console.error('[SW] Failed to show notification:', {
-          error: error instanceof Error ? error.message : String(error),
-          title: notificationData.title,
-        });
-      }),
-  );
+    try {
+      notificationData = event.data.json();
+      console.log('[SW] Parsed notification data:', {
+        title: notificationData.title,
+        hasBody: !!notificationData.body,
+        hasData: !!notificationData.data,
+      });
+    } catch (error) {
+      console.error('[SW] Failed to parse push notification data:', {
+        error: error instanceof Error ? error.message : String(error),
+        data: event.data.text ? await event.data.text() : 'Unable to read data',
+      });
+      return;
+    }
+
+    if (!notificationData.title || !notificationData.body) {
+      console.error('[SW] Invalid notification data: missing title or body', notificationData);
+      return;
+    }
+
+    const options: NotificationOptions = {
+      body: notificationData.body,
+      icon: notificationData.icon || '/pwa-192x192.png',
+      badge: notificationData.badge || '/pwa-192x192.png',
+      data: notificationData.data || {},
+      tag: notificationData.tag,
+      requireInteraction: false,
+      vibrate: [200, 100, 200],
+    };
+
+    try {
+      await self.registration.showNotification(notificationData.title, options);
+      console.log('[SW] Notification shown successfully:', notificationData.title);
+    } catch (error) {
+      console.error('[SW] Failed to show notification:', {
+        error: error instanceof Error ? error.message : String(error),
+        title: notificationData.title,
+      });
+    }
+  })());
 });
+
 
 // Обработка кликов по уведомлениям
 self.addEventListener('notificationclick', (event: NotificationEvent) => {
