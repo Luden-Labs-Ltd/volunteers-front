@@ -17,7 +17,7 @@ export const CategorySelector = () => {
     if (!categories) return null;
 
     return (
-        <div className="grid grid-cols-2 gap-3 px-5 pb-10 mt-3">
+        <div className="grid grid-cols-2 gap-3 px-5 mt-3">
             {categories.map((cat) => (
                 <CategoryCard
                     key={cat.id}

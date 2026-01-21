@@ -1,4 +1,5 @@
 import {Category} from "@/entities/category/model";
+import {CATEGORY_IMAGES} from "@/entities/category/lib/CATEGORY_IMAGES.ts";
 
 type CategoryCardType = {
     category: Category;
@@ -7,7 +8,7 @@ type CategoryCardType = {
 }
 
 export const CategoryCard = ({ category, isSelected, onClick }: CategoryCardType) => {
-    console.log(category.iconSvg)
+    const mockImage = CATEGORY_IMAGES[category.name];
     return (
         <button
             onClick={onClick}
@@ -18,18 +19,23 @@ export const CategoryCard = ({ category, isSelected, onClick }: CategoryCardType
                 "opacity-70 border-[#e5e5e5] shadow-[1px_1px_0_0_#e5e5e5,3px_3px_0_0_#e5e5e5]"}
                         `}
         >
-                {category.iconSvg ? (
-                    <div className={`flex-1 w-full bg-gray-50 relative `}>
-                        <div
-                            className="w-full h-full flex items-center justify-center"
-                            dangerouslySetInnerHTML={{ __html: category.iconSvg }}
-                        />
-                    </div>
-                ) : (
-                    <div className={`flex-1 w-full bg-gray-50 relative `}>
-                        <div className="w-full h-full flex items-center justify-center text-gray-300">Img</div>
-                    </div>
-                )}
+            {/*КАРТИНКИ НА ВРЕМЯ, ПОКА НЕ ПОЯВИТСЯ С3 ДЛЯ ФОТО*/}
+            {mockImage ? (
+                <img
+                    src={mockImage}
+                    alt={category.name}
+                    className="w-full h-full object-cover"
+                />
+            ) : category.iconSvg ? (
+                <div
+                    className="w-full h-[137px] flex items-center justify-center p-4"
+                    dangerouslySetInnerHTML={{ __html: category.iconSvg }}
+                />
+            ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-300">
+                    Img
+                </div>
+            )}
 
             <div className="w-full py-3 text-center">
             <span className="text-[#5B5B5B] text-[16px] font-normal">
