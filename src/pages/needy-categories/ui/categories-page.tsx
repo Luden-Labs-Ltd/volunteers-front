@@ -1,33 +1,15 @@
 import {Button} from "@/shared/ui";
 import {useState} from "react";
+import {CategorySelector} from "@/features/select-categories/ui";
 
 export const CategoriesPage = () => {
     const [activeTab, setActiveTab] = useState<'tasks' | 'help'>('help');
-    const [categories, setCategories] = useState<string[]>([]);
-    console.log(categories)
-    const toggleCategory = (title: string) => {
-        setCategories((prev) => {
-            if (prev.includes(title)) {
-                return prev.filter((t) => t !== title);
-            }
-            return [...prev, title];
-        });
-    };
-
     const TASKS = [
         { id: 1, title: 'Transportation' },
         { id: 2, title: 'Private Lessons' },
         { id: 3, title: 'Electrician' },
         { id: 4, title: 'Plumbing' },
         { id: 5, title: 'Shopping' },
-    ];
-    const CATEGORIES = [
-        { id: 1, title: 'Home Maintenance' },
-        { id: 2, title: 'Children & Education' },
-        { id: 3, title: 'Bureaucracy & rights' },
-        { id: 4, title: 'Food and shopping' },
-        { id: 5, title: 'Transport & logistics' },
-        { id: 6, title: 'Personal support' },
     ];
     const MOSTPOPULAR = [
         { id: 1, title: 'Babysitting', place: 1 },
@@ -92,32 +74,7 @@ export const CategoriesPage = () => {
 
             {/*Категории*/}
             <h2 className={"text-[20px] font-normal mt-6 px-[20px]"}>Search by Categories</h2>
-            <div className="grid grid-cols-2 gap-3 px-5 pb-10 mt-3">
-                {CATEGORIES.map((category) => {
-                    const isSelected = categories.includes(category.title);
-                    return (
-                    <button
-                        key={category.id}
-                        className={`flex flex-col bg-white rounded-3xl 
-                        border
-                        overflow-hidden w-[170px] h-[180px] text-left ${isSelected ?
-                            "opacity-100 border-[#004573] shadow-[1px_1px_0_0_#004573,3px_3px_0_0_#004573]" :
-                            "opacity-70 border-[#e5e5e5] shadow-[1px_1px_0_0_#e5e5e5,3px_3px_0_0_#e5e5e5]"}
-                        `}
-                        onClick={() => toggleCategory(category.title)}
-                    >
-                        <div className={`flex-1 w-full bg-gray-50 relative `}>
-                            {/* <img src="..." className="absolute inset-0 w-full h-full object-cover" /> */}
-                            <div className="w-full h-full flex items-center justify-center text-gray-300">Img</div>
-                        </div>
-                        <div className="w-full py-3 text-center">
-            <span className="text-[#5B5B5B] text-[16px] font-normal">
-              {category.title}
-            </span>
-                        </div>
-                    </button>
-                    )})}
-            </div>
+                <CategorySelector />
 
             {/*Выбор комьюнити*/}
             <h2 className={"text-[20px] font-normal mt-6 px-[20px]"}>Most requested in the community</h2>
