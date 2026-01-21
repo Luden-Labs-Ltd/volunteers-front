@@ -82,6 +82,12 @@ self.addEventListener('push', (event: PushEvent) => {
     timestamp: new Date().toISOString(),
   });
 
+  // Проверяем разрешение на уведомления
+  if (Notification.permission !== 'granted') {
+    console.warn('[SW] ⚠️ Notification permission is not granted:', Notification.permission);
+    return;
+  }
+
   if (!event.data) {
     console.warn('[SW] ⚠️ Push event received without data');
     // Показываем уведомление даже без данных
@@ -90,6 +96,10 @@ self.addEventListener('push', (event: PushEvent) => {
         body: 'У вас новое уведомление',
         icon: '/pwa-192x192.png',
         badge: '/pwa-192x192.png',
+      }).then(() => {
+        console.log('[SW] ✅ Default notification shown');
+      }).catch((error) => {
+        console.error('[SW] ❌ Failed to show default notification:', error);
       })
     );
     return;
@@ -162,10 +172,41 @@ self.addEventListener('push', (event: PushEvent) => {
           data: notificationData.data || {},
           tag: notificationData.tag,
           requireInteraction: false,
+          silent: false,
         };
 
-        await self.registration.showNotification(notificationData.title, options);
-        console.log('[SW] ✅ Notification shown successfully:', notificationData.title);
+        // Проверяем активные клиенты
+        const clients = await self.clients.matchAll({ includeUncontrolled: true, type: 'window' });
+        const hasActiveClient = clients.some((client) => client.focused);
+        
+        console.log('[SW] 📤 Attempting to show notification:', {
+          title: notificationData.title,
+          body: notificationData.body,
+          permission: Notification.permission,
+          hasActiveClient,
+          clientsCount: clients.length,
+        });
+
+        try {
+          const notification = await self.registration.showNotification(notificationData.title, options);
+          console.log('[SW] ✅ Notification shown successfully:', {
+            title: notificationData.title,
+            notification: notification ? 'created' : 'null',
+          });
+          
+          // Дополнительная проверка через небольшую задержку
+          setTimeout(() => {
+            console.log('[SW] 🔍 Notification check after 1s - permission:', Notification.permission);
+          }, 1000);
+        } catch (showError) {
+          console.error('[SW] ❌ Failed to show notification:', {
+            error: showError instanceof Error ? showError.message : String(showError),
+            stack: showError instanceof Error ? showError.stack : undefined,
+            permission: Notification.permission,
+            errorName: showError instanceof Error ? showError.name : typeof showError,
+          });
+          throw showError;
+        }
         
         // Отправляем сообщение в основной поток для логирования
         const clients = await self.clients.matchAll();

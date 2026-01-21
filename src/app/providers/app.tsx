@@ -15,6 +15,25 @@ if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
   navigator.serviceWorker.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'NOTIFICATION_RECEIVED') {
       console.log('🔔 [App] Push notification received:', event.data);
+      console.log('🔔 [App] Notification permission:', Notification.permission);
+      
+      // Проверяем, почему уведомление может не показываться
+      if (Notification.permission !== 'granted') {
+        console.warn('⚠️ [App] Notification permission is not granted:', Notification.permission);
+      }
+    }
+  });
+
+  // Также слушаем события от Service Worker для отладки
+  navigator.serviceWorker.ready.then((registration) => {
+    console.log('🔔 [App] Service Worker ready, checking notifications support');
+    console.log('🔔 [App] Notification permission:', Notification.permission);
+    
+    // Проверяем, можем ли мы показать уведомление
+    if (Notification.permission === 'granted') {
+      console.log('✅ [App] Notifications are allowed');
+    } else {
+      console.warn('⚠️ [App] Notifications are not allowed:', Notification.permission);
     }
   });
 }
