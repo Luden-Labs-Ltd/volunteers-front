@@ -19,11 +19,11 @@ export const TaskCard: FC<TaskCardProps> = ({task}) => {
       onClick={handleClick}
     >
 
-      <div className="flex flex-col justify-between">
+      <div className="flex flex-col justify-between min-w-0 max-w">
 
         <span
           className={`
-            font-sans text-[14px] font-normal text-[#393939] px-2 py-0.5 rounded-full w-fit mb-1
+            font-sans text-[14px] font-normal text-[#393939] px-2 py-0.5 rounded-full w-fit mb-1 
             ${task.status === 'active' && 'bg-pastel-peach'}
             ${task.status === 'in_progress' && 'bg-pastel-blue '}
             ${task.status === 'completed' && 'bg-pastel-green'}

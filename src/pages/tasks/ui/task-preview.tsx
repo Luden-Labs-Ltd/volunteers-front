@@ -1,14 +1,20 @@
 import {Button, Card, Header} from "@/shared/ui";
 import {t} from "i18next";
 import mission_illustration from '@/shared/assets/images/mission_illustration.webp'
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 export const TaskPreviewPage = () => {
 
-  const onClickHandler = () => {console.log('click!')}
-
-  const { taskId } = useParams();
+  const navigate = useNavigate();
+  const {taskId} = useParams();
   console.log(taskId);
+  const onClickHandler = () => {
+   navigate(`/volunteer/tasks/${taskId}`);
+  }
+  const onLaterClickHandler = () => {
+    navigate('/volunteer/tasks');
+  };
+
 
   return (
     <section className="bg-backGround flex flex-col min-h-screen pt-24 pb-12 px-5 text-center">
@@ -31,7 +37,7 @@ export const TaskPreviewPage = () => {
         <Button size={'lg'} fullWidth={true} variant={'secondary'} onClick={onClickHandler}>
           View task details
         </Button>
-        <Button size={'lg'} fullWidth={true} variant={'white'} onClick={onClickHandler}>
+        <Button size={'lg'} fullWidth={true} variant={'white'} onClick={onLaterClickHandler}>
           Later
         </Button>
       </div>
