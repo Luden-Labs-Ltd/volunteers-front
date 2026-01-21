@@ -14,9 +14,12 @@ export const TaskDetailsPage = () => {
           src={mission_illustration}
         />
         <div className={'flex flex-col gap-3'}>
-          <Card className="bg-transparent border-none shadow-none">
-
-          </Card>
+          {/*<Card className="bg-transparent border-none shadow-none">*/}
+          {/*  */}
+          {/*</Card>*/}
+          <h1 className="border-none bg-transparent py-0 text-2xl text-primary-900">
+            Shopping at the supermarket
+            </h1>
         </div>
       </div>
       <div className={' flex flex-col gap-3 mt-auto'}>
