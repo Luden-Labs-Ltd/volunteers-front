@@ -99,6 +99,13 @@ registerRoute(
 
 // Обработка push-уведомлений
 self.addEventListener('push', (event: PushEvent) => {
+  // Всегда логируем получение push события (для отладки)
+  console.log('[SW] 🔔🔔🔔 PUSH EVENT RECEIVED 🔔🔔🔔', {
+    hasData: !!event.data,
+    timestamp: new Date().toISOString(),
+    permission: Notification.permission,
+  });
+  
   log('[SW] 🔔🔔🔔 PUSH EVENT RECEIVED 🔔🔔🔔', {
     hasData: !!event.data,
     timestamp: new Date().toISOString(),
@@ -198,6 +205,10 @@ self.addEventListener('push', (event: PushEvent) => {
           tag: notificationData.tag,
           requireInteraction: false,
           silent: false,
+          // Добавляем вибрацию для лучшей заметности
+          vibrate: [200, 100, 200],
+          // Показываем уведомление даже если окно в фокусе
+          renotify: true,
         };
 
         // Проверяем активные клиенты
@@ -213,7 +224,23 @@ self.addEventListener('push', (event: PushEvent) => {
         });
 
         try {
+          // Всегда логируем попытку показа уведомления (даже в production для отладки)
+          console.log('[SW] 📤 Attempting to show notification:', {
+            title: notificationData.title,
+            body: notificationData.body,
+            permission: Notification.permission,
+            hasActiveClient,
+            clientsCount: activeClients.length,
+          });
+
           await self.registration.showNotification(notificationData.title, options);
+          
+          // Всегда логируем успех
+          console.log('[SW] ✅ Notification shown successfully:', {
+            title: notificationData.title,
+            timestamp: new Date().toISOString(),
+          });
+          
           log('[SW] ✅ Notification shown successfully:', {
             title: notificationData.title,
           });
@@ -225,6 +252,14 @@ self.addEventListener('push', (event: PushEvent) => {
             }, 1000);
           }
         } catch (showError) {
+          // Всегда логируем ошибки
+          console.error('[SW] ❌ Failed to show notification:', {
+            error: showError instanceof Error ? showError.message : String(showError),
+            stack: showError instanceof Error ? showError.stack : undefined,
+            permission: Notification.permission,
+            errorName: showError instanceof Error ? showError.name : typeof showError,
+          });
+          
           logError('[SW] ❌ Failed to show notification:', {
             error: showError instanceof Error ? showError.message : String(showError),
             stack: showError instanceof Error ? showError.stack : undefined,
