@@ -8,15 +8,37 @@ import { NetworkFirst, CacheFirst, StaleWhileRevalidate } from 'workbox-strategi
 
 declare const self: ServiceWorkerGlobalScope;
 
+// Определение режима разработки (в Service Worker нет import.meta.env)
+const isDev = self.registration?.scope?.includes('localhost') || 
+              self.registration?.scope?.includes('127.0.0.1') ||
+              self.registration?.scope?.includes('192.168.');
+
+// Утилита для условного логирования
+const log = (...args: any[]) => {
+  if (isDev) {
+    console.log(...args);
+  }
+};
+
+const logError = (...args: any[]) => {
+  // Ошибки всегда логируем
+  console.error(...args);
+};
+
+const logWarn = (...args: any[]) => {
+  // Предупреждения всегда логируем
+  console.warn(...args);
+};
+
 // Логирование при установке Service Worker
 self.addEventListener('install', () => {
-  console.log('[SW] 📦 Service Worker installing');
+  log('[SW] 📦 Service Worker installing');
   self.skipWaiting();
 });
 
 // Логирование при активации Service Worker
 self.addEventListener('activate', () => {
-  console.log('[SW] ✅ Service Worker activated');
+  log('[SW] ✅ Service Worker activated');
   clientsClaim();
 });
 
@@ -77,19 +99,22 @@ registerRoute(
 
 // Обработка push-уведомлений
 self.addEventListener('push', (event: PushEvent) => {
-  console.log('[SW] 🔔 Push event received', {
+  log('[SW] 🔔🔔🔔 PUSH EVENT RECEIVED 🔔🔔🔔', {
     hasData: !!event.data,
     timestamp: new Date().toISOString(),
+    permission: Notification.permission,
   });
 
   // Проверяем разрешение на уведомления
   if (Notification.permission !== 'granted') {
-    console.warn('[SW] ⚠️ Notification permission is not granted:', Notification.permission);
+    logWarn('[SW] ⚠️ Notification permission is not granted:', Notification.permission);
     return;
   }
+  
+  log('[SW] ✅ Permission granted, processing push event...');
 
   if (!event.data) {
-    console.warn('[SW] ⚠️ Push event received without data');
+    logWarn('[SW] ⚠️ Push event received without data');
     // Показываем уведомление даже без данных
     event.waitUntil(
       self.registration.showNotification('Новое уведомление', {
@@ -97,9 +122,9 @@ self.addEventListener('push', (event: PushEvent) => {
         icon: '/pwa-192x192.png',
         badge: '/pwa-192x192.png',
       }).then(() => {
-        console.log('[SW] ✅ Default notification shown');
+        log('[SW] ✅ Default notification shown');
       }).catch((error) => {
-        console.error('[SW] ❌ Failed to show default notification:', error);
+        logError('[SW] ❌ Failed to show default notification:', error);
       })
     );
     return;
@@ -115,9 +140,9 @@ self.addEventListener('push', (event: PushEvent) => {
             throw new Error('Push event has no data');
           }
           text = await event.data.text();
-          console.log('[SW] 📦 Push data as text:', text);
+          log('[SW] 📦 Push data as text:', text);
         } catch (textError) {
-          console.error('[SW] ❌ Failed to read push data as text:', textError);
+          logError('[SW] ❌ Failed to read push data as text:', textError);
           // Показываем уведомление с дефолтными данными
           await self.registration.showNotification('Новое уведомление', {
             body: 'У вас новое уведомление',
@@ -138,13 +163,13 @@ self.addEventListener('push', (event: PushEvent) => {
 
         try {
           notificationData = JSON.parse(text);
-          console.log('[SW] ✅ Parsed notification data:', {
+          log('[SW] ✅ Parsed notification data:', {
             title: notificationData.title,
             hasBody: !!notificationData.body,
             hasData: !!notificationData.data,
           });
         } catch (parseError) {
-          console.error('[SW] ❌ Failed to parse JSON:', parseError);
+          logError('[SW] ❌ Failed to parse JSON:', parseError);
           // Показываем уведомление с текстом данных
           await self.registration.showNotification('Новое уведомление', {
             body: text || 'У вас новое уведомление',
@@ -156,7 +181,7 @@ self.addEventListener('push', (event: PushEvent) => {
 
         // Валидация обязательных полей
         if (!notificationData.title || !notificationData.body) {
-          console.error('[SW] ❌ Invalid notification data: missing title or body', notificationData);
+          logError('[SW] ❌ Invalid notification data: missing title or body', notificationData);
           await self.registration.showNotification('Новое уведомление', {
             body: notificationData.body || text || 'У вас новое уведомление',
             icon: notificationData.icon || '/pwa-192x192.png',
@@ -179,7 +204,7 @@ self.addEventListener('push', (event: PushEvent) => {
         const activeClients = await self.clients.matchAll({ includeUncontrolled: true, type: 'window' });
         const hasActiveClient = activeClients.some((client) => client.focused);
         
-        console.log('[SW] 📤 Attempting to show notification:', {
+        log('[SW] 📤 Attempting to show notification:', {
           title: notificationData.title,
           body: notificationData.body,
           permission: Notification.permission,
@@ -189,16 +214,18 @@ self.addEventListener('push', (event: PushEvent) => {
 
         try {
           await self.registration.showNotification(notificationData.title, options);
-          console.log('[SW] ✅ Notification shown successfully:', {
+          log('[SW] ✅ Notification shown successfully:', {
             title: notificationData.title,
           });
           
-          // Дополнительная проверка через небольшую задержку
-          setTimeout(() => {
-            console.log('[SW] 🔍 Notification check after 1s - permission:', Notification.permission);
-          }, 1000);
+          // Дополнительная проверка через небольшую задержку (только в dev)
+          if (isDev) {
+            setTimeout(() => {
+              log('[SW] 🔍 Notification check after 1s - permission:', Notification.permission);
+            }, 1000);
+          }
         } catch (showError) {
-          console.error('[SW] ❌ Failed to show notification:', {
+          logError('[SW] ❌ Failed to show notification:', {
             error: showError instanceof Error ? showError.message : String(showError),
             stack: showError instanceof Error ? showError.stack : undefined,
             permission: Notification.permission,
@@ -217,19 +244,21 @@ self.addEventListener('push', (event: PushEvent) => {
           });
         });
       } catch (error) {
-        console.error('[SW] ❌ Failed to process push notification:', {
+        logError('[SW] ❌ Failed to process push notification:', {
           error: error instanceof Error ? error.message : String(error),
           stack: error instanceof Error ? error.stack : undefined,
         });
-        // Показываем уведомление с ошибкой для отладки
-        try {
-          await self.registration.showNotification('Ошибка уведомления', {
-            body: error instanceof Error ? error.message : String(error),
-            icon: '/pwa-192x192.png',
-            badge: '/pwa-192x192.png',
-          });
-        } catch (showError) {
-          console.error('[SW] ❌ Failed to show error notification:', showError);
+        // Показываем уведомление с ошибкой только в dev режиме
+        if (isDev) {
+          try {
+            await self.registration.showNotification('Ошибка уведомления', {
+              body: error instanceof Error ? error.message : String(error),
+              icon: '/pwa-192x192.png',
+              badge: '/pwa-192x192.png',
+            });
+          } catch (showError) {
+            logError('[SW] ❌ Failed to show error notification:', showError);
+          }
         }
       }
     })()
@@ -238,7 +267,7 @@ self.addEventListener('push', (event: PushEvent) => {
 
 // Обработка кликов по уведомлениям
 self.addEventListener('notificationclick', (event: NotificationEvent) => {
-  console.log('[SW] Notification clicked:', {
+  log('[SW] Notification clicked:', {
     tag: event.notification.tag,
     data: event.notification.data,
   });
@@ -257,33 +286,58 @@ self.addEventListener('notificationclick', (event: NotificationEvent) => {
         includeUncontrolled: true,
       })
       .then((clientList) => {
-        console.log('[SW] Found clients:', clientList.length);
+        log('[SW] Found clients:', clientList.length);
 
         // Если окно уже открыто, фокусируемся на нем
         for (const client of clientList) {
           if (client.url.includes(urlToOpen) && 'focus' in client) {
-            console.log('[SW] Focusing existing client:', client.url);
+            log('[SW] Focusing existing client:', client.url);
             return client.focus();
           }
         }
 
         // Иначе открываем новое окно
         if (self.clients.openWindow) {
-          console.log('[SW] Opening new window:', urlToOpen);
+          log('[SW] Opening new window:', urlToOpen);
           return self.clients.openWindow(urlToOpen).catch((error) => {
-            console.error('[SW] Failed to open window:', {
+            logError('[SW] Failed to open window:', {
               error: error instanceof Error ? error.message : String(error),
               url: urlToOpen,
             });
           });
         } else {
-          console.warn('[SW] openWindow is not available');
+          logWarn('[SW] openWindow is not available');
         }
       })
       .catch((error) => {
-        console.error('[SW] Error handling notification click:', {
+        logError('[SW] Error handling notification click:', {
           error: error instanceof Error ? error.message : String(error),
         });
       }),
+  );
+});
+
+// Обработка закрытия уведомлений (для аналитики)
+self.addEventListener('notificationclose', (event: NotificationEvent) => {
+  log('[SW] Notification closed:', {
+    tag: event.notification.tag,
+    data: event.notification.data,
+    timestamp: new Date().toISOString(),
+  });
+
+  // Отправляем событие в основной поток для аналитики (опционально)
+  event.waitUntil(
+    self.clients.matchAll().then((clientList) => {
+      clientList.forEach((client) => {
+        client.postMessage({
+          type: 'NOTIFICATION_CLOSED',
+          data: {
+            tag: event.notification.tag,
+            data: event.notification.data,
+            timestamp: new Date().toISOString(),
+          },
+        });
+      });
+    }),
   );
 });
