@@ -1,14 +1,16 @@
+// features/select-subcategory-list/ui/SelectSubcategoryListItems.tsx
 import { SubcategoryList } from "@/entities/category/ui/subcategoryList";
 import { useQuery } from "@tanstack/react-query";
 import { categoryApi } from "@/entities/category/api";
-import {Category} from "@/entities/category/model";
+import { Category } from "@/entities/category/model";
 
 type SelectSubcategoryListItemsType = {
-    onSelect: (skillId: string) => void;
-    className?:string;
+    selectedIds: string[];
+    onToggle: (skillId: string) => void;
+    className?: string;
 }
 
-export const SelectSubcategoryListItems = ({ onSelect, className }: SelectSubcategoryListItemsType) => {
+export const SelectSubcategoryListItems = ({ selectedIds, onToggle, className }: SelectSubcategoryListItemsType) => {
     const { data: categories } = useQuery({
         queryKey: ['categories'],
         queryFn: () => categoryApi.getCategories(),
@@ -21,8 +23,9 @@ export const SelectSubcategoryListItems = ({ onSelect, className }: SelectSubcat
                     key={category.id}
                     categoryName={category.name}
                     skills={category.skills}
-                    onSkillClick={onSelect}
-                    onMissingClick={() => console.log('Open custom request form')}
+                    selectedSkillIds={selectedIds}
+                    onSkillClick={onToggle}
+                    onMissingClick={() => console.log('Open request form')}
                 />
             ))}
         </div>

@@ -1,1 +1,1 @@
-export { SelectSubcategoryListItems } from "./SelectSubcategoryList.tsx"
+export { SelectSubcategoryListItems } from "./select-subcategory-list.tsx"
