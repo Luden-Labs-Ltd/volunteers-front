@@ -6,7 +6,7 @@ type TaskTileType = {
 }
 
 export const TaskTile = ({task}:TaskTileType)=> {
-    const mockImage = TASKS_IMAGES[task.type]
+    const mockImage = TASKS_IMAGES[task.category?.name || ""]
     return (
         <button
             className="flex flex-col items-center gap-3 w-[110px]"

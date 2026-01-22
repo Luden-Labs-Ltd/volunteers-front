@@ -16,7 +16,7 @@ export const CategoryCard = ({ category, isSelected, onClick }: CategoryCardType
                         border
                         overflow-hidden w-[170px] h-[180px] text-left ${isSelected ?
                 "opacity-100 border-[#004573] shadow-[1px_1px_0_0_#004573,3px_3px_0_0_#004573]" :
-                "opacity-70 border-[#e5e5e5] shadow-[1px_1px_0_0_#e5e5e5,3px_3px_0_0_#e5e5e5]"}
+                "opacity-60 border-[#e5e5e5] shadow-[1px_1px_0_0_#e5e5e5,3px_3px_0_0_#e5e5e5]"}
                         `}
         >
             {/*КАРТИНКИ НА ВРЕМЯ, ПОКА НЕ ПОЯВИТСЯ С3 ДЛЯ ФОТО*/}
