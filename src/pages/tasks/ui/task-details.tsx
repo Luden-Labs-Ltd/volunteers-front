@@ -27,7 +27,7 @@ export const TaskDetailsPage = () => {
           <Card variant={'elevated'} className={'p-4 flex flex-col gap-3 items-start text-left w-full'}>
             <p className="text-textGray font-normal">To carry out the task, please contact</p>
             <p className="text-textGray font-medium">Sara Cohen</p>
-            <a><p className={'text-deepBlue font-normal'}>
+            <a><p className={'text-deepBlue font-normal flex flex-row items-center gap-2'}>
               <span>
                 <img
                   src={phoneIcon}
@@ -38,7 +38,7 @@ export const TaskDetailsPage = () => {
               <span> +12345</span>
             </p>
             </a>
-            <a><p className={'text-deepBlue font-normal'}>
+            <a><p className={'text-deepBlue font-normal flex flex-row items-center gap-2'}>
               <span>
                 <img
                   src={smsIcon}
@@ -50,7 +50,7 @@ export const TaskDetailsPage = () => {
             </p>
             </a>
             <a>
-              <p className={'text-deepBlue font-normal'}>
+              <p className={'text-deepBlue font-normal flex flex-row items-center gap-2'}>
               <span>
                 <img
                   src={watsappIcon}
@@ -61,7 +61,8 @@ export const TaskDetailsPage = () => {
               Send a WhatsApp message
             </p>
             </a>
-            <p className="text-textGray font-medium line-clamp-3 text-left">At the end of the task, please let us know
+            <p className="text-textGray font-medium line-clamp-3 text-left">
+              At the end of the task, please let us know
               that it has been completed, so we can feel at ease🙏</p>
           </Card>
         </div>
