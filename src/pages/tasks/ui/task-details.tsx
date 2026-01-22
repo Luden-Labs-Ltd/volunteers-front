@@ -26,7 +26,7 @@ export const TaskDetailsPage = () => {
   }
 
   return (
-    <section className="flex flex-col min-h-screen pt-24 pb-24 px-5 text-center">
+    <section className="flex flex-col min-h-screen pt-24 pb-24 px-5 text-center gap-4">
       <div className={'flex flex-col gap-8'}>
         <img
           src={mission_illustration}
