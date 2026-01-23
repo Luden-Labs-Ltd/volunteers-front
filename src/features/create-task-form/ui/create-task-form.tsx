@@ -10,6 +10,7 @@ import {useGetMe} from "@/entities/user";
 import {SelectSkills} from "@/features/selected-skills/ui";
 import {createTaskSchema} from "@/pages/needy-categories/model/schema.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
+import {QUERY_KEYS} from "@/shared/api/hook/query-keys.ts";
 
 type CreateTaskFormProps = {
     skillsIds: string[];
@@ -27,8 +28,8 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
     const { mutate, isPending } = useMutation({
         mutationFn: (data: CreateTaskDto) => taskApi.createTask(data),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['tasks'] });
-            queryClient.invalidateQueries({ queryKey: ['my-tasks'] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.TASKS] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.MY_TASKS] });
             onSuccess();
         },
         onError: (error) => {
