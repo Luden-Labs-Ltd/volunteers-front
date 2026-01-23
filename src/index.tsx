@@ -103,13 +103,13 @@ const root = createRoot(rootElement);
 
 try {
   console.log('📦 Rendering app...');
-  root.render(
-    <StrictMode>
+root.render(
+  <StrictMode>
       <ErrorBoundary>
-        <App />
+    <App />
       </ErrorBoundary>
-    </StrictMode>
-  );
+  </StrictMode>
+);
   console.log('✅ App rendered successfully');
 } catch (error) {
   console.error('❌ Failed to render app:', error);
