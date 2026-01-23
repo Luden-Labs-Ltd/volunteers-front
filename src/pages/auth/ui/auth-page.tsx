@@ -40,7 +40,7 @@ export const AuthPage: FC = () => {
       try {
         const response = await sendSmsMutation.mutateAsync({
           phoneNumber: phone,
-          isDev: isDev,
+          isDev: true,
         });
         setShowCodeInput(true);
         // Сохраняем dev код если он есть в ответе
