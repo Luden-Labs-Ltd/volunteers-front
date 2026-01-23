@@ -1,1 +1,1 @@
-export { CategoriesPage } from "./ui/categories-page.tsx";
+export { NeedyLayout } from "./ui/needy-layout.tsx";

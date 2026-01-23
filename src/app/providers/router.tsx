@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
 import { AuthPage } from '@/pages/auth/ui';
 import { TasksPage } from '@/pages/tasks/ui';
 import { UIKitPage } from '@/pages/ui-kit/ui';
@@ -8,7 +8,8 @@ import { LeaderboardPage } from '@/pages/leaderboard/ui';
 import { SettingsPage } from '@/pages/settings/ui';
 import { PrivateRoute } from './private-route';
 import { RoleRedirect } from './role-redirect';
-import {CategoriesPage} from "@/pages/needy-categories";
+import {NeedyLayout} from "@/pages/needy-categories";
+import {CategoriesPage, CategorySkillsPage, NeedyTasksPage, TaskDetailsPage} from "@/pages/needy-categories/ui";
 
 export const Router: FC = () => {
   return (
@@ -22,7 +23,6 @@ export const Router: FC = () => {
         {/* Публичные роуты */}
         <Route path="/ui-kit" element={<UIKitPage />} />
         <Route path="/auth" element={<AuthPage />} />
-
         {/* Онбординг волонтера */}
         <Route
           path="/volunteer/onboarding"
@@ -70,15 +70,19 @@ export const Router: FC = () => {
           }
         />
 
-        {/* Роуты для нуждающихся */}
-        <Route
-          path="/needy"
-          element={
-            <PrivateRoute allowedRoles={['needy']}>
-              <CategoriesPage />
-            </PrivateRoute>
-          }
-        />
+          <Route path="/needy" element={
+              <PrivateRoute allowedRoles={['needy']}>
+                  <NeedyLayout />
+              </PrivateRoute>
+          }>
+              {/* Редирект по умолчанию на категории */}
+              <Route index element={<Navigate to="categories" replace />} />
+              <Route path="categories" element={<CategoriesPage />} />
+              <Route path="skills" element={<CategorySkillsPage />} />
+              <Route path="details" element={<TaskDetailsPage />} />
+              <Route path="tasks" element={<NeedyTasksPage />} />
+          </Route>
+
         <Route
           path="/needy/tasks"
           element={

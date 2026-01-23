@@ -1,13 +1,16 @@
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
+import { z } from "zod";
 import { Button } from "@/shared/ui";
-import { SelectSkills } from "@/entities/skills/ui/select-skills";
 import { TaskFormCard } from "@/entities/task/ui/task-form-card";
 import { taskApi } from "@/entities/task/api";
 import { CreateTaskDto } from "@/entities/task/model/types";
 import {useGetMe} from "@/entities/user";
+import {SelectSkills} from "@/features/selected-skills/ui";
+import {createTaskSchema} from "@/pages/needy-categories/model/schema.ts";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {QUERY_KEYS} from "@/shared/api/hook/query-keys.ts";
 
 type CreateTaskFormProps = {
     skillsIds: string[];
@@ -15,6 +18,8 @@ type CreateTaskFormProps = {
     onBack: () => void;
     onSuccess: () => void;
 };
+type CreateTaskFormValues = z.infer<typeof createTaskSchema>;
+
 
 export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: CreateTaskFormProps) => {
     const { t } = useTranslation();
@@ -23,16 +28,16 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
     const { mutate, isPending } = useMutation({
         mutationFn: (data: CreateTaskDto) => taskApi.createTask(data),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['tasks'] });
-            queryClient.invalidateQueries({ queryKey: ['my-tasks'] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.TASKS] });
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.MY_TASKS] });
             onSuccess();
         },
         onError: (error) => {
             console.error("Failed to create task:", error);
         }
     });
-
-    const { register, control, handleSubmit, formState: { errors } } = useForm<CreateTaskDto>({
+    const { register, control, handleSubmit, formState: { errors } } = useForm<CreateTaskFormValues>({
+        resolver: zodResolver(createTaskSchema),
         mode: "onChange",
         defaultValues: {
             title: "",
@@ -42,7 +47,9 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
             categoryId: categoryId,
         }
     });
-    const onSubmit = (data: CreateTaskDto) => {
+
+    const onSubmit = (data: CreateTaskFormValues) => {
+
         const payload: CreateTaskDto = {
             programId: "32a8ae3b-d7df-4d37-bb0c-ee2ad7824499",
             needyId: user?.id || "",
@@ -50,8 +57,8 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
             title: data.title,
             description: data.description,
             details: "",
-            skillIds: skillsIds,
-            categoryId: categoryId,
+            skillIds: data.skillIds,
+            categoryId: data.categoryId,
             firstResponseMode: data.firstResponseMode,
         };
         mutate(payload);
@@ -68,8 +75,7 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
             <h2 className={"text-[20px] font-normal mt-6 mb-3"}>
                 {t("taskDetails.selectedSkills")}
             </h2>
-            <SelectSkills ids={skillsIds}/>
-
+            <SelectSkills ids={skillsIds} />
             <div className="fixed z-[1000] bottom-0 left-0 right-0 w-full max-w-[398px] mx-auto bg-white border-t border-blue-50 px-[20px]">
                 <div className="pointer-events-auto bg-white mt-5">
                     <Button
@@ -81,7 +87,6 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
                     >
                         {t("taskDetails.buttonGoToTasks")}
                     </Button>
-
                     <Button
                         className={"py-4 text-[20px] border-none mb-[20px] active:bg-transparent focus:bg-transparent"}
                         variant="text"
