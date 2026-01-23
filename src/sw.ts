@@ -8,8 +8,39 @@ import { NetworkFirst, CacheFirst, StaleWhileRevalidate } from 'workbox-strategi
 
 declare const self: ServiceWorkerGlobalScope;
 
-// Управление версией кеша
-clientsClaim();
+// Определение режима разработки (в Service Worker нет import.meta.env)
+const isDev = self.registration?.scope?.includes('localhost') || 
+              self.registration?.scope?.includes('127.0.0.1') ||
+              self.registration?.scope?.includes('192.168.');
+
+// Утилита для условного логирования
+const log = (...args: any[]) => {
+  if (isDev) {
+    console.log(...args);
+  }
+};
+
+const logError = (...args: any[]) => {
+  // Ошибки всегда логируем
+  console.error(...args);
+};
+
+const logWarn = (...args: any[]) => {
+  // Предупреждения всегда логируем
+  console.warn(...args);
+};
+
+// Логирование при установке Service Worker
+self.addEventListener('install', () => {
+  log('[SW] 📦 Service Worker installing');
+  self.skipWaiting();
+});
+
+// Логирование при активации Service Worker
+self.addEventListener('activate', () => {
+  log('[SW] ✅ Service Worker activated');
+  clientsClaim();
+});
 
 // Предкэширование ресурсов
 precacheAndRoute(self.__WB_MANIFEST);
@@ -67,138 +98,211 @@ registerRoute(
 );
 
 // Обработка push-уведомлений
-// self.addEventListener('push', (event: PushEvent) => {
-//   console.log('[SW] Push event received', {
-//     hasData: !!event.data,
-//     dataType: event.data?.type,
-//   });
-//
-//   if (!event.data) {
-//     console.warn('[SW] Push event received without data');
-//     return;
-//   }
-//
-//   let notificationData: {
-//     title: string;
-//     body: string;
-//     icon?: string;
-//     badge?: string;
-//     data?: Record<string, any>;
-//     tag?: string;
-//   };
-//
-//   try {
-//     notificationData = event.data.json();
-//     console.log('[SW] Parsed notification data:', {
-//       title: notificationData.title,
-//       hasBody: !!notificationData.body,
-//       hasData: !!notificationData.data,
-//     });
-//   } catch (error) {
-//     console.error('[SW] Failed to parse push notification data:', {
-//       error: error instanceof Error ? error.message : String(error),
-//       data: event.data.text ? await event.data.text() : 'Unable to read data',
-//     });
-//     return;
-//   }
-//
-//   // Валидация обязательных полей
-//   if (!notificationData.title || !notificationData.body) {
-//     console.error('[SW] Invalid notification data: missing title or body', notificationData);
-//     return;
-//   }
-//
-//   const options: NotificationOptions = {
-//     body: notificationData.body,
-//     icon: notificationData.icon || '/pwa-192x192.png',
-//     badge: notificationData.badge || '/pwa-192x192.png',
-//     data: notificationData.data || {},
-//     tag: notificationData.tag,
-//     requireInteraction: false,
-//     vibrate: [200, 100, 200],
-//   };
-//
-//   event.waitUntil(
-//     self.registration
-//       .showNotification(notificationData.title, options)
-//       .then(() => {
-//         console.log('[SW] Notification shown successfully:', notificationData.title);
-//       })
-//       .catch((error) => {
-//         console.error('[SW] Failed to show notification:', {
-//           error: error instanceof Error ? error.message : String(error),
-//           title: notificationData.title,
-//         });
-//       }),
-//   );
-// });
 self.addEventListener('push', (event: PushEvent) => {
-  event.waitUntil((async () => {
-    console.log('[SW] Push event received', {
-      hasData: !!event.data,
-      dataType: event.data?.type,
-    });
+  // Всегда логируем получение push события (для отладки)
+  console.log('[SW] 🔔🔔🔔 PUSH EVENT RECEIVED 🔔🔔🔔', {
+    hasData: !!event.data,
+    timestamp: new Date().toISOString(),
+    permission: Notification.permission,
+  });
+  
+  log('[SW] 🔔🔔🔔 PUSH EVENT RECEIVED 🔔🔔🔔', {
+    hasData: !!event.data,
+    timestamp: new Date().toISOString(),
+    permission: Notification.permission,
+  });
 
-    if (!event.data) {
-      console.warn('[SW] Push event received without data');
-      return;
-    }
+  // Проверяем разрешение на уведомления
+  if (Notification.permission !== 'granted') {
+    logWarn('[SW] ⚠️ Notification permission is not granted:', Notification.permission);
+    return;
+  }
+  
+  log('[SW] ✅ Permission granted, processing push event...');
 
-    let notificationData: {
-      title: string;
-      body: string;
-      icon?: string;
-      badge?: string;
-      data?: Record<string, any>;
-      tag?: string;
-    };
+  if (!event.data) {
+    logWarn('[SW] ⚠️ Push event received without data');
+    // Показываем уведомление даже без данных
+    event.waitUntil(
+      self.registration.showNotification('Новое уведомление', {
+        body: 'У вас новое уведомление',
+        icon: '/pwa-192x192.png',
+        badge: '/pwa-192x192.png',
+      }).then(() => {
+        log('[SW] ✅ Default notification shown');
+      }).catch((error) => {
+        logError('[SW] ❌ Failed to show default notification:', error);
+      })
+    );
+    return;
+  }
 
-    try {
-      notificationData = event.data.json();
-      console.log('[SW] Parsed notification data:', {
-        title: notificationData.title,
-        hasBody: !!notificationData.body,
-        hasData: !!notificationData.data,
-      });
-    } catch (error) {
-      console.error('[SW] Failed to parse push notification data:', {
-        error: error instanceof Error ? error.message : String(error),
-        data: event.data.text ? await event.data.text() : 'Unable to read data',
-      });
-      return;
-    }
+  // Обрабатываем push событие
+  event.waitUntil(
+    (async () => {
+      try {
+        let text: string;
+        try {
+          if (!event.data) {
+            throw new Error('Push event has no data');
+          }
+          text = await event.data.text();
+          log('[SW] 📦 Push data as text:', text);
+        } catch (textError) {
+          logError('[SW] ❌ Failed to read push data as text:', textError);
+          // Показываем уведомление с дефолтными данными
+          await self.registration.showNotification('Новое уведомление', {
+            body: 'У вас новое уведомление',
+            icon: '/pwa-192x192.png',
+            badge: '/pwa-192x192.png',
+          });
+          return;
+        }
 
-    if (!notificationData.title || !notificationData.body) {
-      console.error('[SW] Invalid notification data: missing title or body', notificationData);
-      return;
-    }
+        let notificationData: {
+          title: string;
+          body: string;
+          icon?: string;
+          badge?: string;
+          data?: Record<string, any>;
+          tag?: string;
+        };
 
-    const options: NotificationOptions = {
-      body: notificationData.body,
-      icon: notificationData.icon || '/pwa-192x192.png',
-      badge: notificationData.badge || '/pwa-192x192.png',
-      data: notificationData.data || {},
-      tag: notificationData.tag,
-      requireInteraction: false,
-      vibrate: [200, 100, 200],
-    };
+        try {
+          notificationData = JSON.parse(text);
+          log('[SW] ✅ Parsed notification data:', {
+            title: notificationData.title,
+            hasBody: !!notificationData.body,
+            hasData: !!notificationData.data,
+          });
+        } catch (parseError) {
+          logError('[SW] ❌ Failed to parse JSON:', parseError);
+          // Показываем уведомление с текстом данных
+          await self.registration.showNotification('Новое уведомление', {
+            body: text || 'У вас новое уведомление',
+            icon: '/pwa-192x192.png',
+            badge: '/pwa-192x192.png',
+          });
+          return;
+        }
 
-    try {
-      await self.registration.showNotification(notificationData.title, options);
-      console.log('[SW] Notification shown successfully:', notificationData.title);
-    } catch (error) {
-      console.error('[SW] Failed to show notification:', {
-        error: error instanceof Error ? error.message : String(error),
-        title: notificationData.title,
-      });
-    }
-  })());
+        // Валидация обязательных полей
+        if (!notificationData.title || !notificationData.body) {
+          logError('[SW] ❌ Invalid notification data: missing title or body', notificationData);
+          await self.registration.showNotification('Новое уведомление', {
+            body: notificationData.body || text || 'У вас новое уведомление',
+            icon: notificationData.icon || '/pwa-192x192.png',
+            badge: notificationData.badge || '/pwa-192x192.png',
+          });
+          return;
+        }
+
+        const options: NotificationOptions = {
+          body: notificationData.body,
+          icon: notificationData.icon || '/pwa-192x192.png',
+          badge: notificationData.badge || '/pwa-192x192.png',
+          data: notificationData.data || {},
+          tag: notificationData.tag,
+          requireInteraction: false,
+          silent: false,
+          // Добавляем вибрацию для лучшей заметности
+          vibrate: [200, 100, 200],
+          // Показываем уведомление даже если окно в фокусе
+          renotify: true,
+        };
+
+        // Проверяем активные клиенты
+        const activeClients = await self.clients.matchAll({ includeUncontrolled: true, type: 'window' });
+        const hasActiveClient = activeClients.some((client) => client.focused);
+        
+        log('[SW] 📤 Attempting to show notification:', {
+          title: notificationData.title,
+          body: notificationData.body,
+          permission: Notification.permission,
+          hasActiveClient,
+          clientsCount: activeClients.length,
+        });
+
+        try {
+          // Всегда логируем попытку показа уведомления (даже в production для отладки)
+          console.log('[SW] 📤 Attempting to show notification:', {
+            title: notificationData.title,
+            body: notificationData.body,
+            permission: Notification.permission,
+            hasActiveClient,
+            clientsCount: activeClients.length,
+          });
+
+          await self.registration.showNotification(notificationData.title, options);
+          
+          // Всегда логируем успех
+          console.log('[SW] ✅ Notification shown successfully:', {
+            title: notificationData.title,
+            timestamp: new Date().toISOString(),
+          });
+          
+          log('[SW] ✅ Notification shown successfully:', {
+            title: notificationData.title,
+          });
+          
+          // Дополнительная проверка через небольшую задержку (только в dev)
+          if (isDev) {
+            setTimeout(() => {
+              log('[SW] 🔍 Notification check after 1s - permission:', Notification.permission);
+            }, 1000);
+          }
+        } catch (showError) {
+          // Всегда логируем ошибки
+          console.error('[SW] ❌ Failed to show notification:', {
+            error: showError instanceof Error ? showError.message : String(showError),
+            stack: showError instanceof Error ? showError.stack : undefined,
+            permission: Notification.permission,
+            errorName: showError instanceof Error ? showError.name : typeof showError,
+          });
+          
+          logError('[SW] ❌ Failed to show notification:', {
+            error: showError instanceof Error ? showError.message : String(showError),
+            stack: showError instanceof Error ? showError.stack : undefined,
+            permission: Notification.permission,
+            errorName: showError instanceof Error ? showError.name : typeof showError,
+          });
+          throw showError;
+        }
+        
+        // Отправляем сообщение в основной поток для логирования
+        const allClients = await self.clients.matchAll();
+        allClients.forEach((client) => {
+          client.postMessage({
+            type: 'NOTIFICATION_RECEIVED',
+            data: notificationData,
+            timestamp: new Date().toISOString(),
+          });
+        });
+      } catch (error) {
+        logError('[SW] ❌ Failed to process push notification:', {
+          error: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined,
+        });
+        // Показываем уведомление с ошибкой только в dev режиме
+        if (isDev) {
+          try {
+            await self.registration.showNotification('Ошибка уведомления', {
+              body: error instanceof Error ? error.message : String(error),
+              icon: '/pwa-192x192.png',
+              badge: '/pwa-192x192.png',
+            });
+          } catch (showError) {
+            logError('[SW] ❌ Failed to show error notification:', showError);
+          }
+        }
+      }
+    })()
+  );
 });
-
 
 // Обработка кликов по уведомлениям
 self.addEventListener('notificationclick', (event: NotificationEvent) => {
-  console.log('[SW] Notification clicked:', {
+  log('[SW] Notification clicked:', {
     tag: event.notification.tag,
     data: event.notification.data,
   });
@@ -217,33 +321,58 @@ self.addEventListener('notificationclick', (event: NotificationEvent) => {
         includeUncontrolled: true,
       })
       .then((clientList) => {
-        console.log('[SW] Found clients:', clientList.length);
+        log('[SW] Found clients:', clientList.length);
 
         // Если окно уже открыто, фокусируемся на нем
         for (const client of clientList) {
           if (client.url.includes(urlToOpen) && 'focus' in client) {
-            console.log('[SW] Focusing existing client:', client.url);
+            log('[SW] Focusing existing client:', client.url);
             return client.focus();
           }
         }
 
         // Иначе открываем новое окно
         if (self.clients.openWindow) {
-          console.log('[SW] Opening new window:', urlToOpen);
+          log('[SW] Opening new window:', urlToOpen);
           return self.clients.openWindow(urlToOpen).catch((error) => {
-            console.error('[SW] Failed to open window:', {
+            logError('[SW] Failed to open window:', {
               error: error instanceof Error ? error.message : String(error),
               url: urlToOpen,
             });
           });
         } else {
-          console.warn('[SW] openWindow is not available');
+          logWarn('[SW] openWindow is not available');
         }
       })
       .catch((error) => {
-        console.error('[SW] Error handling notification click:', {
+        logError('[SW] Error handling notification click:', {
           error: error instanceof Error ? error.message : String(error),
         });
       }),
+  );
+});
+
+// Обработка закрытия уведомлений (для аналитики)
+self.addEventListener('notificationclose', (event: NotificationEvent) => {
+  log('[SW] Notification closed:', {
+    tag: event.notification.tag,
+    data: event.notification.data,
+    timestamp: new Date().toISOString(),
+  });
+
+  // Отправляем событие в основной поток для аналитики (опционально)
+  event.waitUntil(
+    self.clients.matchAll().then((clientList) => {
+      clientList.forEach((client) => {
+        client.postMessage({
+          type: 'NOTIFICATION_CLOSED',
+          data: {
+            tag: event.notification.tag,
+            data: event.notification.data,
+            timestamp: new Date().toISOString(),
+          },
+        });
+      });
+    }),
   );
 });

@@ -11,6 +11,10 @@ export default defineConfig({
       srcDir: "src",
       filename: "sw.ts",
       registerType: "autoUpdate",
+      injectManifest: {
+        // В dev режиме используем наш sw.ts напрямую
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
+      },
       includeAssets: [
         "favicon.ico",
         "favicon-16x16.png",
@@ -21,7 +25,7 @@ export default defineConfig({
         name: "Волонтерское приложение",
         short_name: "Волонтеры",
         description: "Платформа для координации волонтерской помощи",
-        theme_color: "#16a34a",
+        theme_color: "#ffffff",
         background_color: "#ffffff",
         display: "standalone",
         orientation: "portrait",
@@ -63,8 +67,10 @@ export default defineConfig({
         ],
       },
       devOptions: {
-        enabled: true,
-        type: "module",
+        enabled: true, // Включено для тестирования push-уведомлений в dev режиме
+        type: "module", // Module type для поддержки ES6 импортов
+        navigateFallback: "index.html",
+        suppressWarnings: true,
       },
     }),
   ],
@@ -75,7 +81,8 @@ export default defineConfig({
     extensions: [".ts", ".tsx", ".js", ".jsx", ".json", ".png", ".jpg", ".jpeg", ".svg", ".gif", ".webp"],
   },
   server: {
-    port: 3000,
+    port: 5173, // Можно переопределить через --port
+    host: true, // Можно переопределить через --host <IP>
     open: true,
   },
   build: {

@@ -1,7 +1,38 @@
 import { getToken, setToken, getRefreshToken, setRefreshToken, clearTokens } from '@/shared/lib/auth';
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "https://volunteers-backend-production.up.railway.app";
+// Автоматическое определение API URL
+const getApiBaseUrl = (): string => {
+  // Если указан явно через переменную окружения, используем его
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+
+  if (typeof window === 'undefined') {
+    return "https://volunteers-backend-production.up.railway.app";
+  }
+
+  const host = window.location.hostname;
+  
+  // Приоритет: если это IP адрес локальной сети, используем его с портом 4000
+  if (host.startsWith('192.168.') || host.startsWith('10.') || host.startsWith('172.')) {
+    return `http://${host}:4000`;
+  }
+
+  // Если localhost, используем localhost:4000
+  if (host === 'localhost' || host === '127.0.0.1') {
+    return 'http://localhost:4000';
+  }
+
+  // По умолчанию production URL
+  return "https://volunteers-backend-production.up.railway.app";
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
+// Логирование API URL в development режиме
+if (import.meta.env.DEV) {
+  console.log('🔗 API Base URL:', API_BASE_URL);
+}
 
 export class ApiClient {
   private baseUrl: string;

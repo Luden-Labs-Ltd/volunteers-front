@@ -5,6 +5,7 @@ import { TasksPage } from '@/pages/tasks/ui';
 import { UIKitPage } from '@/pages/ui-kit/ui';
 import { OnboardingPage } from '@/pages/volunteer-onboarding/ui';
 import { LeaderboardPage } from '@/pages/leaderboard/ui';
+import { SettingsPage } from '@/pages/settings/ui';
 import { PrivateRoute } from './private-route';
 import { RoleRedirect } from './role-redirect';
 import { TaskPreviewPage } from '@/pages/tasks/ui';
@@ -62,6 +63,14 @@ export const Router: FC = () => {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/volunteer/settings"
+          element={
+            <PrivateRoute allowedRoles={['volunteer']}>
+              <SettingsPage />
+            </PrivateRoute>
+          }
+        />
 
         <Route path="/volunteer/tasks/:taskId/preview" element={
           <PrivateRoute allowedRoles={['volunteer']}>
@@ -95,6 +104,14 @@ export const Router: FC = () => {
           element={
             <PrivateRoute allowedRoles={['needy']}>
               <TasksPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/needy/settings"
+          element={
+            <PrivateRoute allowedRoles={['needy']}>
+              <SettingsPage />
             </PrivateRoute>
           }
         />

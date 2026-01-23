@@ -26,12 +26,17 @@ export function usePushSubscription() {
   // Проверка поддержки браузером
   useEffect(() => {
     const isSupported =
+      typeof window !== 'undefined' &&
       'serviceWorker' in navigator &&
       'PushManager' in window &&
       'Notification' in window &&
+      typeof Notification !== 'undefined' &&
       isVapidConfigured();
 
-    const permission = Notification.permission;
+    const permission: NotificationPermission = 
+      isSupported && typeof Notification !== 'undefined' 
+        ? Notification.permission 
+        : 'denied';
 
     setState((prev) => ({
       ...prev,
@@ -64,6 +69,13 @@ export function usePushSubscription() {
     }
 
     getSubscription().then((subscription) => {
+      if (subscription) {
+        console.log('🔔 [Hook] Current subscription found:', {
+          endpoint: subscription.endpoint.substring(0, 50) + '...',
+        });
+      } else {
+        console.log('🔔 [Hook] No subscription found');
+      }
       setState((prev) => ({
         ...prev,
         subscription,
@@ -74,7 +86,7 @@ export function usePushSubscription() {
 
   // Запрос разрешения
   const requestPermission = useCallback(async (): Promise<boolean> => {
-    if (!state.isSupported) {
+    if (!state.isSupported || typeof window === 'undefined' || typeof Notification === 'undefined') {
       setState((prev) => ({
         ...prev,
         error: 'Push notifications are not supported',
@@ -118,9 +130,15 @@ export function usePushSubscription() {
 
     try {
       const registration = await navigator.serviceWorker.ready;
+      const applicationServerKey = urlBase64ToUint8Array(VAPID_PUBLIC_KEY);
+      console.log('🔔 [Hook] Creating subscription with VAPID key...');
       const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+        applicationServerKey: applicationServerKey as BufferSource,
+      });
+
+      console.log('✅ [Hook] Subscription created:', {
+        endpoint: subscription.endpoint.substring(0, 50) + '...',
       });
 
       setState((prev) => ({

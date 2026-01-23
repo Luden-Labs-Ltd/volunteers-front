@@ -18,11 +18,11 @@ export const AuthPage: FC = () => {
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
   const [showCodeInput, setShowCodeInput] = useState(false);
-  
+  const [devCode, setDevCode] = useState<string | null>(null);
+
   const sendSmsMutation = useSendSms();
   const verifySmsMutation = useVerifySms();
   const { data: user, isLoading } = useGetMe();
-  console.log(user,"response");
 
   // Определяем, находимся ли мы в режиме разработки (для отображения кода в консоли)
   const isDev = import.meta.env.DEV;
@@ -38,11 +38,15 @@ export const AuthPage: FC = () => {
   const handleSendCode = async () => {
     if (phone) {
       try {
-        await sendSmsMutation.mutateAsync({
+        const response = await sendSmsMutation.mutateAsync({
           phoneNumber: phone,
           isDev: isDev,
         });
         setShowCodeInput(true);
+        // Сохраняем dev код если он есть в ответе
+        if (isDev && response?.code) {
+          setDevCode(response.code);
+        }
       } catch (error) {
         // Ошибка уже обработана в хуке через toast
         console.error('Failed to send SMS:', error);
@@ -65,10 +69,18 @@ export const AuthPage: FC = () => {
     }
   };
 
+  const handleCopyDevCode = () => {
+    if (devCode) {
+      navigator.clipboard.writeText(devCode);
+      // Можно показать toast, но он уже есть в useSendSms
+    }
+  };
+
   // Показываем код в консоли в режиме разработки
   useEffect(() => {
     if (isDev && sendSmsMutation.data?.code) {
       console.log('🔧 DEV MODE: SMS код:', sendSmsMutation.data.code);
+      setDevCode(sendSmsMutation.data.code);
     }
   }, [sendSmsMutation.data, isDev]);
 
@@ -142,6 +154,28 @@ export const AuthPage: FC = () => {
                     maxLength={6}
                   />
                 </div>
+                {isDev && devCode && (
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-xs text-yellow-800 font-medium mb-1">
+                          🔧 DEV MODE: SMS код
+                        </p>
+                        <p className="text-lg font-mono font-bold text-yellow-900">
+                          {devCode}
+                        </p>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleCopyDevCode}
+                        className="ml-2"
+                      >
+                        Копировать
+                      </Button>
+                    </div>
+                  </div>
+                )}
                 <Button
                   fullWidth
                   size="lg"
@@ -153,7 +187,10 @@ export const AuthPage: FC = () => {
                 <Button
                   fullWidth
                   variant="text"
-                  onClick={() => setShowCodeInput(false)}
+                  onClick={() => {
+                    setShowCodeInput(false);
+                    setDevCode(null);
+                  }}
                 >
                   {t('auth.changePhone')}
                 </Button>
