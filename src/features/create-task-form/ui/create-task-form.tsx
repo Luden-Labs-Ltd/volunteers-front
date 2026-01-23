@@ -1,16 +1,18 @@
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 import { Button } from "@/shared/ui";
 import { TaskFormCard } from "@/entities/task/ui/task-form-card";
 import { taskApi } from "@/entities/task/api";
-import { CreateTaskDto } from "@/entities/task/model/types";
+import { CreateTaskDto, Task } from "@/entities/task/model/types";
 import {useGetMe} from "@/entities/user";
 import {SelectSkills} from "@/features/selected-skills/ui";
 import {createTaskSchema} from "@/pages/needy-categories/model/schema.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {QUERY_KEYS} from "@/shared/api/hook/query-keys.ts";
+import { useMutationWithErrorHandling } from "@/shared/api/hook/use-mutation-with-error-handling";
+import { validateApiResponse, isObject, validateRequiredFields } from "@/shared/lib/validation";
 
 type CreateTaskFormProps = {
     skillsIds: string[];
@@ -25,16 +27,30 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
     const { t } = useTranslation();
     const queryClient = useQueryClient();
     const { data: user } = useGetMe()
-    const { mutate, isPending } = useMutation({
-        mutationFn: (data: CreateTaskDto) => taskApi.createTask(data),
+    const { mutate, isPending } = useMutationWithErrorHandling<Task, Error, CreateTaskDto>({
+        mutationFn: async (data: CreateTaskDto) => {
+            // Валидация входных данных
+            if (!data.programId || !data.needyId || !data.title || !data.description) {
+                throw new Error('Missing required task fields');
+            }
+            
+            const response = await taskApi.createTask(data);
+            
+            // Валидация ответа
+            return validateApiResponse(
+                response,
+                (data): data is Task => {
+                    return isObject(data) && 
+                           validateRequiredFields(data, ['id', 'programId', 'needyId', 'title', 'description', 'status']);
+                },
+                'Invalid task creation response format'
+            );
+        },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.TASKS] });
             queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.MY_TASKS] });
             onSuccess();
         },
-        onError: (error) => {
-            console.error("Failed to create task:", error);
-        }
     });
     const { register, control, handleSubmit, formState: { errors } } = useForm<CreateTaskFormValues>({
         resolver: zodResolver(createTaskSchema),

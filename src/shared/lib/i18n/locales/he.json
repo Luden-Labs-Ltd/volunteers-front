@@ -242,5 +242,24 @@
       "worldBetter": "בזכותך, העולם שלנו הוא מקום טוב יותר!",
       "returnToTasks": "חזור למשימות."
     }
+  },
+  "errors": {
+    "validation": "שגיאת אימות",
+    "forbidden": "גישה נדחתה",
+    "forbiddenDescription": "אין לך הרשאה לבצע פעולה זו",
+    "notFound": "לא נמצא",
+    "notFoundDescription": "המשאב המבוקש לא נמצא",
+    "conflict": "קונפליקט",
+    "serverError": "שגיאת שרת",
+    "serverErrorDescription": "אירעה שגיאה בשרת. אנא נסה שוב מאוחר יותר",
+    "clientError": "שגיאת בקשה",
+    "general": "שגיאה",
+    "unknown": "אירעה שגיאה לא ידועה",
+    "network": "שגיאת רשת",
+    "networkDescription": "לא ניתן להתחבר לשרת. אנא בדוק את חיבור האינטרנט שלך"
+  },
+  "auth": {
+    "sessionExpired": "הסשן פג",
+    "sessionExpiredDescription": "אנא התחבר שוב"
   }
 }

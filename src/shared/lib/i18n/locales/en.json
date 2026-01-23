@@ -225,5 +225,24 @@
       "worldBetter": "Thanks to you, our world is a better place!",
       "returnToTasks": "Return to tasks."
     }
+  },
+  "errors": {
+    "validation": "Validation Error",
+    "forbidden": "Access Denied",
+    "forbiddenDescription": "You don't have permission to perform this action",
+    "notFound": "Not Found",
+    "notFoundDescription": "The requested resource was not found",
+    "conflict": "Conflict",
+    "serverError": "Server Error",
+    "serverErrorDescription": "An error occurred on the server. Please try again later",
+    "clientError": "Request Error",
+    "general": "Error",
+    "unknown": "An unknown error occurred",
+    "network": "Network Error",
+    "networkDescription": "Unable to connect to the server. Please check your internet connection"
+  },
+  "auth": {
+    "sessionExpired": "Session Expired",
+    "sessionExpiredDescription": "Please log in again"
   }
 }

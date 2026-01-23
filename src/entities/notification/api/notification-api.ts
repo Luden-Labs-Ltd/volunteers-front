@@ -1,4 +1,5 @@
 import { apiClient } from '@/shared/api/base-client';
+import { validateApiResponse, isObject, validateRequiredFields, isString } from '@/shared/lib/validation';
 
 export interface PushSubscriptionDto {
   endpoint: string;
@@ -14,18 +15,40 @@ export interface PushSubscriptionDto {
 export async function subscribeToPushNotifications(
   subscription: PushSubscription,
 ): Promise<void> {
+  // Валидация входных данных
+  if (!subscription || !subscription.endpoint) {
+    throw new Error('Invalid push subscription');
+  }
+  
+  const p256dh = subscription.getKey('p256dh');
+  const auth = subscription.getKey('auth');
+  
+  if (!p256dh || !auth) {
+    throw new Error('Missing subscription keys');
+  }
+  
   const subscriptionData: PushSubscriptionDto = {
     endpoint: subscription.endpoint,
     keys: {
-      p256dh: arrayBufferToBase64(subscription.getKey('p256dh')!),
-      auth: arrayBufferToBase64(subscription.getKey('auth')!),
+      p256dh: arrayBufferToBase64(p256dh),
+      auth: arrayBufferToBase64(auth),
     },
   };
 
-  await apiClient.request('/notifications/subscribe', {
+  const response = await apiClient.request<{ success: boolean }>('/notifications/subscribe', {
     method: 'POST',
     body: JSON.stringify(subscriptionData),
   });
+  
+  // Валидация ответа
+  validateApiResponse(
+    response,
+    (data): data is { success: boolean } => {
+      return isObject(data) && 
+             validateRequiredFields(data, ['success']);
+    },
+    'Invalid subscribe response format'
+  );
 }
 
 /**
@@ -34,6 +57,11 @@ export async function subscribeToPushNotifications(
 export async function unsubscribeFromPushNotifications(
   endpoint?: string,
 ): Promise<void> {
+  // Валидация входных данных
+  if (endpoint && !isString(endpoint)) {
+    throw new Error('Invalid endpoint format');
+  }
+  
   await apiClient.request('/notifications/unsubscribe', {
     method: 'DELETE',
     body: endpoint ? JSON.stringify({ endpoint }) : undefined,
@@ -47,7 +75,7 @@ export async function sendTestNotification(
   title?: string,
   body?: string,
 ): Promise<{ success: boolean; message: string }> {
-  return apiClient.request<{ success: boolean; message: string }>(
+  const response = await apiClient.request<{ success: boolean; message: string }>(
     '/notifications/test-public',
     {
       method: 'POST',
@@ -56,6 +84,16 @@ export async function sendTestNotification(
         body: body || 'Это тестовое push-уведомление для проверки работы системы',
       }),
     },
+  );
+  
+  // Валидация ответа
+  return validateApiResponse(
+    response,
+    (data): data is { success: boolean; message: string } => {
+      return isObject(data) && 
+             validateRequiredFields(data, ['success']);
+    },
+    'Invalid test notification response format'
   );
 }
 

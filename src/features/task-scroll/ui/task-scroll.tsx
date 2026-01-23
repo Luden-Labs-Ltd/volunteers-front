@@ -1,12 +1,21 @@
 import {TaskTile} from "@/entities/task/ui/task-tile";
-import {useQuery} from "@tanstack/react-query";
 import {taskApi} from "@/entities/task";
+import { useQueryWithErrorHandling } from "@/shared/api/hook/use-query-with-error-handling";
+import { validateApiResponse, isArray } from "@/shared/lib/validation";
+import { Task } from "@/entities/task/model/types";
 
 export const TaskScroll = () => {
-
-    const { data: tasks } = useQuery({
+    const { data: tasks } = useQueryWithErrorHandling<Task[]>({
         queryKey: ['my-recent-tasks'],
-        queryFn: () => taskApi.getMyTasks(),
+        queryFn: async () => {
+            const response = await taskApi.getMyTasks();
+            // Валидация ответа
+            return validateApiResponse(
+                response,
+                (data): data is Task[] => isArray(data),
+                'Invalid my tasks response format'
+            );
+        },
     });
     return (
         <div

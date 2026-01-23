@@ -1,4 +1,5 @@
 import { getToken, setToken, getRefreshToken, setRefreshToken, clearTokens } from '@/shared/lib/auth';
+import { ApiException, ApiError } from './types';
 
 // Автоматическое определение API URL
 const getApiBaseUrl = (): string => {
@@ -132,22 +133,20 @@ export class ApiClient {
 
     if (!response.ok) {
       const errorText = await response.text();
-      let errorMessage = `API Error: ${response.statusText}`;
-      
+      let errorData: ApiError;
+
       try {
-        const errorData = JSON.parse(errorText);
-        errorMessage = errorData.message || errorMessage;
+        errorData = JSON.parse(errorText);
       } catch {
-        // Если не удалось распарсить JSON, используем текст ошибки
-        if (errorText) {
-          errorMessage = errorText;
-        }
+        // Если не удалось распарсить JSON, создаем базовую структуру ошибки
+        errorData = {
+          statusCode: response.status,
+          message: errorText || response.statusText,
+        };
       }
 
-      const error = new Error(errorMessage) as Error & { status?: number; response?: Response };
-      error.status = response.status;
-      error.response = response;
-      throw error;
+      // Создаем типизированную ошибку
+      throw ApiException.fromResponse(response, errorData);
     }
 
     return response.json();

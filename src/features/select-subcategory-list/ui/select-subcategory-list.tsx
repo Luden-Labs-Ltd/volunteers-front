@@ -1,8 +1,9 @@
 // features/select-subcategory-list/ui/SelectSubcategoryListItems.tsx
 import { SubcategoryList } from "@/entities/category/ui/subcategoryList";
-import { useQuery } from "@tanstack/react-query";
 import { categoryApi } from "@/entities/category/api";
 import { Category } from "@/entities/category/model";
+import { useQueryWithErrorHandling } from "@/shared/api/hook/use-query-with-error-handling";
+import { validateApiResponse, isArray } from "@/shared/lib/validation";
 
 type SelectSubcategoryListItemsType = {
     selectedIds: string[];
@@ -11,9 +12,17 @@ type SelectSubcategoryListItemsType = {
 }
 
 export const SelectSubcategoryListItems = ({ selectedIds, onToggle, className }: SelectSubcategoryListItemsType) => {
-    const { data: categories } = useQuery({
+    const { data: categories } = useQueryWithErrorHandling<Category[]>({
         queryKey: ['categories'],
-        queryFn: () => categoryApi.getCategories(),
+        queryFn: async () => {
+            const response = await categoryApi.getCategories();
+            // Валидация ответа
+            return validateApiResponse(
+                response,
+                (data): data is Category[] => isArray(data),
+                'Invalid categories response format'
+            );
+        },
     });
 
     return (

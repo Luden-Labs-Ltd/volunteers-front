@@ -3,6 +3,9 @@ import { UserWithRoleData } from "../types";
 import { authApi } from "@/entities/auth/api";
 import { getToken, removeToken, removeRefreshToken } from "@/shared/lib/auth";
 import { useState, useEffect } from "react";
+import { useQueryWithErrorHandling } from "@/shared/api/hook/use-query-with-error-handling";
+import { validateApiResponse, isObject, validateRequiredFields } from "@/shared/lib/validation";
+import { ApiException } from "@/shared/api/types";
 
 export const useGetMe = () => {
   const [hasToken, setHasToken] = useState<boolean | null>(null);
@@ -15,22 +18,24 @@ export const useGetMe = () => {
     checkToken();
   }, []);
 
-  const query = useQuery<UserWithRoleData | null>({
+  const query = useQueryWithErrorHandling<UserWithRoleData | null>({
     queryKey: ["user", "me"],
     queryFn: async (): Promise<UserWithRoleData | null> => {
-      try {
-        // Бэкенд возвращает UserWithRoleData напрямую, а не объект с полем user
-        const response = await authApi.getMe();
-        if (!response) {
-          return null;
-        }
-        
-        return response;
-      } catch (error) {
-        // Если произошла ошибка, возвращаем null вместо undefined
-        console.error('Error fetching user data:', error);
+      // Бэкенд возвращает UserWithRoleData напрямую, а не объект с полем user
+      const response = await authApi.getMe();
+      if (!response) {
         return null;
       }
+      
+      // Валидация ответа
+      return validateApiResponse(
+        response,
+        (data): data is UserWithRoleData => {
+          return isObject(data) && 
+                 validateRequiredFields(data, ['id', 'role']);
+        },
+        'Invalid user data response format'
+      );
     },
     enabled: hasToken === true, // Выполнять запрос только если есть токен
     staleTime: 5 * 60 * 1000, // 5 минут - данные считаются свежими
@@ -39,8 +44,7 @@ export const useGetMe = () => {
     refetchOnMount: false, // не перезагружать при монтировании
     retry: (failureCount, error: unknown) => {
       // Не повторять запрос при 401 ошибке - interceptor уже обработает это
-      const status = (error as { status?: number })?.status;
-      if (status === 401) {
+      if (error instanceof ApiException && error.isUnauthorized()) {
         removeToken();
         removeRefreshToken();
         return false;

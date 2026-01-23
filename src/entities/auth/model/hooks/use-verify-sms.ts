@@ -1,16 +1,30 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { authApi } from '../../api';
-import { VerifySmsRequest } from '../types';
+import { VerifySmsRequest, AuthResponse } from '../types';
 import { setToken, setRefreshToken } from '@/shared/lib/auth';
+import { useMutationWithErrorHandling } from '@/shared/api/hook/use-mutation-with-error-handling';
+import { validateApiResponse, isObject, validateRequiredFields } from '@/shared/lib/validation';
 
 export function useVerifySms() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  return useMutation({
-    mutationFn: (data: VerifySmsRequest) => authApi.verifySms(data),
+  return useMutationWithErrorHandling<AuthResponse, Error, VerifySmsRequest>({
+    mutationFn: async (data: VerifySmsRequest) => {
+      const response = await authApi.verifySms(data);
+      
+      // Валидация ответа
+      return validateApiResponse(
+        response,
+        (data): data is AuthResponse => {
+          return isObject(data) && 
+                 validateRequiredFields(data, ['accessToken', 'refreshToken', 'user']);
+        },
+        'Invalid verify SMS response format'
+      );
+    },
     onSuccess: async (data) => {
       // Валидация данных ответа - проверяем что все обязательные поля присутствуют
       if (!data || !data.accessToken || !data.refreshToken || !data.user) {
@@ -65,16 +79,7 @@ export function useVerifySms() {
     },
     onError: (error: unknown) => {
       console.error('Ошибка верификации SMS:', error);
-
-      const errorMessage =
-        (error as { response?: { data?: { message?: string } } })?.response?.data?.message ||
-        (error as Error)?.message ||
-        'Неверный код подтверждения';
-
-      toast.error('Ошибка входа', {
-        description: errorMessage,
-        duration: 5000,
-      });
+      handleApiError(error);
     },
   });
 }

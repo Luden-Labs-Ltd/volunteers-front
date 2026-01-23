@@ -1,11 +1,21 @@
-import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { authApi } from '../../api';
-import { SendSmsRequest } from '../types';
+import { SendSmsRequest, SendSmsResponse } from '../types';
+import { useMutationWithErrorHandling } from '@/shared/api/hook/use-mutation-with-error-handling';
+import { validateApiResponse, isObject } from '@/shared/lib/validation';
 
 export function useSendSms() {
-  return useMutation({
-    mutationFn: (data: SendSmsRequest) => authApi.sendSms(data),
+  return useMutationWithErrorHandling<SendSmsResponse, Error, SendSmsRequest>({
+    mutationFn: async (data: SendSmsRequest) => {
+      const response = await authApi.sendSms(data);
+      
+      // Валидация ответа
+      return validateApiResponse(
+        response,
+        (data): data is SendSmsResponse => isObject(data),
+        'Invalid send SMS response format'
+      );
+    },
     onSuccess: (_, variables) => {
       const isDev = variables.isDev;
       toast.success('SMS код отправлен!', {
@@ -18,19 +28,6 @@ export function useSendSms() {
       if (isDev) {
         console.log('🔧 DEV MODE: SMS код отправлен для номера', variables.phoneNumber);
       }
-    },
-    onError: (error: unknown) => {
-      console.error('Ошибка отправки SMS:', error);
-
-      const errorMessage =
-        (error as { response?: { data?: { message?: string } } })?.response?.data?.message ||
-        (error as Error)?.message ||
-        'Произошла ошибка при отправке SMS кода';
-
-      toast.error('Ошибка отправки SMS', {
-        description: errorMessage,
-        duration: 5000,
-      });
     },
   });
 }

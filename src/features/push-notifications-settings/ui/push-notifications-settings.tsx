@@ -8,6 +8,7 @@ import {
   sendTestNotification,
 } from '@/entities/notification/api';
 import { toast } from 'sonner';
+import { handleApiError } from '@/shared/lib/error-handler';
 
 export const PushNotificationsSettings: FC = () => {
   const { t } = useTranslation();
@@ -55,7 +56,7 @@ export const PushNotificationsSettings: FC = () => {
       }
     } catch (err) {
       console.error('Error toggling push notifications:', err);
-      toast.error(error || t('notifications.error'));
+      handleApiError(err);
     } finally {
       setIsProcessing(false);
     }

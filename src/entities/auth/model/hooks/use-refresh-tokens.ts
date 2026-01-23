@@ -1,12 +1,33 @@
-import { useMutation } from '@tanstack/react-query';
-import { toast } from 'sonner';
 import { authApi } from '../../api';
-import { RefreshTokensRequest } from '../types';
+import { RefreshTokensRequest, RefreshTokensResponse } from '../types';
 import { setToken, setRefreshToken, removeToken, removeRefreshToken } from '@/shared/lib/auth';
+import { useMutationWithErrorHandling } from '@/shared/api/hook/use-mutation-with-error-handling';
+import { validateApiResponse, isObject, validateRequiredFields } from '@/shared/lib/validation';
+import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 
 export function useRefreshTokens() {
-  return useMutation({
-    mutationFn: (data: RefreshTokensRequest) => authApi.refreshTokens(data),
+  const { t } = useTranslation();
+  
+  return useMutationWithErrorHandling<RefreshTokensResponse, Error, RefreshTokensRequest>({
+    mutationFn: async (data: RefreshTokensRequest) => {
+      // Валидация входных данных
+      if (!data.accessToken || !data.refreshToken) {
+        throw new Error('Tokens are required');
+      }
+      
+      const response = await authApi.refreshTokens(data);
+      
+      // Валидация ответа
+      return validateApiResponse(
+        response,
+        (data): data is RefreshTokensResponse => {
+          return isObject(data) && 
+                 validateRequiredFields(data, ['accessToken', 'refreshToken']);
+        },
+        'Invalid refresh tokens response format'
+      );
+    },
     onSuccess: (data) => {
       setToken(data.accessToken);
       setRefreshToken(data.refreshToken);
@@ -14,8 +35,8 @@ export function useRefreshTokens() {
     onError: (error: unknown) => {
       console.error('Ошибка обновления токенов:', error);
 
-      toast.error('Сессия истекла', {
-        description: 'Пожалуйста, войдите в систему заново',
+      toast.error(t('auth.sessionExpired') || 'Сессия истекла', {
+        description: t('auth.sessionExpiredDescription') || 'Пожалуйста, войдите в систему заново',
         duration: 5000,
       });
 

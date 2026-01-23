@@ -8,6 +8,7 @@ import { usePWAInstall } from '@/shared/lib/hooks/use-pwa-install';
 import { usePushSubscription } from '@/shared/lib/hooks/use-push-subscription';
 import { subscribeToPushNotifications } from '@/entities/notification/api';
 import { getToken } from '@/shared/lib/auth/token';
+import { handleApiError } from '@/shared/lib/error-handler';
 import '@/shared/lib/i18n';
 
 // Логирование уведомлений в основном потоке
@@ -153,6 +154,7 @@ export const App: FC<AppProviderProps> = ({ children }) => {
               console.log('✅ [App] Existing subscription sent to server');
             } catch (error) {
               console.error('❌ [App] Ошибка отправки существующей подписки:', error);
+              handleApiError(error);
             }
           }
         });
@@ -175,6 +177,7 @@ export const App: FC<AppProviderProps> = ({ children }) => {
             console.log('✅ [App] Subscription sent to server successfully');
           } catch (error) {
             console.error('❌ [App] Ошибка регистрации подписки:', error);
+            handleApiError(error);
             safeLocalStorage.setItem('push-subscription-sent', 'false');
           }
         } else {
@@ -213,6 +216,7 @@ export const App: FC<AppProviderProps> = ({ children }) => {
           await subscribeToPushNotifications(subscription);
         } catch (error) {
           console.error('Ошибка регистрации подписки:', error);
+          handleApiError(error);
         }
       }
     }
