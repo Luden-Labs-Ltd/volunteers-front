@@ -2,13 +2,14 @@ import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Controller } from "react-hook-form";
 import {Input, Switch, Textarea} from "@/shared/ui";
-import {CreateTaskDto} from "@/entities/task";
+import {createTaskSchema} from "@/pages/needy-categories/model/schema.ts";
+import { z } from "zod";
 
-
+type CreateTaskFormValues = z.infer<typeof createTaskSchema>;
 type TaskFormCardType = {
-    register: UseFormRegister<CreateTaskDto>;
-    control: Control<CreateTaskDto>;
-    errors: FieldErrors<CreateTaskDto>;
+    register: UseFormRegister<CreateTaskFormValues>;
+    control: Control<CreateTaskFormValues>;
+    errors: FieldErrors<CreateTaskFormValues>;
 }
 
 export const TaskFormCard = ({ register, control, errors }: TaskFormCardType) => {
@@ -19,7 +20,7 @@ export const TaskFormCard = ({ register, control, errors }: TaskFormCardType) =>
             <div>
                 <Input
                     label="Title"
-                    {...register("title", { required: true })}
+                    {...register("title")}
                     error={errors.title ? "true" : undefined}
                 />
             </div>
@@ -64,7 +65,7 @@ export const TaskFormCard = ({ register, control, errors }: TaskFormCardType) =>
             <div>
                 <Textarea
                     label="Description"
-                    {...register("description", { required: true })}
+                    {...register("description")}
                     error={errors.title ? "true" : undefined}
                 />
             </div>
