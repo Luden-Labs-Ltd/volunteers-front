@@ -198,5 +198,28 @@
     "selectedSkills": "Selected skills",
     "labelAnythingElse": "Do you need anything else?",
     "buttonGoToTasks": "Create task"
+  },
+  "volunteerTask": {
+    "preview": {
+      "title": "New details have been received for the task you wanted!",
+      "description": "Come view the task details now so you can schedule a time to complete it",
+      "viewDetails": "View task details",
+      "later": "Later"
+    },
+    "details": {
+      "contactTitle": "To carry out the task, please contact",
+      "sendMessage": "Send a message",
+      "sendWhatsApp": "Send a WhatsApp message",
+      "completionNote": "At the end of the task, please let us know that it has been completed, so we can feel at ease🙏",
+      "completeButton": "The task is complete!",
+      "invalidLink": "Invalid task link",
+      "notFound": "Task not found"
+    },
+    "completed": {
+      "title": "You are amazing!",
+      "thankYou": "Thank you very much for all the help.",
+      "worldBetter": "Thanks to you, our world is a better place!",
+      "returnToTasks": "Return to tasks."
+    }
   }
 }

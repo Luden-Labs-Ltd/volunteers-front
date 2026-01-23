@@ -1,7 +1,9 @@
 import { FC } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthPage } from '@/pages/auth/ui';
-import { TasksPage } from '@/pages/tasks/ui';
+import { TasksPage, TaskPreviewPage } from '@/pages/tasks/ui';
+import { TaskDetailsPage as VolunteerTaskDetailsPage } from '@/pages/tasks/ui/task-details';
+import { TaskCompletedPage } from '@/pages/tasks/ui/task-completed';
 import { UIKitPage } from '@/pages/ui-kit/ui';
 import { OnboardingPage } from '@/pages/volunteer-onboarding/ui';
 import { LeaderboardPage } from '@/pages/leaderboard/ui';
@@ -39,6 +41,18 @@ export const Router: FC = () => {
           <Route path="/volunteer/onboarding" element={<OnboardingPage />} />
           <Route path="/volunteer" element={<TasksPage />} />
           <Route path="/volunteer/tasks" element={<TasksPage />} />
+          <Route
+            path="/volunteer/tasks/:taskId/preview"
+            element={<TaskPreviewPage />}
+          />
+          <Route
+            path="/volunteer/tasks/:taskId"
+            element={<VolunteerTaskDetailsPage />}
+          />
+          <Route
+            path="/volunteer/tasks/:taskId/completed"
+            element={<TaskCompletedPage />}
+          />
           <Route
             path="/volunteer/leaderboard"
             element={<LeaderboardPage />}

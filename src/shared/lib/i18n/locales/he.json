@@ -215,5 +215,28 @@
     "selectedSkills": "מיומנויות שנבחרו",
     "labelAnythingElse": "האם דרוש לכם משהו נוסף?",
     "buttonGoToTasks": "צור משימה"
+  },
+  "volunteerTask": {
+    "preview": {
+      "title": "פרטים חדשים התקבלו למשימה שרצית!",
+      "description": "בואו צפו בפרטי המשימה עכשיו כדי שתוכלו לתזמן זמן להשלמתה",
+      "viewDetails": "צפה בפרטי המשימה",
+      "later": "מאוחר יותר"
+    },
+    "details": {
+      "contactTitle": "לביצוע המשימה, אנא צור קשר",
+      "sendMessage": "שלח הודעה",
+      "sendWhatsApp": "שלח הודעת WhatsApp",
+      "completionNote": "בסוף המשימה, אנא הודע לנו שהיא הושלמה, כדי שנוכל להרגיש בטוחים🙏",
+      "completeButton": "המשימה הושלמה!",
+      "invalidLink": "קישור משימה לא חוקי",
+      "notFound": "משימה לא נמצאה"
+    },
+    "completed": {
+      "title": "אתה מדהים!",
+      "thankYou": "תודה רבה על כל העזרה.",
+      "worldBetter": "בזכותך, העולם שלנו הוא מקום טוב יותר!",
+      "returnToTasks": "חזור למשימות."
+    }
   }
 }

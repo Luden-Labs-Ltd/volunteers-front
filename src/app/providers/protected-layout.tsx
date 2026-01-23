@@ -4,15 +4,15 @@ import { PrivateRoute } from './private-route';
 import { UserRole } from '@/entities/user/model/types';
 
 interface ProtectedLayoutProps {
-    allowedRoles: UserRole[];
+  allowedRoles: UserRole[];
 }
 
 export const ProtectedLayout: FC<ProtectedLayoutProps> = ({
-    allowedRoles,
+  allowedRoles,
 }) => {
-    return (
-        <PrivateRoute allowedRoles={allowedRoles}>
-            <Outlet />
-        </PrivateRoute>
-    );
+  return (
+    <PrivateRoute allowedRoles={allowedRoles}>
+      <Outlet />
+    </PrivateRoute>
+  );
 };
