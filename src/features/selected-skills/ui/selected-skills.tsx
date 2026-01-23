@@ -1,27 +1,26 @@
-import {cn} from "@/shared/lib";
-import {Skill} from "@/entities/category/model";
+import { useGetSkillById } from "@/entities/skills/hook/useGetSkillById.tsx";
+import { SelectedSkillsSkeleton } from "@/shared/ui/skeleton/SelectedSkillsSkeleton";
+import {SkillCardItem} from "@/entities/skills/ui/select-skills/ui.tsx";
 
-type SelectedSkillsType = {
-    skill: Skill
-}
+export const SelectSkills = ({ ids }: { ids: string[] }) => {
+    const skillsResults = useGetSkillById(ids);
 
-export const SelectedSkills = ({skill}: SelectedSkillsType) => {
+    if (!ids.length) return null;
+
     return (
-                    <button
-                        className={cn(
-                            "w-full min-h-[58px] flex items-center gap-2 py-3.5 px-3.5 rounded-xl text-left transition-all duration-200",
-                            "border border-[#162A43] shadow-[1px_1px_0_0_#162A43,2px_2px_0_0_#162A43]"
+        <div className="flex flex-col gap-3">
+            {skillsResults.map((result, index) => {
+                if (result.isLoading) {
+                    return (
+                        <SelectedSkillsSkeleton key={index} />
+                    );
+                }
 
-                        )}
-                    >
-                        <div
-                            className="w-10 h-10 flex items-center justify-center bg-[#EBF7FF] rounded-xl [&>svg]:w-6 [&>svg]:h-6"
-                            dangerouslySetInnerHTML={{ __html: skill.iconSvg }}
-                        />
+                const skill = result.data;
+                if (!skill) return null;
 
-                        <span className="text-[18px] font-normal text-[#5B5B5B]">
-              {skill.name}
-            </span>
-                    </button>
-    )
-}
+                return <SkillCardItem key={skill.id} skill={skill} />;
+            })}
+        </div>
+    );
+};

@@ -1,1 +1,1 @@
-export { SelectedSkills } from "./selected-skills.tsx"
+export { SelectSkills } from "./selected-skills.tsx"

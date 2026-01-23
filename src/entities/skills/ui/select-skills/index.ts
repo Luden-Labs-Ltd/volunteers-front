@@ -1,1 +1,1 @@
-export { SelectSkills } from "./ui.tsx";
+export { SkillCardItem } from "./ui.tsx";

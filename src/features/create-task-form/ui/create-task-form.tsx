@@ -3,11 +3,11 @@ import { useTranslation } from "react-i18next";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Button } from "@/shared/ui";
-import { SelectSkills } from "@/entities/skills/ui/select-skills";
 import { TaskFormCard } from "@/entities/task/ui/task-form-card";
 import { taskApi } from "@/entities/task/api";
 import { CreateTaskDto } from "@/entities/task/model/types";
 import {useGetMe} from "@/entities/user";
+import {SelectSkills} from "@/features/selected-skills/ui";
 
 type CreateTaskFormProps = {
     skillsIds: string[];
