@@ -1,18 +1,28 @@
 import {FC, useState} from 'react';
 import {useTranslation} from 'react-i18next';
+import {useNavigate} from 'react-router-dom';
 import {TaskList} from '@/widgets/task-list';
 import {Header, IconButton} from '@/shared/ui';
 import {useGetTasks} from "@/entities/task/hook";
+import {useGetMe} from '@/entities/user/model/hooks';
 import {Tabs} from "@/shared/ui/tabs";
 import userIcon from '@/shared/assets/images/userIcon.webp';
 
 export const TasksPage: FC = () => {
   const {t} = useTranslation();
-  const tabs = ['All tasks', 'My tasks'];
+  const navigate = useNavigate();
+  const {data: user} = useGetMe();
+  const tabs = [t('tasks.allTasks'), t('tasks.myTasks')];
   const [, setActiveTab] = useState(tabs[0]);
 
 
   const {data: tasks = []} = useGetTasks();
+
+  const handleSettingsClick = () => {
+    if (user?.role) {
+      navigate(`/${user.role}/settings`);
+    }
+  };
 
 
   return (
@@ -33,9 +43,7 @@ export const TasksPage: FC = () => {
                   className={"w-full h-full object-cover"}
                 />
               }
-              onClick={() => {
-                // TODO: Navigate to profile page
-              }}
+              onClick={handleSettingsClick}
             />
           ]}
         />

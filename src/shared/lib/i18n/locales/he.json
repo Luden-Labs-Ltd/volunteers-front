@@ -78,6 +78,7 @@
   "tasks": {
     "title": "משימות",
     "myTasks": "המשימות שלי",
+    "allTasks": "כל המשימות",
     "availableTasks": "משימות זמינות",
     "createTask": "צור משימה",
     "taskDetails": "פרטי משימה",
@@ -103,7 +104,8 @@
     "title": "נזקק",
     "createRequest": "צור בקשה",
     "myRequests": "הבקשות שלי",
-    "responses": "תגובות"
+    "responses": "תגובות",
+    "waitingForVolunteers": "ממתין למתנדבים"
   },
   "leaderboard": {
     "title": "איפה הכי הרבה מתנדבים?",
@@ -185,7 +187,9 @@
     "taskStatusUpdated": "סטטוס משימה עודכן"
   },
   "settings": {
-    "title": "הגדרות"
+    "title": "הגדרות",
+    "language": "שפה",
+    "selectLanguage": "בחר שפה"
   },
   "categoriesNeedy": {
     "headerTitle": "איך נוכל לעזור?",

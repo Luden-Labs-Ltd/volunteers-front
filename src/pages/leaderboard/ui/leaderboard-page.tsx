@@ -1,7 +1,9 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, Header } from '@/shared/ui';
-import { IconUser } from '@/shared/assets/images/iconUser/iconUser';
+import { useNavigate } from 'react-router-dom';
+import { Card, Header, IconButton, Button } from '@/shared/ui';
+import { useGetMe } from '@/entities/user/model/hooks';
+import userIcon from '@/shared/assets/images/userIcon.webp';
 import trophy1 from './assets/Gemini_Generated_Image_87xzbo87xzbo87xz 1.png';
 import trophy2 from './assets/Gemini_Generated_Image_87xzbo87xzbo87xz 1 (1).png';
 import trophy3 from './assets/Gemini_Generated_Image_87xzbo87xzbo87xz 1 (2).png';
@@ -17,6 +19,14 @@ interface Community {
 
 export const LeaderboardPage: FC = () => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
+    const { data: user } = useGetMe();
+
+    const handleSettingsClick = () => {
+        if (user?.role) {
+            navigate(`/${user.role}/settings`);
+        }
+    };
 
     // Мок данные для топ-3
     const topThree: Community[] = [
@@ -50,7 +60,20 @@ export const LeaderboardPage: FC = () => {
             <Header
                 title={t('leaderboard.title')}
                 rightActions={[
-                    <IconUser key="settings" />
+                    <IconButton
+                        className="w-8 h-8 rounded-lg drop-shadow-[2px_2px_0_#004573]"
+                        key="profile"
+                        variant="ghost"
+                        aria-label={t('common.profile')}
+                        icon={
+                            <img
+                                src={userIcon}
+                                alt={t('common.profile')}
+                                className="w-full h-full object-cover"
+                            />
+                        }
+                        onClick={handleSettingsClick}
+                    />
                 ]}
             />
             <div className="px-4 py-8">
@@ -168,6 +191,18 @@ export const LeaderboardPage: FC = () => {
                             ))}
                         </div>
                     </Card>
+
+                    {/* Кнопка перехода к задачам */}
+                    <div className="mt-6">
+                        <Button
+                            size="lg"
+                            fullWidth
+                            variant="secondary"
+                            onClick={() => navigate('/volunteer')}
+                        >
+                            {t('tasks.title')}
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>

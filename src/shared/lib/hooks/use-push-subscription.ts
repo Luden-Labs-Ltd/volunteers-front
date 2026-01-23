@@ -25,63 +25,106 @@ export function usePushSubscription() {
 
   // Проверка поддержки браузером
   useEffect(() => {
-    // Проверка базовых API
-    const hasServiceWorker = typeof window !== 'undefined' && 'serviceWorker' in navigator;
-    const hasPushManager = typeof window !== 'undefined' && 'PushManager' in window;
-    const hasNotification = typeof window !== 'undefined' && 'Notification' in window && typeof Notification !== 'undefined';
-    const hasVapid = isVapidConfigured();
-    
-    // Проверка secure context (HTTPS или localhost)
-    const isSecureContext = typeof window !== 'undefined' && window.isSecureContext;
-    
-    // Проверка, что мы на localhost или HTTPS
-    const isLocalhost = typeof window !== 'undefined' && (
-      window.location.hostname === 'localhost' ||
-      window.location.hostname === '127.0.0.1'
-    );
-    const isHTTPS = typeof window !== 'undefined' && window.location.protocol === 'https:';
-    
-    // Для iOS Safari требуется secure context (HTTPS или localhost)
-    const isIOS = typeof window !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const isSafari = typeof window !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    
-    const isSupported = 
-      hasServiceWorker &&
-      hasPushManager &&
-      hasNotification &&
-      hasVapid &&
-      isSecureContext &&
-      (isLocalhost || isHTTPS || !isIOS || !isSafari); // На iOS Safari требуется localhost или HTTPS
+    const checkSupport = async () => {
+      // Проверка базовых API
+      const hasServiceWorker = typeof window !== 'undefined' && 'serviceWorker' in navigator;
+      const hasNotification = typeof window !== 'undefined' && 'Notification' in window && typeof Notification !== 'undefined';
+      const hasVapid = isVapidConfigured();
+      
+      // Проверка secure context (HTTPS или localhost)
+      const isSecureContext = typeof window !== 'undefined' && window.isSecureContext;
+      
+      // Проверка, что мы на localhost или HTTPS
+      const isLocalhost = typeof window !== 'undefined' && (
+        window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1'
+      );
+      const isHTTPS = typeof window !== 'undefined' && window.location.protocol === 'https:';
+      
+      // Для iOS Safari требуется secure context (HTTPS или localhost)
+      const isIOS = typeof window !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
+      const isSafari = typeof window !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+      
+      // Проверка PushManager через ServiceWorkerRegistration (правильный способ для Chrome)
+      let hasPushManager = false;
+      if (hasServiceWorker && typeof window !== 'undefined') {
+        try {
+          // Сначала проверяем, есть ли уже зарегистрированный Service Worker
+          const registrations = await navigator.serviceWorker.getRegistrations();
+          let registration = registrations[0];
+          
+          // Если нет зарегистрированного, пробуем получить ready
+          if (!registration) {
+            try {
+              registration = await navigator.serviceWorker.ready;
+            } catch (readyError) {
+              console.warn('🔔 [Hook] Service Worker not ready, trying to register:', readyError);
+              // Пробуем зарегистрировать Service Worker
+              registration = await navigator.serviceWorker.register('/sw.js', {
+                scope: '/',
+              });
+            }
+          }
+          
+          if (registration) {
+            hasPushManager = 'pushManager' in registration;
+            console.log('🔔 [Hook] Service Worker registration found:', {
+              scope: registration.scope,
+              hasPushManager,
+              active: !!registration.active,
+              installing: !!registration.installing,
+              waiting: !!registration.waiting,
+            });
+          }
+        } catch (error) {
+          console.error('🔔 [Hook] Error checking Service Worker:', error);
+          // В Chrome PushManager доступен только через ServiceWorkerRegistration
+          // Если Service Worker не может быть зарегистрирован, PushManager недоступен
+          hasPushManager = false;
+        }
+      }
+      
+      const isSupported = 
+        hasServiceWorker &&
+        hasPushManager &&
+        hasNotification &&
+        hasVapid &&
+        isSecureContext &&
+        (isLocalhost || isHTTPS || !isIOS || !isSafari); // На iOS Safari требуется localhost или HTTPS
 
-    const permission: NotificationPermission = 
-      isSupported && typeof Notification !== 'undefined' 
-        ? Notification.permission 
-        : 'denied';
+      const permission: NotificationPermission = 
+        isSupported && typeof Notification !== 'undefined' 
+          ? Notification.permission 
+          : 'denied';
 
-    // Логирование для отладки
-    if (typeof window !== 'undefined') {
-      console.log('🔔 [Hook] Push support check:', {
-        hasServiceWorker,
-        hasPushManager,
-        hasNotification,
-        hasVapid,
-        isSecureContext,
-        isLocalhost,
-        isHTTPS,
-        isIOS,
-        isSafari,
-        hostname: window.location.hostname,
-        protocol: window.location.protocol,
+      // Логирование для отладки
+      if (typeof window !== 'undefined') {
+        console.log('🔔 [Hook] Push support check:', {
+          hasServiceWorker,
+          hasPushManager,
+          hasNotification,
+          hasVapid,
+          isSecureContext,
+          isLocalhost,
+          isHTTPS,
+          isIOS,
+          isSafari,
+          hostname: window.location.hostname,
+          protocol: window.location.protocol,
+          isSupported,
+          userAgent: navigator.userAgent,
+        });
+      }
+
+      setState((prev) => ({
+        ...prev,
         isSupported,
-      });
-    }
+        permission,
+        isLoading: false,
+      }));
+    };
 
-    setState((prev) => ({
-      ...prev,
-      isSupported,
-      permission,
-      isLoading: false,
-    }));
+    checkSupport();
   }, []);
 
   // Получение текущей подписки

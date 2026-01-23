@@ -10,7 +10,6 @@ export const TaskScroll = () => {
     });
     return (
         <div
-            dir="rtl"
             className="flex gap-2.5 overflow-x-auto px-[20px] pb-4 mt-3">
             {tasks?.map((task) => (
                 <TaskTile key={task.id} task={task} />

@@ -36,6 +36,7 @@
   "tasks": {
     "title": "Tasks",
     "myTasks": "My Tasks",
+    "allTasks": "All tasks",
     "availableTasks": "Available Tasks",
     "createTask": "Create Task",
     "taskDetails": "Task Details",
@@ -61,7 +62,8 @@
     "title": "Needy",
     "createRequest": "Create Request",
     "myRequests": "My Requests",
-    "responses": "Responses"
+    "responses": "Responses",
+    "waitingForVolunteers": "Waiting for volunteers"
   },
   "leaderboard": {
     "title": "Where are the most volunteers?",
@@ -168,7 +170,9 @@
     "taskStatusUpdated": "Task Status Updated"
   },
   "settings": {
-    "title": "Settings"
+    "title": "Settings",
+    "language": "Language",
+    "selectLanguage": "Select Language"
   },
   "categoriesNeedy": {
     "headerTitle": "How can we help?",

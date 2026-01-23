@@ -17,7 +17,7 @@ export const NeedyLayout = () => {
             return { title: t("taskDetails.headerTitle"), subtitle: t("taskDetails.headerSubtitle") };
         }
         if (path.includes('/needy/tasks')) {
-            return { title: "My tasks", subtitle: "Waiting for volunteers" };
+            return { title: t("tasks.myTasks"), subtitle: t("needy.waitingForVolunteers") };
         }
         return { title: "", subtitle: null };
     };
