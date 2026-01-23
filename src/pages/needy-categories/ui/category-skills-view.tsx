@@ -2,8 +2,10 @@ import {Button} from "@/shared/ui";
 import {SelectSubcategoryListItems} from "@/features/select-subcategory-list/ui";
 import {useState} from "react";
 import {Icon} from "@/shared/ui/Icon";
+import {useTranslation} from "react-i18next";
 
 export const CategorySkillsView = ({ onNext }: { onNext: (skills: string[]) => void }) => {    const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+    const { t } = useTranslation();
 
     const handleToggleSkill = (skillId: string) => {
         setSelectedSkills(prev => {
@@ -34,13 +36,15 @@ export const CategorySkillsView = ({ onNext }: { onNext: (skills: string[]) => v
                         onClick={handleFindVolunteer}
                         disabled={selectedSkills.length === 0}
                     >
-                        Find a volunteer
+                        { t("categorySkillsView.submitButton")}
                     </Button>
                     <div className="flex  mt-3">
                     <div className="mr-2">
                         <Icon iconId={"icon-lock"} size={20}/>
                     </div>
-                    <p className={"text-[14px] font-normal text-[#5B5B5B]"}>Your details remain confidential. Volunteers only access the task description.</p>
+                    <p className={"text-[14px] font-normal text-[#5B5B5B]"}>
+                        { t("categorySkillsView.privacyNote")}
+                    </p>
                     </div>
                 </div>
             </div>

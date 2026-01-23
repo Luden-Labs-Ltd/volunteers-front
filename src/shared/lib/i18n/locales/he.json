@@ -197,5 +197,23 @@
     "nextButton": "הבא",
     "tabMyTasks": "המשימות שלי",
     "tabRequestHelp": "בקשת עזרה"
+  },
+  "categorySkillsView": {
+    "headerTitle": "מה בדיוק דרוש לכם?",
+    "headerSubtitle": "הפרטים יסייעו לנו להתאים לכם את המתנדבים המתאימים ביותר.",
+    "submitButton": "מציאת מתנדב",
+    "privacyNote": "הפרטים שלכם נשארים חסויים. למתנדבים תהיה גישה רק לתיאור המשימה."
+  },
+  "taskDetails": {
+    "headerTitle": "קיבלנו!",
+    "headerSubtitle": "ניצור איתכם קשר בשעות הקרובות לתיאום.",
+    "checkboxMarkUrgent": "סימון כדחוף",
+    "labelAddTime": "הוספת שעה",
+    "labelDate": "תאריך",
+    "labelTime": "שעה",
+    "tagUrgent": "דחוף",
+    "selectedSkills": "מיומנויות שנבחרו",
+    "labelAnythingElse": "האם דרוש לכם משהו נוסף?",
+    "buttonGoToTasks": "מעבר למשימות שלי"
   }
 }

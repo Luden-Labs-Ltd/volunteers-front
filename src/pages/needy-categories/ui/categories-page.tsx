@@ -20,12 +20,12 @@ export const CategoriesPage = () => {
             subtitle: null
         },
         skills: {
-            title: "What exactly do you need?",
-            subtitle: "Details will help us match the right volunteers to you."
+            title:  t("categorySkillsView.headerTitle"),
+            subtitle: t("categorySkillsView.headerSubtitle")
         },
         details: {
-            title: "Got it!",
-            subtitle: "We will contact you in the next few hours to coordinate."
+            title: t("taskDetails.headerTitle"),
+            subtitle: t("taskDetails.checkboxMarkUrgent")
         },
         task: {
             title: "My tasks",
