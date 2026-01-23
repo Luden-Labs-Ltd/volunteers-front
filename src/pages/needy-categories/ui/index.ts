@@ -1,4 +1,5 @@
+export { NeedyLayout } from "./needy-layout.tsx"
+export { CategorySkillsPage } from "./category-skills-page.tsx"
 export { CategoriesPage } from "./categories-page.tsx"
-export { CategorySkillsView } from "./category-skills-view.tsx"
-export { CategoriesView } from "./categories-view.tsx"
-export { TaskDetails } from "./task-details.tsx"
+export { TaskDetailsPage } from "./task-details-page.tsx"
+export { NeedyTasksPage } from "./needy-tasks-page.tsx"

@@ -1,12 +1,16 @@
-import {Button} from "@/shared/ui";
-import {SelectSubcategoryListItems} from "@/features/select-subcategory-list/ui";
-import {useState} from "react";
-import {Icon} from "@/shared/ui/Icon";
-import {useTranslation} from "react-i18next";
+import { Button } from "@/shared/ui";
+import { SelectSubcategoryListItems } from "@/features/select-subcategory-list/ui";
+import { useState } from "react";
+import { Icon } from "@/shared/ui/Icon";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { useCreateTaskStore } from "@/features/create-task/model/store.ts";
 
-export const CategorySkillsView = ({ onNext }: { onNext: (skills: string[]) => void }) => {    const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+export const CategorySkillsPage = () => {
     const { t } = useTranslation();
-
+    const navigate = useNavigate();
+    const { skillIds, setSkillIds } = useCreateTaskStore();
+    const [selectedSkills, setSelectedSkills] = useState<string[]>(skillIds);
     const handleToggleSkill = (skillId: string) => {
         setSelectedSkills(prev => {
             if (prev.includes(skillId)) {
@@ -17,7 +21,8 @@ export const CategorySkillsView = ({ onNext }: { onNext: (skills: string[]) => v
         });
     };
     const handleFindVolunteer = () => {
-        onNext(selectedSkills)
+        setSkillIds(selectedSkills);
+        navigate("/needy/details");
     };
 
     return (
@@ -36,15 +41,15 @@ export const CategorySkillsView = ({ onNext }: { onNext: (skills: string[]) => v
                         onClick={handleFindVolunteer}
                         disabled={selectedSkills.length === 0}
                     >
-                        { t("categorySkillsView.submitButton")}
+                        {t("categorySkillsView.submitButton")}
                     </Button>
-                    <div className="flex  mt-3">
-                    <div className="mr-2">
-                        <Icon iconId={"icon-lock"} size={20}/>
-                    </div>
-                    <p className={"text-[14px] font-normal text-[#5B5B5B]"}>
-                        { t("categorySkillsView.privacyNote")}
-                    </p>
+                    <div className="flex mt-3">
+                        <div className="mr-2">
+                            <Icon iconId={"icon-lock"} size={20}/>
+                        </div>
+                        <p className={"text-[14px] font-normal text-[#5B5B5B]"}>
+                            {t("categorySkillsView.privacyNote")}
+                        </p>
                     </div>
                 </div>
             </div>
