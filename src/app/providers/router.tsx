@@ -12,10 +12,11 @@ import { RoleRedirect } from './role-redirect';
 import { ProtectedLayout } from './protected-layout';
 import { NeedyLayout } from '@/pages/needy-categories';
 import {
-  CategoriesPage,
-  CategorySkillsPage,
-  NeedyTasksPage,
-  TaskDetailsPage,
+    AssignVolunteerPage,
+    CategoriesPage,
+    CategorySkillsPage,
+    NeedyTasksPage,
+    TaskDetailsPage,
 } from '@/pages/needy-categories/ui';
 
 export const Router: FC = () => {
@@ -73,6 +74,7 @@ export const Router: FC = () => {
             <Route path="skills" element={<CategorySkillsPage />} />
             <Route path="details" element={<TaskDetailsPage />} />
             <Route path="tasks" element={<NeedyTasksPage />} />
+            <Route path="tasks/:id/assign" element={<AssignVolunteerPage />} />
           </Route>
           <Route path="/needy/tasks" element={<TasksPage />} />
           <Route path="/needy/settings" element={<SettingsPage />} />

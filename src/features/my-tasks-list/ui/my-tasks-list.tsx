@@ -1,10 +1,11 @@
 import { TaskBrief } from "@/entities/task/ui/task-brief";
 import {useMyTasksGrouped} from "@/entities/task/hook/useMyTasksGrouped.ts";
+import {TaskBriefWithCandidates} from "@/features/task-brief-with-candidates/ui";
+import {useNavigate} from "react-router-dom";
 
 export const MyTasksList = () => {
-    // const { t } = useTranslation();
+    const navigate = useNavigate();
     const { groupedTasks } = useMyTasksGrouped();
-
     const isEmpty = !groupedTasks.waiting.length && !groupedTasks.active.length && !groupedTasks.history.length;
     if (isEmpty) {
         return (
@@ -23,7 +24,7 @@ export const MyTasksList = () => {
                     </h2>
                     <div className="flex flex-col gap-3">
                         {groupedTasks.waiting.map(task => (
-                            <TaskBrief key={task.id} task={task} onClick={()=>console.log("Ожидают")}/>
+                            <TaskBriefWithCandidates key={task.id} task={task} onClick={() => navigate(`/needy/tasks/${task.id}/assign`)}/>
                         ))}
                     </div>
                 </section>
@@ -36,7 +37,7 @@ export const MyTasksList = () => {
                     </h2>
                     <div className="flex flex-col gap-3">
                         {groupedTasks.active.map(task => (
-                            <TaskBrief key={task.id} task={task} onClick={()=>console.log("Выполняются")}/>
+                            <TaskBrief key={task.id} task={task} onClick={()=>console.log("Выполняются", task.id)}/>
                         ))}
                     </div>
                 </section>
@@ -49,7 +50,7 @@ export const MyTasksList = () => {
                     </h2>
                     <div className="flex flex-col gap-3">
                         {groupedTasks.history.map(task => (
-                            <TaskBrief key={task.id} task={task} onClick={()=>console.log("Готовы")}/>
+                            <TaskBrief key={task.id} task={task} onClick={()=>console.log("Готовы", task.id)}/>
                         ))}
                     </div>
                 </section>

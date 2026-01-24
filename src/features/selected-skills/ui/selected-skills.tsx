@@ -1,6 +1,6 @@
-import { useGetSkillById } from "@/entities/skills/hook/useGetSkillById.tsx";
 import { SelectedSkillsSkeleton } from "@/shared/ui/skeleton/SelectedSkillsSkeleton";
 import {SkillCardItem} from "@/entities/skills/ui/select-skills/ui.tsx";
+import {useGetSkillById} from "@/entities/skills/hook";
 
 export const SelectSkills = ({ ids }: { ids: string[] }) => {
     const skillsResults = useGetSkillById(ids);
