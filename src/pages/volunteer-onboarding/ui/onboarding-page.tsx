@@ -23,6 +23,7 @@ interface OnboardingData {
   phone: string;
   about: string;
   photo: string | null;
+  privacyAccepted: boolean;
 }
 
 export const OnboardingPage: FC = () => {
@@ -43,6 +44,7 @@ export const OnboardingPage: FC = () => {
     phone: '',
     about: '',
     photo: null,
+    privacyAccepted: false
   });
 
   const steps: OnboardingStep[] = ['program', 'skills', 'city', 'profile', 'contact', 'photo', 'thank-you'];
@@ -97,7 +99,11 @@ export const OnboardingPage: FC = () => {
       case 'profile':
         return data.agreementAccepted;
       case 'contact':
-        return data.firstName.trim() !== '' && data.cityId !== null;
+        return (
+          data.firstName.trim() !== '' &&
+          data.cityId !== null &&
+          data.privacyAccepted === true
+        )
       case 'photo':
         return true; // Фото опционально
       case 'thank-you':
@@ -117,7 +123,7 @@ export const OnboardingPage: FC = () => {
 
       case 'skills':
         return (
-          <Container className={'flex flex-col items-stretch gap-3 pt-12'}>
+          <Container className={'flex flex-col items-stretch gap-3 pt-4'}>
             <h6 className={'text-deepBlue text-lg font-medium'}>What am I good at?</h6>
             <div className="flex flex-col gap-3 mb-4">
               {skills.map((skill) => {
@@ -383,6 +389,8 @@ export const OnboardingPage: FC = () => {
                   <input
                     type="checkbox"
                     id="privacy"
+                    checked={data.privacyAccepted}
+                    onChange={(e) => setData( (prev) => ({...prev, privacyAccepted: e.target.checked}))}
                     className="mt-1 w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary"
                   />
                   <label htmlFor="privacy" className="text-sm text-gray-700">
