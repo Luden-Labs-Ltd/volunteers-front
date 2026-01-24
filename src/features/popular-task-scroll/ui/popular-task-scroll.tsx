@@ -18,7 +18,7 @@ export const PopularTaskScroll = () => {
         },
     });
     return (
-        <div className="flex gap-2.5 overflow-x-auto px-[20px] pb-4 mt-3">
+        <div dir={"rtl"} className="flex gap-2.5 overflow-x-auto px-[20px] pb-4 mt-3">
             {popularTask?.map((popularTask, index) => (
                 <PopularTaskTile key={popularTask.id} popularTask={popularTask} place={index}/>
         ))}
