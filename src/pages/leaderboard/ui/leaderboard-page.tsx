@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, Header } from '@/shared/ui';
-import { IconUser } from '@/shared/assets/images/iconUser/iconUser';
+// import { IconUser } from '@/shared/assets/images/iconUser/iconUser';
 import trophy1 from './assets/Gemini_Generated_Image_87xzbo87xzbo87xz 1.png';
 import trophy2 from './assets/Gemini_Generated_Image_87xzbo87xzbo87xz 1 (1).png';
 import trophy3 from './assets/Gemini_Generated_Image_87xzbo87xzbo87xz 1 (2).png';
@@ -50,7 +50,7 @@ export const LeaderboardPage: FC = () => {
             <Header
                 title={t('leaderboard.title')}
                 rightActions={[
-                    <IconUser key="settings" />
+                    // <IconUser key="settings" />
                 ]}
             />
             <div className="px-4 py-8">

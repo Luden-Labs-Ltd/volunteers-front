@@ -125,9 +125,9 @@ export const OnboardingPage: FC = () => {
                                 return (
                                     <Card
                                         key={skill.id}
-                                        className={`cursor-pointer transition-all relative ${isSelected
-                                            ? 'ring-2 ring-primary border-2 border-primary'
-                                            : 'border border-gray-200'
+                                        className={`cursor-pointer transition-all relative border-2 ${isSelected
+                                            ? 'ring-2 ring-primary  border-primary'
+                                            : 'border-gray-200'
                                             }`}
                                         onClick={() => {
                                             setData((prev) => ({
