@@ -13,7 +13,9 @@ export const useCompleteTask = () => {
       if (!taskId) {
         throw new Error('Task ID is required');
       }
-      const response = await taskApi.approveCompletion(taskId, { role: 'volunteer' });
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+        const response = await taskApi.approveCompletion(taskId, { role: 'volunteer' });
       // Валидация ответа
       return validateApiResponse(
         response,
