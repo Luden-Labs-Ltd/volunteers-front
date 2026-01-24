@@ -1,4 +1,4 @@
-import { TaskBrief } from "@/entities/task/ui/task-brief";
+import {TaskBrief} from "@/entities/task/ui/task-brief";
 import {useMyTasksGrouped} from "@/entities/task/hook/useMyTasksGrouped.ts";
 import {TaskBriefWithCandidates} from "@/features/task-brief-with-candidates/ui";
 import {useNavigate} from "react-router-dom";

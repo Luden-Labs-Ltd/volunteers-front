@@ -18,7 +18,6 @@ export const NeedyTasksPage = () => {
             <div className="pt-[120px] pb-[90px]">
             <MyTasksList />
             </div>
-
         </div>
     )
 }
