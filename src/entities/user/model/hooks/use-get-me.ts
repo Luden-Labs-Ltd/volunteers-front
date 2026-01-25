@@ -3,7 +3,7 @@ import { authApi } from "@/entities/auth/api";
 import { getToken, removeToken, removeRefreshToken } from "@/shared/lib/auth";
 import { useState, useEffect } from "react";
 import { useQueryWithErrorHandling } from "@/shared/api/hook/use-query-with-error-handling";
-import { validateApiResponse, isObject, validateRequiredFields } from "@/shared/lib/validation";
+import { validateApiResponse, isObject, validateRequiredFields, isString } from "@/shared/lib/validation";
 import { ApiException } from "@/shared/api/types";
 
 export const useGetMe = () => {
@@ -26,12 +26,38 @@ export const useGetMe = () => {
         return null;
       }
       
-      // Валидация ответа
+      // Валидация ответа с улучшенными type guards
       return validateApiResponse(
         response,
         (data): data is UserWithRoleData => {
-          return isObject(data) && 
-                 validateRequiredFields(data, ['id', 'role']);
+          if (!isObject(data)) {
+            return false;
+          }
+          
+          // Проверяем обязательные поля
+          if (!validateRequiredFields(data, ['id', 'role'])) {
+            return false;
+          }
+          
+          // Проверяем, что role валидный
+          const validRoles = ['volunteer', 'needy', 'admin'];
+          if (!isString(data.role) || !validRoles.includes(data.role)) {
+            return false;
+          }
+          
+          // Проверяем, что id - это строка
+          if (!isString(data.id)) {
+            return false;
+          }
+          
+          // Если есть profile, проверяем его структуру
+          if ('profile' in data && data.profile !== null && data.profile !== undefined) {
+            if (!isObject(data.profile)) {
+              return false;
+            }
+          }
+          
+          return true;
         },
         'Invalid user data response format'
       );

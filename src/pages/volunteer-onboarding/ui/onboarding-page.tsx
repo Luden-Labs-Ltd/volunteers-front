@@ -1,10 +1,14 @@
-import { FC, useState, useRef } from 'react';
+import { FC, useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Button, Card, Input } from '@/shared/ui';
 import backgroundImage from './assets/Tal_background_--ar_11_--v_7_dc9a92ad-7e25-4ad7-bfe4-618b3aa51e78_3 1.png';
 import thankYouImage from './assets/Tal_background_--ar_11_--v_7_201dcc33-c3b1-4090-9884-5f0540ec3ef3 1.png';
 import { ProgressSteps } from './progress-steps';
+import { useGetCities } from '@/entities/city';
+import { useGetMe } from '@/entities/user/model/hooks/use-get-me';
+import { apiClient } from '@/shared/api';
+import { toast } from 'sonner';
 
 type OnboardingStep = 'program' | 'skills' | 'city' | 'profile' | 'contact' | 'photo' | 'thank-you';
 
@@ -46,6 +50,57 @@ export const OnboardingPage: FC = () => {
     const steps: OnboardingStep[] = ['program', 'skills', 'city', 'profile', 'contact', 'photo', 'thank-you'];
     const currentStepIndex = steps.indexOf(currentStep);
 
+    // Запрос геолокации при переходе на шаг city
+    useEffect(() => {
+        if (currentStep === 'city' && !data.cityId && !isGeolocating && navigator.geolocation) {
+            setIsGeolocating(true);
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const { latitude, longitude } = position.coords;
+                    // Находим ближайший город по координатам
+                    let nearestCity: { id: string; distance: number } | null = null;
+                    
+                    cities.forEach((city) => {
+                        if (city.latitude && city.longitude) {
+                            // Простой расчет расстояния (формула гаверсинуса)
+                            const R = 6371; // Радиус Земли в км
+                            const dLat = ((city.latitude - latitude) * Math.PI) / 180;
+                            const dLon = ((city.longitude - longitude) * Math.PI) / 180;
+                            const a =
+                                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                                Math.cos((latitude * Math.PI) / 180) *
+                                    Math.cos((city.latitude * Math.PI) / 180) *
+                                    Math.sin(dLon / 2) *
+                                    Math.sin(dLon / 2);
+                            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                            const distance = R * c;
+                            
+                            if (!nearestCity || distance < nearestCity.distance) {
+                                nearestCity = { id: city.id, distance };
+                            }
+                        }
+                    });
+                    
+                    if (nearestCity && nearestCity.distance < 50) { // В пределах 50км
+                        setData((prev) => ({ ...prev, cityId: nearestCity!.id }));
+                        toast.success(t('onboarding.cityDetected') || 'Город определен автоматически');
+                    }
+                    setIsGeolocating(false);
+                },
+                (error) => {
+                    console.warn('Geolocation error:', error);
+                    setIsGeolocating(false);
+                    // Fallback на ручной выбор - ничего не делаем
+                },
+                {
+                    enableHighAccuracy: false,
+                    timeout: 5000,
+                    maximumAge: 60000, // Кэш на 1 минуту
+                }
+            );
+        }
+    }, [currentStep, data.cityId, isGeolocating, cities, t]);
+
     const skills = [
         { id: 'technology', name: 'Technology', icon: '💻', color: 'bg-blue-100' },
         { id: 'meals', name: 'Meals', icon: '🍲', color: 'bg-green-100' },
@@ -68,9 +123,33 @@ export const OnboardingPage: FC = () => {
         }
     };
 
-    const handleSubmit = () => {
-        // После финального экрана благодарности переходим на рейтинг
-        navigate('/volunteer/leaderboard');
+    const handleSubmit = async () => {
+        if (!currentUser?.id) {
+            toast.error(t('onboarding.userNotFound') || 'Пользователь не найден');
+            return;
+        }
+
+        try {
+            // Обновляем профиль пользователя с данными онбординга, включая cityId и skills
+            await apiClient.request(`/user/${currentUser.id}`, {
+                method: 'PATCH',
+                body: JSON.stringify({
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    about: data.about,
+                    photo: data.photo,
+                    cityId: data.cityId,
+                    skills: data.skills,
+                }),
+            });
+
+            toast.success(t('onboarding.profileUpdated') || 'Профиль обновлен');
+            // После финального экрана благодарности переходим на рейтинг
+            navigate('/volunteer/leaderboard');
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            toast.error(t('onboarding.updateError') || 'Ошибка обновления профиля');
+        }
     };
 
     const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -362,14 +441,26 @@ export const OnboardingPage: FC = () => {
                                         onChange={(e) =>
                                             setData((prev) => ({ ...prev, cityId: e.target.value || null }))
                                         }
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary"
+                                        disabled={citiesLoading || isGeolocating}
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary disabled:bg-gray-100 disabled:cursor-not-allowed"
                                     >
-                                        <option value="">{t('onboarding.cityPlaceholder')}</option>
-                                        <option value="1">Tel Aviv</option>
-                                        <option value="2">Jerusalem</option>
-                                        <option value="3">Haifa</option>
-                                        <option value="4">Beer Sheva</option>
+                                        <option value="">
+                                            {isGeolocating 
+                                                ? (t('onboarding.detectingLocation') || 'Определение местоположения...')
+                                                : (t('onboarding.cityPlaceholder') || 'Выберите город')
+                                            }
+                                        </option>
+                                        {cities.map((city) => (
+                                            <option key={city.id} value={city.id}>
+                                                {city.name}
+                                            </option>
+                                        ))}
                                     </select>
+                                    {isGeolocating && (
+                                        <p className="text-sm text-gray-500 mt-1">
+                                            {t('onboarding.geolocating') || 'Определение ближайшего города...'}
+                                        </p>
+                                    )}
                                 </div>
                                 {/* <div> */}
                                     {/* <label className="block text-sm font-medium text-gray-700 mb-2">

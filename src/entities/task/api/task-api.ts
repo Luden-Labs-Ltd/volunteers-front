@@ -16,6 +16,7 @@ interface GetTasksParams {
   status?: TaskStatus;
   categoryId?: string;
   skillIds?: string | string[];
+  cityId?: string;
 }
 
 export const taskApi = {
@@ -33,6 +34,9 @@ export const taskApi = {
         throw new Error('Invalid skillIds format');
       }
     }
+    if (params?.cityId && !isValidUUID(params.cityId)) {
+      throw new Error('Invalid cityId format');
+    }
     
     const queryParams = new URLSearchParams();
     if (params?.programId) queryParams.append('programId', params.programId);
@@ -42,6 +46,7 @@ export const taskApi = {
       const skillIdsArray = Array.isArray(params.skillIds) ? params.skillIds : [params.skillIds];
       skillIdsArray.forEach((id) => queryParams.append('skillIds', id));
     }
+    if (params?.cityId) queryParams.append('cityId', params.cityId);
     const queryString = queryParams.toString();
     const response = await apiClient.request<Task[]>(`/tasks${queryString ? `?${queryString}` : ''}`);
     

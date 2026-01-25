@@ -103,3 +103,32 @@ export function validateApiResponse<T>(
   }
   return data;
 }
+
+/**
+ * Валидирует UserWithRoleData структуру
+ */
+export function isValidUserWithRoleData(data: unknown): data is import('@/entities/user/model/types').UserWithRoleData {
+  if (!isObject(data)) {
+    return false;
+  }
+  
+  // Проверяем базовые поля
+  if (!validateRequiredFields(data, ['id', 'role'])) {
+    return false;
+  }
+  
+  // Проверяем, что role валидный
+  const validRoles = ['volunteer', 'needy', 'admin'];
+  if (!isString(data.role) || !validRoles.includes(data.role)) {
+    return false;
+  }
+  
+  // Если есть profile, проверяем его структуру
+  if ('profile' in data && data.profile !== null && data.profile !== undefined) {
+    if (!isObject(data.profile)) {
+      return false;
+    }
+  }
+  
+  return true;
+}

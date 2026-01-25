@@ -33,6 +33,12 @@ export interface Task {
   firstResponseMode: boolean;
   assignedVolunteerId?: string;
   approveBy: TaskApproveRole[];
+  cityId?: string;
+  address?: string;
+  location?: {
+    type: 'Point';
+    coordinates: [number, number];
+  };
   createdAt: Date;
   updatedAt: Date;
 }

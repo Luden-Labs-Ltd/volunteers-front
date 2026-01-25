@@ -24,6 +24,13 @@ export interface VolunteerProfile {
   points: number;
   completedTasksCount: number;
   rating: number | null;
+  cityId?: string;
+  city?: {
+    id: string;
+    name: string;
+    latitude: number;
+    longitude: number;
+  };
   programs?: Array<{
     id: string;
     name: string;
@@ -43,6 +50,14 @@ export interface NeedyProfile {
   userId: string;
   programId: string;
   creatorId: string;
+  cityId?: string;
+  address?: string;
+  city?: {
+    id: string;
+    name: string;
+    latitude: number;
+    longitude: number;
+  };
   program?: {
     id: string;
     name: string;

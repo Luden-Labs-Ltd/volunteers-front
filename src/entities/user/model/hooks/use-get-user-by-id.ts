@@ -1,8 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
-import {userApi} from "@/entities/user";
+import { useQueryWithErrorHandling } from "@/shared/api/hook/use-query-with-error-handling";
+import { userApi } from "@/entities/user";
+import { UserWithRoleData } from "../types";
 
 export const useUserById = (userId: string) => {
-    return useQuery({
+    return useQueryWithErrorHandling<UserWithRoleData, Error>({
         queryKey: ['user', userId],
         queryFn: () => userApi.getUserById(userId),
         enabled: !!userId,

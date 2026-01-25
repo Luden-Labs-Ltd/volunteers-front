@@ -28,6 +28,11 @@ export const useCompleteTask = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.TASKS] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.MY_TASKS] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.POINTS_BALANCE] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.POINTS_TRANSACTIONS] });
+      // Инвалидируем также данные пользователя, так как там обновляется количество баллов
+      queryClient.invalidateQueries({ queryKey: ['user', 'me'] });
     },
   });
 };

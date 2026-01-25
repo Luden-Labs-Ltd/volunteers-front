@@ -6,6 +6,7 @@ import mission_illustration from '@/shared/assets/images/mission_illustration.we
 import { Button, Card } from '@/shared/ui';
 import { useGetTaskById } from '@/entities/task/hook/useGetTaskId';
 import { useCompleteTask } from '@/entities/task/hook/useCompleteTask';
+import { TaskStatus } from '@/entities/task/model/types';
 import smsIcon from '@/shared/assets/images/sms.webp';
 import phoneIcon from '@/shared/assets/images/phone.webp';
 import watsappIcon from '@/shared/assets/images/watsapp.webp';
@@ -80,6 +81,17 @@ export const TaskDetailsPage = () => {
               <p className="text-textGray font-medium">
                 {task.needy?.firstName} {task.needy?.lastName}
               </p>
+              {/* Показываем адрес только если задача в статусе IN_PROGRESS (волонтер одобрен) */}
+              {task.status === TaskStatus.IN_PROGRESS && task.address && (
+                <div className="w-full">
+                  <p className="text-textGray font-normal text-sm mb-1">
+                    {t('volunteerTask.details.address') || 'Адрес:'}
+                  </p>
+                  <p className="text-textGray font-medium">
+                    {task.address}
+                  </p>
+                </div>
+              )}
               {task.needy?.phone && (
                 <>
                   <a href={`tel:${task.needy.phone}`}>
