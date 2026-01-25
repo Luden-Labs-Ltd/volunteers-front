@@ -11,7 +11,7 @@ export const NeedyTasksPage = () => {
                 <h1 className="text-[28px] text-[#004573] font-medium">
                     { t("tasks.myTasks")}
                 </h1>
-                <div className="">
+                <div>
                     <Button icon={<Icon iconId={"icon-plus"} />} variant="transition" size="sm"/>
                 </div>
             </div>

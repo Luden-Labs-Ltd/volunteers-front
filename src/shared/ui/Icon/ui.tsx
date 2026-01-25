@@ -12,7 +12,6 @@ export const Icon: FC<IconProps> = ({ iconId, size = 24, className = '' }) => {
     return (
         <svg className={className} width={size} height={size} fill={'currentColor'}>
             <use href={`${sprite}#${iconId}`} />
-
         </svg>
     )
 }

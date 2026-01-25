@@ -8,7 +8,7 @@ export const CandidatesList = ({ volunteerId }: { volunteerId: string }) => {
     if (!user) return null;
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col mb-4">
             <VolunteerCard location={"Kisufim"} skills={["Home Cooking", "Maintenance"]}
                 volunteer={{
                     ...user,

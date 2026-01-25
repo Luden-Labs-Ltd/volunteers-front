@@ -1,7 +1,7 @@
 import { cn } from "@/shared/lib";
 import {User} from "@/entities/user";
 
-interface VolunteerCardProps {
+type VolunteerCardType = {
     volunteer: User;
     className?: string;
     onClick?: () => void;
@@ -9,24 +9,25 @@ interface VolunteerCardProps {
     skills: string[];
 }
 
-export const VolunteerCard = ({ volunteer, className, onClick, location, skills }: VolunteerCardProps) => {
+export const VolunteerCard = ({ volunteer, className, onClick, location, skills }: VolunteerCardType) => {
     const fullName = [volunteer.firstName, volunteer.lastName].filter(Boolean).join(" ");
-    const displayName = fullName || "Unknown Volunteer";
+    const displayName = fullName || "Unknown Volunteer"; //Сейчас fullName null (на севере у вало)
     const isVerified = volunteer.status === "approved";
-
+    const photoUrl = (volunteer.photo || "").replace(/^"|"$/g, '')
     return (
         <div
             onClick={onClick}
             className={cn(
                 "w-full h-[95px] bg-white rounded-2xl p-6 border border-[#F2F2F2] flex items-start gap-5 transition-all cursor-pointer",
+                "shadow-[1px_1px_0_0_#F2F2F2,3px_3px_0_0_#F2F2F2]",
                 className
             )}
         >
             <div className="flex-shrink-0 relative">
                 <img
-                    src={volunteer.photo || `https://api.dicebear.com/7.x/avataaars/svg?seed=${volunteer.id}`}
+                    src={photoUrl || `https://api.dicebear.com/7.x/avataaars/svg?seed=123`}
                     alt={displayName}
-                    className="w-[56px] h-[56px] rounded-full object-cover border-[3px] border-white shadow-sm bg-gray-50"
+                    className="w-[56px] h-[56px] rounded-full object-cover border-[3px] border-white"
                 />
             </div>
 
@@ -35,7 +36,7 @@ export const VolunteerCard = ({ volunteer, className, onClick, location, skills 
                     <h3 className="text-[18px] font-medium text-[#5B5B5B] leading-none tracking-tight truncate">
                         {displayName}
                     </h3>
-                    {!isVerified && (
+                    {isVerified && (
                             <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M9.99333 1.47833L6.32667 0.105C5.94667 -0.035 5.32667 -0.035 4.94667 0.105L1.28 1.47833C0.573333 1.745 0 2.57167 0 3.325V8.725C0 9.265 0.353333 9.97833 0.786667 10.2983L4.45333 13.0383C5.1 13.525 6.16 13.525 6.80667 13.0383L10.4733 10.2983C10.9067 9.97167 11.26 9.265 11.26 8.725V3.325C11.2667 2.57167 10.6933 1.745 9.99333 1.47833ZM7.95333 5.21167L5.08667 8.07833C4.98667 8.17833 4.86 8.225 4.73333 8.225C4.60667 8.225 4.48 8.17833 4.38 8.07833L3.31333 6.99833C3.12 6.805 3.12 6.485 3.31333 6.29167C3.50667 6.09833 3.82667 6.09833 4.02 6.29167L4.74 7.01167L7.25333 4.49833C7.44667 4.305 7.76667 4.305 7.96 4.49833C8.15333 4.69167 8.15333 5.01833 7.95333 5.21167Z" fill="#00731D"/>
                             </svg>
@@ -47,6 +48,8 @@ export const VolunteerCard = ({ volunteer, className, onClick, location, skills 
                 <div className="flex flex-wrap items-center gap-2">
                     {skills.map((skill, index) => (
                         <div key={index} className="flex items-center gap-2">
+                            {/*Добавить реальную иконку*/}
+                            🍲
                             <span className="text-[#8795B0] text-[14px] font-medium">{skill}</span>
                         </div>
                     ))}

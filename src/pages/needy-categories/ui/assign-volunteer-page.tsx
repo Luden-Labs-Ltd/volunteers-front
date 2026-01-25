@@ -15,8 +15,11 @@ export const AssignVolunteerPage = () => {
         <div className="w-full max-w-[393px] min-h-screen m-auto relative bg-white">
             <div className="fixed flex flex-col top-0 left-0 right-0 z-[50] w-[398px] mx-auto bg-gradient-to-b from-blue-50 to-white pt-16 pb-2 px-[20px]">
                 <div className="flex gap-2 items-center">
-                <div className="">
-                    <Button icon={<Icon iconId={"icon-arrow-back"} />} variant="transition" size="sm" onClick={() => navigate(-1)}/>
+                <div>
+                    <Button
+                        icon={<Icon iconId="icon-arrow-back"/>} variant="transition" size="sm"
+                        onClick={() => navigate(-1)}
+                    />
                 </div>
                 <h1 className="text-[32px] text-[#004573] font-medium">
                     Plumber
@@ -29,8 +32,7 @@ export const AssignVolunteerPage = () => {
             </div>
             <div className="pt-[250px] pb-[90px]">
                 <div>
-                    <h1>Task ID: {id}</h1>
-                    {responses?.map((task) => <CandidatesList key={task.taskId} volunteerId={task.volunteerId} />)}
+                    {responses?.map((task) => <CandidatesList key={task.volunteerId} volunteerId={task.volunteerId} />)}
                 </div>
             </div>
         </div>
