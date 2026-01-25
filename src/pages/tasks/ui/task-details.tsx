@@ -23,12 +23,12 @@ export const TaskDetailsPage = () => {
   const { taskId } = useParams();
   const { data: task, isLoading, isError, refetch: refetchTask } = useGetTaskById(taskId);
   const { data: user } = useGetMe();
-  
+
   // Получаем информацию о назначенном волонтере (для нуждающихся)
   const { data: assignedVolunteer } = useUserById(
     user?.role === 'needy' && task?.assignedVolunteerId ? task.assignedVolunteerId : ''
   );
-  
+
   // Для нуждающихся используем useTaskResponses, для волонтеров - useVolunteerResponse
   const { refetch: refetchResponses } = useTaskResponses(
     user?.role === 'needy' ? (taskId || '') : ''
@@ -37,16 +37,16 @@ export const TaskDetailsPage = () => {
     user?.role === 'volunteer' ? user.id : undefined,
     user?.role === 'volunteer' ? (taskId || '') : undefined
   );
-  
+
   const { mutate: completeTask, isPending: isCompleting } = useCompleteTask();
   const { mutate: respondToTask, isPending: isResponding } = useRespondToTask();
 
   // Проверяем, назначена ли задача волонтеру
   const isAssignedToMe = task?.assignedVolunteerId === user?.id;
-  
+
   // Определяем путь назад в зависимости от роли
   const backPath = user?.role === 'needy' ? '/needy/tasks' : '/volunteer/tasks';
-  
+
   // Проверяем, находится ли волонтер в той же программе, что и задача
   const isInSameProgram = useMemo(() => {
     if (!task?.programId || user?.role !== 'volunteer') return false;
@@ -56,14 +56,14 @@ export const TaskDetailsPage = () => {
 
   // Определяем, можно ли завершить задачу (только если назначена и в статусе IN_PROGRESS)
   const canComplete = isAssignedToMe && task?.status === TaskStatus.IN_PROGRESS;
-  
+
   // Определяем, можно ли откликнуться (если не назначена, не откликался, задача активна, и в той же программе)
-  const canRespond = 
-    !isAssignedToMe && 
-    !volunteerResponse && 
+  const canRespond =
+    !isAssignedToMe &&
+    !volunteerResponse &&
     task?.status === TaskStatus.ACTIVE &&
     isInSameProgram;
-  
+
   // Определяем статус отклика
   const responseStatus = volunteerResponse?.status;
 
@@ -125,7 +125,7 @@ export const TaskDetailsPage = () => {
               {task?.title}
             </h1>
             <p className="text-textGray font-normal">{taskId}</p>
-            
+
             {/* Информация о назначенном волонтере (для нуждающихся) */}
             {user?.role === 'needy' && task?.assignedVolunteerId && assignedVolunteer && (
               <Card variant={'elevated'} className={'p-4 flex flex-col gap-3 items-start text-left w-full'}>
@@ -152,10 +152,10 @@ export const TaskDetailsPage = () => {
                 />
               </Card>
             )}
-            
+
             <Card variant={'elevated'} className={'p-4 flex flex-col gap-3 items-start text-left w-full'}>
               <p className="text-textGray font-normal">
-                {user?.role === 'needy' 
+                {user?.role === 'needy'
                   ? (t('taskResponses.taskOwner') || 'Владелец задачи:')
                   : t('volunteerTask.details.contactTitle')
                 }
@@ -221,9 +221,9 @@ export const TaskDetailsPage = () => {
               )}
               {/* Показываем заметку о завершении только для волонтеров */}
               {user?.role === 'volunteer' && (
-              <p className="text-textGray font-medium text-left w-80">
-                {t('volunteerTask.details.completionNote')}
-              </p>
+                <p className="text-textGray font-medium text-left w-80">
+                  {t('volunteerTask.details.completionNote')}
+                </p>
               )}
             </Card>
           </div>
@@ -231,21 +231,21 @@ export const TaskDetailsPage = () => {
         <div className={' flex flex-col gap-3 mt-auto'}>
           {/* Кнопка "Завершить выполнение" - только если задача назначена */}
           {canComplete && (
-          <Button
-            size={'lg'}
-            fullWidth
-            variant={'secondary'}
+            <Button
+              size={'lg'}
+              fullWidth
+              variant={'secondary'}
               disabled={isCompleting}
-            onClick={() => {
-              completeTask(taskId, {
-                onSuccess: () => {
-                  setShowAnimation(true);
-                },
-              });
-            }}
-          >
-            {t('volunteerTask.details.completeButton')}
-          </Button>
+              onClick={() => {
+                completeTask(taskId, {
+                  onSuccess: () => {
+                    setShowAnimation(true);
+                  },
+                });
+              }}
+            >
+              {t('volunteerTask.details.completeButton')}
+            </Button>
           )}
 
           {/* Кнопка "Я готов взять ее" - если можно откликнуться */}
@@ -274,19 +274,19 @@ export const TaskDetailsPage = () => {
           )}
 
           {/* Предупреждение, если волонтер не в той же программе */}
-          {!isAssignedToMe && 
-           !volunteerResponse && 
-           task?.status === TaskStatus.ACTIVE &&
-           !isInSameProgram && (
-            <div className="text-center py-4">
-              <Badge variant="warning">
-                {t('volunteerTask.details.differentProgram') || 'Другая программа'}
-              </Badge>
-              <p className="text-sm text-gray-600 mt-2">
-                {t('volunteerTask.details.differentProgramDescription') || 'Вы не можете откликнуться на эту задачу, так как она относится к другой программе, в которой вы не участвуете.'}
-              </p>
-            </div>
-          )}
+          {!isAssignedToMe &&
+            !volunteerResponse &&
+            task?.status === TaskStatus.ACTIVE &&
+            !isInSameProgram && (
+              <div className="text-center py-4">
+                <Badge variant="warning">
+                  {t('volunteerTask.details.differentProgram') || 'Другая программа'}
+                </Badge>
+                <p className="text-sm text-gray-600 mt-2">
+                  {t('volunteerTask.details.differentProgramDescription') || 'Вы не можете откликнуться на эту задачу, так как она относится к другой программе, в которой вы не участвуете.'}
+                </p>
+              </div>
+            )}
 
           {/* Статус ожидания одобрения */}
           {volunteerResponse && responseStatus === TaskResponseStatus.PENDING && (

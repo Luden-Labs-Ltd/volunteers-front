@@ -127,7 +127,7 @@ export const LeaderboardPage: FC = () => {
                                     alt="Trophy illustration"
                                     className="w-32 h-32 object-contain mx-auto opacity-50"
                                 />
-                            </div>
+                        </div>
                             <h2 className="text-lg font-bold text-gray-900 mb-2">
                                 {t('leaderboard.empty') || 'No winners yet'}
                             </h2>
@@ -162,67 +162,67 @@ export const LeaderboardPage: FC = () => {
                                             </div>
                                         ) : (
                                             <>
-                                                {/* 2-е место */}
+                                        {/* 2-е место */}
                                                 {topThree.length >= 2 && (
-                                                    <div className="flex flex-col items-center flex-1 relative">
-                                                        <div className="absolute right-0 top-0 bottom-0 w-px bg-[#F2F2F2]"></div>
-                                                        <div className="mb-3">
-                                                            <img
-                                                                src={getTrophyImage(2)}
-                                                                alt="2nd place"
-                                                                className="w-14 h-14 object-contain"
-                                                            />
-                                                        </div>
-                                                        <div className="text-center">
-                                                            <p className="font-bold text-gray-900 text-base mb-1">
-                                                                {topThree[0]?.name || ''}
-                                                            </p>
-                                                            <p className="text-gray-600 text-sm">{topThree[0]?.volunteers || 0}</p>
-                                                        </div>
-                                                    </div>
+                                        <div className="flex flex-col items-center flex-1 relative">
+                                            <div className="absolute right-0 top-0 bottom-0 w-px bg-[#F2F2F2]"></div>
+                                            <div className="mb-3">
+                                                <img
+                                                    src={getTrophyImage(2)}
+                                                    alt="2nd place"
+                                                    className="w-14 h-14 object-contain"
+                                                />
+                                            </div>
+                                            <div className="text-center">
+                                                <p className="font-bold text-gray-900 text-base mb-1">
+                                                    {topThree[0]?.name || ''}
+                                                </p>
+                                                <p className="text-gray-600 text-sm">{topThree[0]?.volunteers || 0}</p>
+                                            </div>
+                                        </div>
                                                 )}
 
-                                                {/* 1-е место */}
+                                        {/* 1-е место */}
                                                 {topThree.length >= 1 && (
-                                                    <div className="flex flex-col items-center flex-1 relative">
+                                        <div className="flex flex-col items-center flex-1 relative">
                                                         {topThree.length >= 2 && (
-                                                            <div className="absolute right-0 top-0 bottom-0 w-px bg-[#F2F2F2]"></div>
+                                            <div className="absolute right-0 top-0 bottom-0 w-px bg-[#F2F2F2]"></div>
                                                         )}
-                                                        <div className="mb-3">
-                                                            <img
-                                                                src={getTrophyImage(1)}
-                                                                alt="1st place"
-                                                                className="w-20 h-20 object-contain"
-                                                            />
-                                                        </div>
-                                                        <div className="text-center">
-                                                            <p className="font-bold text-gray-900 text-base mb-1">
-                                                                {topThree[1]?.name || ''}
-                                                            </p>
+                                            <div className="mb-3">
+                                                <img
+                                                    src={getTrophyImage(1)}
+                                                    alt="1st place"
+                                                    className="w-20 h-20 object-contain"
+                                                />
+                                            </div>
+                                            <div className="text-center">
+                                                <p className="font-bold text-gray-900 text-base mb-1">
+                                                    {topThree[1]?.name || ''}
+                                                </p>
                                                             <p className="text-gray-600 text-sm">
                                                                 {topThree[1]?.volunteers || 0}
                                                             </p>
-                                                        </div>
-                                                    </div>
+                                            </div>
+                                        </div>
                                                 )}
 
-                                                {/* 3-е место */}
+                                        {/* 3-е место */}
                                                 {topThree.length >= 3 && (
-                                                    <div className="flex flex-col items-center flex-1">
-                                                        <div className="mb-3">
-                                                            <img
-                                                                src={getTrophyImage(3)}
-                                                                alt="3rd place"
-                                                                className="w-14 h-14 object-contain"
-                                                            />
-                                                        </div>
-                                                        <div className="text-center">
-                                                            <p className="font-bold text-gray-900 text-base mb-1">
-                                                                {topThree[2]?.name || ''}
-                                                            </p>
-                                                            <p className="text-gray-600 text-sm">{topThree[2]?.volunteers || 0}</p>
-                                                        </div>
-                                                    </div>
+                                        <div className="flex flex-col items-center flex-1">
+                                            <div className="mb-3">
+                                                <img
+                                                    src={getTrophyImage(3)}
+                                                    alt="3rd place"
+                                                    className="w-14 h-14 object-contain"
+                                                />
+                                            </div>
+                                            <div className="text-center">
+                                                <p className="font-bold text-gray-900 text-base mb-1">
+                                                    {topThree[2]?.name || ''}
+                                                </p>
+                                                <p className="text-gray-600 text-sm">{topThree[2]?.volunteers || 0}</p>
+                                            </div>
+                                        </div>
                                                 )}
                                             </>
                                         )}
@@ -259,35 +259,35 @@ export const LeaderboardPage: FC = () => {
 
                             {/* Остальные сообщества */}
                             {otherCommunities.length > 0 && (
-                                <Card className="p-4">
-                                    <div className="space-y-3">
-                                        {otherCommunities.map((community) => (
-                                            <div
-                                                key={community.id}
-                                                className="flex items-center gap-3"
-                                            >
-                                                <div className="w-8 h-8 rounded-full bg-primary-50 flex items-center justify-center flex-shrink-0">
-                                                    <span className="text-white font-semibold text-sm">
-                                                        {community.rank}
-                                                    </span>
-                                                </div>
-                                                <div className="flex-1">
-                                                    <p className="font-semibold text-gray-900 text-sm">
-                                                        {community.name}
-                                                    </p>
-                                                    <p className="text-xs text-gray-600">
-                                                        {community.volunteers} {t('leaderboard.volunteers')}
-                                                    </p>
-                                                </div>
-                                                <div className="text-right">
-                                                    <p className="text-sm font-semibold text-primary">
-                                                        {community.points} {t('leaderboard.points')}
-                                                    </p>
-                                                </div>
+                            <Card className="p-4">
+                                <div className="space-y-3">
+                                    {otherCommunities.map((community) => (
+                                        <div
+                                            key={community.id}
+                                            className="flex items-center gap-3"
+                                        >
+                                            <div className="w-8 h-8 rounded-full bg-primary-50 flex items-center justify-center flex-shrink-0">
+                                                <span className="text-white font-semibold text-sm">
+                                                    {community.rank}
+                                                </span>
                                             </div>
-                                        ))}
-                                    </div>
-                                </Card>
+                                            <div className="flex-1">
+                                                <p className="font-semibold text-gray-900 text-sm">
+                                                    {community.name}
+                                                </p>
+                                                <p className="text-xs text-gray-600">
+                                                    {community.volunteers} {t('leaderboard.volunteers')}
+                                                </p>
+                                            </div>
+                                            <div className="text-right">
+                                                <p className="text-sm font-semibold text-primary">
+                                                    {community.points} {t('leaderboard.points')}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </Card>
                             )}
 
                             {/* Кнопка перехода к задачам */}

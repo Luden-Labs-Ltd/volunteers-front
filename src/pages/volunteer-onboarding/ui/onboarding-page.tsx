@@ -416,54 +416,54 @@ export const OnboardingPage: FC = () => {
                                         </p>
                                     </div>
                                 ) : (
-                                    <div className="flex flex-col gap-3 mb-4">
-                                        {skills.map((skill) => {
-                                            const isSelected = data.skills.includes(skill.id);
-                                            return (
-                                                <Card
-                                                    key={skill.id}
-                                                    className={`cursor-pointer transition-all relative ${isSelected
-                                                        ? 'ring-2 ring-primary border-2 border-primary'
-                                                        : 'border border-gray-200'
-                                                        }`}
-                                                    onClick={() => {
-                                                        setData((prev) => ({
-                                                            ...prev,
-                                                            skills: prev.skills.includes(skill.id)
-                                                                ? prev.skills.filter((s) => s !== skill.id)
-                                                                : [...prev.skills, skill.id],
-                                                        }));
-                                                    }}
-                                                >
-                                                    <div className="p-4 flex items-center gap-4">
-                                                        {isSelected && (
-                                                            <div className="absolute top-2 right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                                                                <svg
-                                                                    className="w-4 h-4 text-white"
-                                                                    fill="none"
-                                                                    stroke="currentColor"
-                                                                    viewBox="0 0 24 24"
-                                                                >
-                                                                    <path
-                                                                        strokeLinecap="round"
-                                                                        strokeLinejoin="round"
-                                                                        strokeWidth={2}
-                                                                        d="M5 13l4 4L19 7"
-                                                                    />
-                                                                </svg>
-                                                            </div>
-                                                        )}
-                                                        <div className={`w-12 h-12 ${skill.color} rounded-xl flex items-center justify-center text-2xl flex-shrink-0`}>
-                                                            {skill.icon}
-                                                        </div>
-                                                        <h3 className="font-semibold text-base text-gray-900">
-                                                            {skill.name}
-                                                        </h3>
-                                                    </div>
-                                                </Card>
-                                            );
-                                        })}
-                                    </div>
+                        <div className="flex flex-col gap-3 mb-4">
+                            {skills.map((skill) => {
+                                const isSelected = data.skills.includes(skill.id);
+                                return (
+                                    <Card
+                                        key={skill.id}
+                                        className={`cursor-pointer transition-all relative ${isSelected
+                                            ? 'ring-2 ring-primary border-2 border-primary'
+                                            : 'border border-gray-200'
+                                            }`}
+                                        onClick={() => {
+                                            setData((prev) => ({
+                                                ...prev,
+                                                skills: prev.skills.includes(skill.id)
+                                                    ? prev.skills.filter((s) => s !== skill.id)
+                                                    : [...prev.skills, skill.id],
+                                            }));
+                                        }}
+                                    >
+                                        <div className="p-4 flex items-center gap-4">
+                                            {isSelected && (
+                                                <div className="absolute top-2 right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                                                    <svg
+                                                        className="w-4 h-4 text-white"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 24 24"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth={2}
+                                                            d="M5 13l4 4L19 7"
+                                                        />
+                                                    </svg>
+                                                </div>
+                                            )}
+                                            <div className={`w-12 h-12 ${skill.color} rounded-xl flex items-center justify-center text-2xl flex-shrink-0`}>
+                                                {skill.icon}
+                                            </div>
+                                            <h3 className="font-semibold text-base text-gray-900">
+                                                {skill.name}
+                                            </h3>
+                                        </div>
+                                    </Card>
+                                );
+                            })}
+                        </div>
                                 )}
                             </>
                         )}
@@ -590,8 +590,8 @@ export const OnboardingPage: FC = () => {
                                         className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${fieldErrors.agreement
                                             ? 'border-red-500'
                                             : data.agreementAccepted
-                                                ? 'bg-primary border-primary'
-                                                : 'border-gray-300'
+                                            ? 'bg-primary border-primary'
+                                            : 'border-gray-300'
                                             }`}
                                     >
                                         {data.agreementAccepted && (
@@ -669,7 +669,7 @@ export const OnboardingPage: FC = () => {
                                             setData((prev) => ({ ...prev, cityId: e.target.value || null }));
                                             if (fieldErrors.cityId) {
                                                 setFieldErrors((prev) => ({ ...prev, cityId: undefined }));
-                                            }
+                                        }
                                         }}
                                         disabled={citiesLoading || isGeolocating}
                                         className={`w-full px-4 py-3 border rounded-2xl focus:outline-none focus:ring-2 disabled:bg-gray-100 disabled:cursor-not-allowed ${fieldErrors.cityId
@@ -681,8 +681,8 @@ export const OnboardingPage: FC = () => {
                                             {citiesLoading
                                                 ? (t('onboarding.loadingCities') || 'Загрузка городов...')
                                                 : isGeolocating
-                                                    ? (t('onboarding.detectingLocation') || 'Определение местоположения...')
-                                                    : (t('onboarding.cityPlaceholder') || 'Выберите город')
+                                                ? (t('onboarding.detectingLocation') || 'Определение местоположения...')
+                                                : (t('onboarding.cityPlaceholder') || 'Выберите город')
                                             }
                                         </option>
                                         {cities.length === 0 && !citiesLoading ? (
@@ -691,9 +691,9 @@ export const OnboardingPage: FC = () => {
                                             </option>
                                         ) : (
                                             cities.map((city) => (
-                                                <option key={city.id} value={city.id}>
-                                                    {city.name}
-                                                </option>
+                                            <option key={city.id} value={city.id}>
+                                                {city.name}
+                                            </option>
                                             ))
                                         )}
                                     </select>

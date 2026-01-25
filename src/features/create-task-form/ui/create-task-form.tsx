@@ -34,15 +34,15 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
             if (!data.programId || !data.needyId || !data.title || !data.description) {
                 throw new Error('Missing required task fields');
             }
-
+            
             const response = await taskApi.createTask(data);
-
+            
             // Валидация ответа
             return validateApiResponse(
                 response,
                 (data): data is Task => {
-                    return isObject(data) &&
-                        validateRequiredFields(data, ['id', 'programId', 'needyId', 'title', 'description', 'status']);
+                    return isObject(data) && 
+                           validateRequiredFields(data, ['id', 'programId', 'needyId', 'title', 'description', 'status']);
                 },
                 'Invalid task creation response format'
             );
@@ -88,31 +88,31 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
                 return;
             }
 
-            // Формируем details с датой и временем, если они указаны
-            let details = "";
-            if (data.scheduledDate || data.scheduledTime) {
-                const dateTimeParts = [];
-                if (data.scheduledDate) {
-                    dateTimeParts.push(`Дата: ${new Date(data.scheduledDate).toLocaleDateString()}`);
-                }
-                if (data.scheduledTime) {
-                    dateTimeParts.push(`Время: ${data.scheduledTime}`);
-                }
-                details = dateTimeParts.join(", ");
+        // Формируем details с датой и временем, если они указаны
+        let details = "";
+        if (data.scheduledDate || data.scheduledTime) {
+            const dateTimeParts = [];
+            if (data.scheduledDate) {
+                dateTimeParts.push(`Дата: ${new Date(data.scheduledDate).toLocaleDateString()}`);
             }
+            if (data.scheduledTime) {
+                dateTimeParts.push(`Время: ${data.scheduledTime}`);
+            }
+            details = dateTimeParts.join(", ");
+        }
 
-            const payload: CreateTaskDto = {
+        const payload: CreateTaskDto = {
                 programId: programId,
                 needyId: user.id,
-                type: data.title,
-                title: data.title,
-                description: data.description,
-                details: details,
-                skillIds: data.skillIds,
-                categoryId: data.categoryId,
-                firstResponseMode: data.firstResponseMode,
-            };
-            mutate(payload);
+            type: data.title,
+            title: data.title,
+            description: data.description,
+            details: details,
+            skillIds: data.skillIds,
+            categoryId: data.categoryId,
+            firstResponseMode: data.firstResponseMode,
+        };
+        mutate(payload);
         } catch (error) {
             console.error('Error in onSubmit:', error);
             const errorMessage = error instanceof Error ? error.message : t('errors.general') || 'Произошла ошибка';
@@ -150,7 +150,7 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
                         type="button"
                         onClick={onBack}
                     >
-                        {t("taskDetails.labelAnythingElse")}
+                    {t("taskDetails.labelAnythingElse")}
                     </Button>
                 </div>
             </div>
