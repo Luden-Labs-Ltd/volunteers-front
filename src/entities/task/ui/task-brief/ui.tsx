@@ -27,7 +27,13 @@ export const TaskBrief = ({ task, className, onClick }: TaskBriefProps) => {
         >
             <div className="w-full flex items-center gap-3">
                 <div className="w-[40px] h-[40px] flex-shrink-0 bg-[#F0F8FF] rounded-lg flex items-center justify-center overflow-hidden">
-                    {task.category?.iconSvg ? (
+                    {task.category?.image?.url ? (
+                        <img
+                            src={task.category.image.url}
+                            alt={task.category.name}
+                            className="w-full h-full object-cover"
+                        />
+                    ) : task.category?.iconSvg ? (
                         <div
                             className="w-6 h-6 [&>svg]:w-full [&>svg]:h-full [&>svg]:fill-[#162A43]"
                             dangerouslySetInnerHTML={{ __html: task.category.iconSvg }}

@@ -19,12 +19,17 @@ export const CategoryCard = ({ category, isSelected, onClick }: CategoryCardType
                 "opacity-60 border-[#e5e5e5] shadow-[1px_1px_0_0_#e5e5e5,3px_3px_0_0_#e5e5e5]"}
                         `}
         >
-            {/*КАРТИНКИ НА ВРЕМЯ, ПОКА НЕ ПОЯВИТСЯ С3 ДЛЯ ФОТО*/}
-            {mockImage ? (
+            {category.image?.url ? (
+                <img
+                    src={category.image.url}
+                    alt={category.name}
+                    className="w-full h-[137px] object-cover"
+                />
+            ) : mockImage ? (
                 <img
                     src={mockImage}
                     alt={category.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-[137px] object-cover"
                 />
             ) : category.iconSvg ? (
                 <div
@@ -32,7 +37,7 @@ export const CategoryCard = ({ category, isSelected, onClick }: CategoryCardType
                     dangerouslySetInnerHTML={{ __html: category.iconSvg }}
                 />
             ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-300">
+                <div className="w-full h-[137px] flex items-center justify-center text-gray-300">
                     Img
                 </div>
             )}
