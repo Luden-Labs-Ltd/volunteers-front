@@ -4,6 +4,7 @@ import { VolunteerCard } from "@/entities/user/ui/volunteer-card";
 import { useApproveVolunteer, useRejectVolunteer } from "@/entities/taskResponses/hook";
 import { Button } from "@/shared/ui";
 import { useTranslation } from "react-i18next";
+import {VolunteerCardSkeleton} from "@/shared/ui/skeleton/VolunteerCardSkeleton";
 import { TaskResponse } from "@/entities/task/model/types";
 import { useNavigate } from "react-router-dom";
 import { VolunteerDetailsModal } from "@/features/volunteer-details";
@@ -49,7 +50,11 @@ export const CandidatesList = ({ taskId, response }: CandidatesListProps) => {
         });
     };
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return (
+        <div className="flex flex-col mb-4">
+            <VolunteerCardSkeleton />
+        </div>
+    );
     if (!user) return null;
 
     // Получаем навыки из профиля волонтера

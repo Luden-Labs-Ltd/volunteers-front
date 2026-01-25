@@ -40,7 +40,7 @@ export const AssignVolunteerPage = () => {
                 </span>
                 </div>
             </div>
-            <div className="pt-[250px] pb-[90px]">
+            <div className="pt-[250px] pb-[90px] px-[20px]">
                 <div>
                     {responses && responses.length > 0 ? (
                         <>
@@ -48,8 +48,8 @@ export const AssignVolunteerPage = () => {
                             {responses
                                 .filter((response) => response.status === 'pending')
                                 .map((response) => (
-                                    <CandidatesList 
-                                        key={response.id || response.volunteerId} 
+                                    <CandidatesList
+                                        key={response.id || response.volunteerId}
                                         taskId={id}
                                         response={response}
                                     />
@@ -58,8 +58,8 @@ export const AssignVolunteerPage = () => {
                             {responses
                                 .filter((response) => response.status === 'approved')
                                 .map((response) => (
-                                    <CandidatesList 
-                                        key={response.id || response.volunteerId} 
+                                    <CandidatesList
+                                        key={response.id || response.volunteerId}
                                         taskId={id}
                                         response={response}
                                     />
@@ -68,8 +68,8 @@ export const AssignVolunteerPage = () => {
                             {responses
                                 .filter((response) => response.status === 'rejected')
                                 .map((response) => (
-                                    <CandidatesList 
-                                        key={response.id || response.volunteerId} 
+                                    <CandidatesList
+                                        key={response.id || response.volunteerId}
                                         taskId={id}
                                         response={response}
                                     />
