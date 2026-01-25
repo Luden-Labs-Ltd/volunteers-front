@@ -25,8 +25,8 @@ export const TabsForLayout = () => {
     };
 
     return (
-        <div className="fixed z-[1000] bottom-0 left-0 right-0 w-full max-w-[398px] mx-auto bg-white border-t border-blue-50">
-            <div className="flex items-center justify-between px-16 pb-4 pt-2">
+        <div className="fixed z-[1000] bottom-0 left-0 right-0 w-full max-w-[398px] mx-auto ">
+            <div className="bg-white border-t border-blue-50 px-16 pb-4 pt-2 flex items-center justify-between">
                 <button
                     className="flex flex-col items-center gap-1 group"
                     onClick={handleTasksClick}
@@ -57,6 +57,7 @@ export const TabsForLayout = () => {
                     </span>
                 </button>
             </div>
+            <div className="h-[env(safe-area-inset-bottom)] bg-white w-full" />
         </div>
     )
 }

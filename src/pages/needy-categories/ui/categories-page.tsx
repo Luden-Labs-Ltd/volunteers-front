@@ -16,7 +16,7 @@ export const CategoriesPage = () => {
     };
 
     return (
-        <div className="pt-[120px] pb-[150px]">
+        <div className="pt-[120px] pb-[calc(150px+env(safe-area-inset-bottom))]">
             {/* Инпут с ИИ + текст */}
             <div className={"flex flex-col justify-center items-center px-[20px]"}>
                 <div className="relative w-full max-w-[353px]">
@@ -62,7 +62,7 @@ export const CategoriesPage = () => {
             </h2>
             <PopularTaskScroll />
 
-            <div className="fixed z-[1000] bottom-[72px] left-0 right-0 w-full py-4 max-w-[395px] mx-auto bg-white">
+            <div className="fixed z-[1000] bottom-[calc(72px+env(safe-area-inset-bottom))] left-0 right-0 w-full py-4 max-w-[395px] mx-auto bg-white">
                     <Button
                         className={"py-4 border border-[#162A43] shadow-[1px_1px_0_0_#162A43,3px_3px_0_0_#162A43]"}
                         variant="primary"
