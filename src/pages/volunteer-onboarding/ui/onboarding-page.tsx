@@ -460,13 +460,13 @@ export const OnboardingPage: FC = () => {
                 <img
                   src={thankYouImage}
                   alt="Thank you illustration"
-                  className="w-full h-auto object-contain mx-auto"
+                  className="w-70 h-70 object-contain mx-auto"
                 />
               </div>
-              <h2 className="text-3xl font-bold text-primary mb-4">
+              <h2 className="text-3xl font-medium text-primary mb-4">
                 {t('onboarding.thankYou')}
               </h2>
-              <p className="text-gray-700 text-base leading-relaxed px-4">
+              <p className="text-gray-700 text-sm font-normal leading-relaxed px-4">
                 {t('onboarding.thankYouDescription')}
               </p>
             </div>
