@@ -11,4 +11,10 @@
         <path d="M6 12H18" stroke="#004573" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M12 18V6" stroke="#004573" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </symbol>
+
+    <!--Стрелка назад-->
+    <symbol id="icon-arrow-back" viewBox="0 0 20 20">
+        <path d="M7.97498 4.94189L2.91664 10.0002L7.97498 15.0586" stroke="#004573" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M17.0834 10H3.05837" stroke="#004573" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
 </svg>

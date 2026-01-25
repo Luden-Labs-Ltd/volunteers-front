@@ -3,10 +3,10 @@ import {useTranslation} from 'react-i18next';
 import {useNavigate} from 'react-router-dom';
 import {TaskList} from '@/widgets/task-list';
 import {Header, IconButton} from '@/shared/ui';
-import {useGetTasks} from "@/entities/task/hook";
 import {useGetMe} from '@/entities/user/model/hooks';
 import {Tabs} from "@/shared/ui/tabs";
 import userIcon from '@/shared/assets/images/userIcon.webp';
+import {useGetTasks} from "@/entities/task/hook";
 
 export const TasksPage: FC = () => {
   const {t} = useTranslation();
