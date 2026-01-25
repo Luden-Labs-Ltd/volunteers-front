@@ -154,11 +154,14 @@ export const taskApi = {
   },
 
   assignVolunteer: async (id: string, data: AssignVolunteerDto): Promise<Task> => {
-    if (!id || !isValidUUID(id)) {
-      throw new Error('Invalid task ID format');
+    if (!id) {
+      throw new Error('Task ID is required');
     }
-    if (!data.volunteerId || !isValidUUID(data.volunteerId)) {
-      throw new Error('Invalid volunteerId format');
+    if (!data || typeof data !== 'object') {
+      throw new Error('Invalid data format: data must be an object');
+    }
+    if (!data.volunteerId) {
+      throw new Error('volunteerId is required');
     }
     
     const response = await apiClient.request<Task>(`/tasks/${id}/assign`, {

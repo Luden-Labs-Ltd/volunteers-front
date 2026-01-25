@@ -10,6 +10,7 @@ import { useGetMe } from '@/entities/user/model/hooks/use-get-me';
 import { imageApi } from '@/entities/image';
 import { apiClient } from '@/shared/api';
 import { toast } from 'sonner';
+import { useGetSkills } from '@/entities/skills/hook';
 
 type OnboardingStep = 'program' | 'skills' | 'city' | 'profile' | 'contact' | 'photo' | 'thank-you';
 
@@ -35,6 +36,13 @@ export const OnboardingPage: FC = () => {
     const [currentStep, setCurrentStep] = useState<OnboardingStep>('program');
     const [isGeolocating, setIsGeolocating] = useState(false);
     const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+    const [skillSearchQuery, setSkillSearchQuery] = useState('');
+    const [fieldErrors, setFieldErrors] = useState<{
+        firstName?: string;
+        lastName?: string;
+        cityId?: string;
+        agreement?: string;
+    }>({});
     const [data, setData] = useState<OnboardingData>({
         programId: null,
         skills: [], // Теперь храним ID навыков
@@ -51,10 +59,32 @@ export const OnboardingPage: FC = () => {
     });
 
     // Загружаем города из API
-    const { data: cities = [], isLoading: citiesLoading } = useGetCities();
+    const { data: cities = [], isLoading: citiesLoading, error: citiesError } = useGetCities();
+
+    // Загружаем навыки из API
+    const { data: skillsData = [], isLoading: skillsLoading } = useGetSkills();
 
     // Загружаем данные текущего пользователя
     const { data: currentUser } = useGetMe();
+
+    // Проверяем, прошел ли волонтер уже онбординг
+    useEffect(() => {
+        if (currentUser && currentUser.role === 'volunteer') {
+            const profile = currentUser.profile;
+            // Проверяем, что онбординг завершен: есть firstName, lastName, skills и cityId
+            const isOnboardingComplete =
+                currentUser.firstName &&
+                currentUser.lastName &&
+                profile?.skills &&
+                profile.skills.length > 0 &&
+                (profile.cityId || profile.city);
+
+            if (isOnboardingComplete) {
+                // Редиректим на главную страницу волонтера
+                navigate('/volunteer', { replace: true });
+            }
+        }
+    }, [currentUser, navigate]);
 
     const steps: OnboardingStep[] = ['program', 'skills', 'city', 'profile', 'contact', 'photo', 'thank-you'];
     const currentStepIndex = steps.indexOf(currentStep);
@@ -114,19 +144,90 @@ export const OnboardingPage: FC = () => {
         }
     }, [currentStep, data.cityId, isGeolocating, cities, t]);
 
-    const skills = [
-        { id: 'technology', name: 'Technology', icon: '💻', color: 'bg-blue-100' },
-        { id: 'meals', name: 'Meals', icon: '🍲', color: 'bg-green-100' },
-        { id: 'medical', name: 'Medical experience', icon: '👨‍⚕️', color: 'bg-orange-100' },
-        { id: 'transportation', name: 'Transportation', icon: '🚗', color: 'bg-red-100' },
-        { id: 'maintenance', name: 'Maintenance', icon: '🔧', color: 'bg-purple-100' },
-        { id: 'electricity', name: 'Electricity', icon: '💡', color: 'bg-yellow-100' },
-    ];
+    // Маппинг иконок для навыков (можно расширить по необходимости)
+    const skillIcons: Record<string, { icon: string; color: string }> = {
+        'technology': { icon: '💻', color: 'bg-blue-100' },
+        'meals': { icon: '🍲', color: 'bg-green-100' },
+        'medical': { icon: '👨‍⚕️', color: 'bg-orange-100' },
+        'transportation': { icon: '🚗', color: 'bg-red-100' },
+        'maintenance': { icon: '🔧', color: 'bg-purple-100' },
+        'electricity': { icon: '💡', color: 'bg-yellow-100' },
+    };
 
+    // Преобразуем навыки из API в формат для UI
+    const allSkills = skillsData.map((skill) => {
+        const skillNameLower = skill.name.toLowerCase();
+        const iconData = skillIcons[skillNameLower] || { icon: '⭐', color: 'bg-gray-100' };
+        return {
+            id: skill.id, // UUID из API
+            name: skill.name,
+            icon: iconData.icon,
+            color: iconData.color,
+        };
+    });
+
+    // Фильтруем навыки по поисковому запросу
+    const skills = allSkills.filter((skill) =>
+        skill.name.toLowerCase().includes(skillSearchQuery.toLowerCase())
+    );
+
+
+    const validateStep = (step: OnboardingStep): boolean => {
+        const errors: typeof fieldErrors = {};
+        let isValid = true;
+
+        if (step === 'contact' || step === 'thank-you') {
+            if (!data.firstName || !data.firstName.trim()) {
+                errors.firstName = t('onboarding.firstNameRequired') || 'First name is required';
+                isValid = false;
+            }
+            if (!data.lastName || !data.lastName.trim()) {
+                errors.lastName = t('onboarding.lastNameRequired') || 'Last name is required';
+                isValid = false;
+            }
+            if (!data.cityId) {
+                errors.cityId = t('onboarding.cityRequired') || 'City selection is required';
+                isValid = false;
+            }
+        }
+
+        if (step === 'profile' || step === 'thank-you') {
+            if (!data.agreementAccepted) {
+                errors.agreement = t('onboarding.agreementRequired') || 'You must accept the agreement';
+                isValid = false;
+            }
+        }
+
+        setFieldErrors(errors);
+        return isValid;
+    };
 
     const handleNext = () => {
         if (currentStepIndex < steps.length - 1) {
-            setCurrentStep(steps[currentStepIndex + 1]);
+            const nextStep = steps[currentStepIndex + 1];
+
+            // Валидация перед переходом на следующий шаг
+            if (!validateStep(currentStep)) {
+                // Остаемся на текущем шаге, ошибки уже установлены
+                return;
+            }
+
+            // Перед переходом на финальный экран проверяем обязательные поля
+            if (nextStep === 'thank-you') {
+                if (!validateStep('thank-you')) {
+                    // Редиректим на шаг с ошибкой
+                    if (fieldErrors.firstName || fieldErrors.lastName || fieldErrors.cityId) {
+                        setCurrentStep('contact');
+                    } else if (fieldErrors.agreement) {
+                        setCurrentStep('profile');
+                    }
+                    return;
+                }
+            }
+
+            // Очищаем ошибки при успешном переходе
+            setFieldErrors({});
+            setCurrentStep(nextStep);
         }
     };
 
@@ -142,14 +243,14 @@ export const OnboardingPage: FC = () => {
             return;
         }
 
-        // Валидация обязательных полей
-        if (!data.firstName || !data.lastName) {
-            toast.error(t('onboarding.requiredFields') || 'Заполните имя и фамилию');
-            return;
-        }
-
-        if (!data.agreementAccepted) {
-            toast.error(t('onboarding.agreementRequired') || 'Необходимо принять соглашение');
+        // Валидация перед отправкой
+        if (!validateStep('thank-you')) {
+            // Редиректим на шаг с ошибкой
+            if (fieldErrors.firstName || fieldErrors.lastName || fieldErrors.cityId) {
+                setCurrentStep('contact');
+            } else if (fieldErrors.agreement) {
+                setCurrentStep('profile');
+            }
             return;
         }
 
@@ -276,60 +377,96 @@ export const OnboardingPage: FC = () => {
             case 'skills':
                 return (
                     <>
-                        <div className="flex flex-col gap-3 mb-4">
-                            {skills.map((skill) => {
-                                const isSelected = data.skills.includes(skill.id);
-                                return (
-                                    <Card
-                                        key={skill.id}
-                                        className={`cursor-pointer transition-all relative ${isSelected
-                                            ? 'ring-2 ring-primary border-2 border-primary'
-                                            : 'border border-gray-200'
-                                            }`}
-                                        onClick={() => {
-                                            setData((prev) => ({
-                                                ...prev,
-                                                skills: prev.skills.includes(skill.id)
-                                                    ? prev.skills.filter((s) => s !== skill.id)
-                                                    : [...prev.skills, skill.id],
-                                            }));
-                                        }}
-                                    >
-                                        <div className="p-4 flex items-center gap-4">
-                                            {isSelected && (
-                                                <div className="absolute top-2 right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                                                    <svg
-                                                        className="w-4 h-4 text-white"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        viewBox="0 0 24 24"
-                                                    >
-                                                        <path
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            strokeWidth={2}
-                                                            d="M5 13l4 4L19 7"
-                                                        />
-                                                    </svg>
-                                                </div>
-                                            )}
-                                            <div className={`w-12 h-12 ${skill.color} rounded-xl flex items-center justify-center text-2xl flex-shrink-0`}>
-                                                {skill.icon}
-                                            </div>
-                                            <h3 className="font-semibold text-base text-gray-900">
-                                                {skill.name}
-                                            </h3>
-                                        </div>
-                                    </Card>
-                                );
-                            })}
-                        </div>
-                        <div className="flex items-center gap-2 text-primary cursor-pointer mb-6">
-                            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                                <span className="text-xl">+</span>
+                        {skillsLoading ? (
+                            <div className="text-center py-8">
+                                <p className="text-gray-600">{t('common.loading') || 'Loading skills...'}</p>
                             </div>
-                            <span className="font-medium">{t('onboarding.add')}</span>
-                        </div>
+                        ) : (
+                            <>
+                                {allSkills.length > 0 && (
+                                    <div className="mb-4">
+                                        <Input
+                                            placeholder={t('onboarding.searchSkills') || 'Search skills...'}
+                                            value={skillSearchQuery}
+                                            onChange={(e) => setSkillSearchQuery(e.target.value)}
+                                            icon={
+                                                <svg
+                                                    className="w-5 h-5"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                                    />
+                                                </svg>
+                                            }
+                                        />
+                                    </div>
+                                )}
+                                {skills.length === 0 ? (
+                                    <div className="text-center py-8">
+                                        <p className="text-gray-600">
+                                            {skillSearchQuery
+                                                ? t('onboarding.noSkillsFound') || 'No skills found'
+                                                : t('onboarding.noSkills') || 'No skills available'}
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col gap-3 mb-4">
+                                        {skills.map((skill) => {
+                                            const isSelected = data.skills.includes(skill.id);
+                                            return (
+                                                <Card
+                                                    key={skill.id}
+                                                    className={`cursor-pointer transition-all relative ${isSelected
+                                                        ? 'ring-2 ring-primary border-2 border-primary'
+                                                        : 'border border-gray-200'
+                                                        }`}
+                                                    onClick={() => {
+                                                        setData((prev) => ({
+                                                            ...prev,
+                                                            skills: prev.skills.includes(skill.id)
+                                                                ? prev.skills.filter((s) => s !== skill.id)
+                                                                : [...prev.skills, skill.id],
+                                                        }));
+                                                    }}
+                                                >
+                                                    <div className="p-4 flex items-center gap-4">
+                                                        {isSelected && (
+                                                            <div className="absolute top-2 right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                                                                <svg
+                                                                    className="w-4 h-4 text-white"
+                                                                    fill="none"
+                                                                    stroke="currentColor"
+                                                                    viewBox="0 0 24 24"
+                                                                >
+                                                                    <path
+                                                                        strokeLinecap="round"
+                                                                        strokeLinejoin="round"
+                                                                        strokeWidth={2}
+                                                                        d="M5 13l4 4L19 7"
+                                                                    />
+                                                                </svg>
+                                                            </div>
+                                                        )}
+                                                        <div className={`w-12 h-12 ${skill.color} rounded-xl flex items-center justify-center text-2xl flex-shrink-0`}>
+                                                            {skill.icon}
+                                                        </div>
+                                                        <h3 className="font-semibold text-base text-gray-900">
+                                                            {skill.name}
+                                                        </h3>
+                                                    </div>
+                                                </Card>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                            </>
+                        )}
                     </>
                 );
 
@@ -442,12 +579,19 @@ export const OnboardingPage: FC = () => {
                                 </p>
                                 <div
                                     className="flex items-start gap-3 cursor-pointer"
-                                    onClick={() => setData((prev) => ({ ...prev, agreementAccepted: !prev.agreementAccepted }))}
+                                    onClick={() => {
+                                        setData((prev) => ({ ...prev, agreementAccepted: !prev.agreementAccepted }));
+                                        if (fieldErrors.agreement) {
+                                            setFieldErrors((prev) => ({ ...prev, agreement: undefined }));
+                                        }
+                                    }}
                                 >
                                     <div
-                                        className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${data.agreementAccepted
-                                            ? 'bg-primary border-primary'
-                                            : 'border-gray-300'
+                                        className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${fieldErrors.agreement
+                                            ? 'border-red-500'
+                                            : data.agreementAccepted
+                                                ? 'bg-primary border-primary'
+                                                : 'border-gray-300'
                                             }`}
                                     >
                                         {data.agreementAccepted && (
@@ -470,6 +614,11 @@ export const OnboardingPage: FC = () => {
                                         {t('onboarding.agreementConfirm')}
                                     </p>
                                 </div>
+                                {fieldErrors.agreement && (
+                                    <p className="text-sm text-red-500 mt-1">
+                                        {fieldErrors.agreement}
+                                    </p>
+                                )}
                             </div>
                         </div>
                     </>
@@ -487,12 +636,28 @@ export const OnboardingPage: FC = () => {
                             </p>
                             <div className="space-y-4">
                                 <Input
-                                    label={t('onboarding.name')}
-                                    placeholder={t('onboarding.namePlaceholder')}
+                                    label={t('onboarding.firstName')}
+                                    placeholder={t('onboarding.firstNamePlaceholder')}
                                     value={data.firstName}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                        setData((prev) => ({ ...prev, firstName: e.target.value }))
-                                    }
+                                    error={fieldErrors.firstName}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        setData((prev) => ({ ...prev, firstName: e.target.value }));
+                                        if (fieldErrors.firstName) {
+                                            setFieldErrors((prev) => ({ ...prev, firstName: undefined }));
+                                        }
+                                    }}
+                                />
+                                <Input
+                                    label={t('onboarding.lastName')}
+                                    placeholder={t('onboarding.lastNamePlaceholder')}
+                                    value={data.lastName}
+                                    error={fieldErrors.lastName}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        setData((prev) => ({ ...prev, lastName: e.target.value }));
+                                        if (fieldErrors.lastName) {
+                                            setFieldErrors((prev) => ({ ...prev, lastName: undefined }));
+                                        }
+                                    }}
                                 />
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -500,27 +665,51 @@ export const OnboardingPage: FC = () => {
                                     </label>
                                     <select
                                         value={data.cityId || ''}
-                                        onChange={(e) =>
-                                            setData((prev) => ({ ...prev, cityId: e.target.value || null }))
-                                        }
+                                        onChange={(e) => {
+                                            setData((prev) => ({ ...prev, cityId: e.target.value || null }));
+                                            if (fieldErrors.cityId) {
+                                                setFieldErrors((prev) => ({ ...prev, cityId: undefined }));
+                                            }
+                                        }}
                                         disabled={citiesLoading || isGeolocating}
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                        className={`w-full px-4 py-3 border rounded-2xl focus:outline-none focus:ring-2 disabled:bg-gray-100 disabled:cursor-not-allowed ${fieldErrors.cityId
+                                            ? 'border-red-500 focus:ring-red-500'
+                                            : 'border-gray-300 focus:ring-primary'
+                                            }`}
                                     >
                                         <option value="">
-                                            {isGeolocating
-                                                ? (t('onboarding.detectingLocation') || 'Определение местоположения...')
-                                                : (t('onboarding.cityPlaceholder') || 'Выберите город')
+                                            {citiesLoading
+                                                ? (t('onboarding.loadingCities') || 'Загрузка городов...')
+                                                : isGeolocating
+                                                    ? (t('onboarding.detectingLocation') || 'Определение местоположения...')
+                                                    : (t('onboarding.cityPlaceholder') || 'Выберите город')
                                             }
                                         </option>
-                                        {cities.map((city) => (
-                                            <option key={city.id} value={city.id}>
-                                                {city.name}
+                                        {cities.length === 0 && !citiesLoading ? (
+                                            <option value="" disabled>
+                                                {t('onboarding.noCities') || 'Нет доступных городов'}
                                             </option>
-                                        ))}
+                                        ) : (
+                                            cities.map((city) => (
+                                                <option key={city.id} value={city.id}>
+                                                    {city.name}
+                                                </option>
+                                            ))
+                                        )}
                                     </select>
                                     {isGeolocating && (
                                         <p className="text-sm text-gray-500 mt-1">
                                             {t('onboarding.geolocating') || 'Определение ближайшего города...'}
+                                        </p>
+                                    )}
+                                    {fieldErrors.cityId && (
+                                        <p className="text-sm text-red-500 mt-1">
+                                            {fieldErrors.cityId}
+                                        </p>
+                                    )}
+                                    {citiesError && !fieldErrors.cityId && (
+                                        <p className="text-sm text-red-500 mt-1">
+                                            {t('onboarding.citiesLoadError') || 'Ошибка загрузки городов. Пожалуйста, обновите страницу.'}
                                         </p>
                                     )}
                                 </div>
@@ -685,9 +874,8 @@ export const OnboardingPage: FC = () => {
                                     fullWidth
                                     size="lg"
                                     onClick={handleSubmit}
-                                    disabled={!canProceed()}
                                 >
-                                    {t('common.next')}
+                                    {t('onboarding.finish') || t('common.next') || 'Завершить'}
                                 </Button>
                             ) : (
                                 <Button

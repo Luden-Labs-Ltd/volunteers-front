@@ -58,6 +58,7 @@ export function useVerifySms() {
         // Редирект на основе роли пользователя
         // Если новый пользователь (нет firstName) - на онбординг
         // Если существующий - на главную по роли
+        // Полная проверка онбординга будет выполнена в OnboardingPage через useGetMe
         if (!data.user.firstName && data.user.role === 'volunteer') {
           navigate('/volunteer/onboarding', { replace: true });
         } else {

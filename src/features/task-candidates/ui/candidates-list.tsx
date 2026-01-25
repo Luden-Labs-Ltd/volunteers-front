@@ -1,10 +1,12 @@
+import { useState } from "react";
 import { useUserById } from "@/entities/user/model/hooks/use-get-user-by-id.ts";
 import { VolunteerCard } from "@/entities/user/ui/volunteer-card";
 import { useApproveVolunteer, useRejectVolunteer } from "@/entities/taskResponses/hook";
 import { Button } from "@/shared/ui";
 import { useTranslation } from "react-i18next";
-import { TaskResponse } from "@/features/respond-to-task/model";
+import { TaskResponse } from "@/entities/task/model/types";
 import { useNavigate } from "react-router-dom";
+import { VolunteerDetailsModal } from "@/features/volunteer-details";
 
 interface CandidatesListProps {
     taskId: string;
@@ -17,6 +19,7 @@ export const CandidatesList = ({ taskId, response }: CandidatesListProps) => {
     const { data: user, isLoading } = useUserById(response.volunteerId);
     const approveMutation = useApproveVolunteer();
     const rejectMutation = useRejectVolunteer();
+    const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
 
     const isApproved = response.status === 'approved';
     const isRejected = response.status === 'rejected';
@@ -30,10 +33,10 @@ export const CandidatesList = ({ taskId, response }: CandidatesListProps) => {
             },
             {
                 onSuccess: () => {
-                    // После успешного одобрения возвращаемся на список задач
+                    // После успешного одобрения возвращаемся на страницу задачи
                     setTimeout(() => {
-                        navigate('/needy/tasks');
-                    }, 1000); // Небольшая задержка для показа toast уведомления
+                        navigate(`/needy/tasks/${taskId}`, { replace: true });
+                    }, 1500); // Задержка для показа toast уведомления
                 },
             }
         );
@@ -60,17 +63,19 @@ export const CandidatesList = ({ taskId, response }: CandidatesListProps) => {
         : '';
 
     return (
-        <div className="flex flex-col mb-4 gap-3">
-            <VolunteerCard
-                location={cityName}
-                skills={skills}
-                volunteer={{
-                    ...user,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    photo: user.photo,
-                }}
-            />
+        <>
+            <div className="flex flex-col mb-4 gap-3">
+                <VolunteerCard
+                    location={cityName}
+                    skills={skills}
+                    volunteer={{
+                        ...user,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        photo: user.photo,
+                    }}
+                    onClick={() => setIsDetailsModalOpen(true)}
+                />
             
             {isPending && (
                 <div className="flex gap-2 px-2">
@@ -116,6 +121,12 @@ export const CandidatesList = ({ taskId, response }: CandidatesListProps) => {
                     </div>
                 </div>
             )}
-        </div>
+            </div>
+            <VolunteerDetailsModal
+                isOpen={isDetailsModalOpen}
+                onClose={() => setIsDetailsModalOpen(false)}
+                volunteer={user}
+            />
+        </>
     );
 };

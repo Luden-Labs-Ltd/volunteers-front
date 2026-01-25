@@ -149,7 +149,33 @@ export class ApiClient {
       throw ApiException.fromResponse(response, errorData);
     }
 
-    return response.json();
+    // Проверяем, есть ли тело ответа
+    const contentType = response.headers.get('content-type');
+    const hasJsonContent = contentType && contentType.includes('application/json');
+    
+    // Получаем текст ответа (можно вызвать только один раз)
+    const text = await response.text();
+    
+    // Если тело ответа пустое, возвращаем null
+    if (!text || !text.trim()) {
+      return null as T;
+    }
+    
+    // Если контент не JSON, возвращаем текст
+    if (!hasJsonContent) {
+      return text as T;
+    }
+    
+    // Парсим JSON
+    try {
+      return JSON.parse(text) as T;
+    } catch (error) {
+      // Если не удалось распарсить JSON, но статус успешный, возвращаем null
+      if (response.ok) {
+        return null as T;
+      }
+      throw error;
+    }
   }
 }
 

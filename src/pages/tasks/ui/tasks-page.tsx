@@ -1,29 +1,58 @@
-import {FC, useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import {useNavigate} from 'react-router-dom';
-import {TaskList} from '@/widgets/task-list';
-import {Header, IconButton} from '@/shared/ui';
-import {useGetMe} from '@/entities/user/model/hooks';
-import {Tabs} from "@/shared/ui/tabs";
+import { FC, useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { TaskList } from '@/widgets/task-list';
+import { Header, IconButton } from '@/shared/ui';
+import { useGetMe } from '@/entities/user/model/hooks';
+import { Tabs } from "@/shared/ui/tabs";
 import userIcon from '@/shared/assets/images/userIcon.webp';
-import {useGetTasks} from "@/entities/task/hook";
+import { useGetTasks } from "@/entities/task/hook";
+import { taskApi } from "@/entities/task/api";
+import { TaskStatus } from "@/entities/task/model/types";
+import { useQueryWithErrorHandling } from "@/shared/api/hook/use-query-with-error-handling";
+import { QUERY_KEYS } from "@/shared/api/hook/query-keys";
 
 export const TasksPage: FC = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
-  const {data: user} = useGetMe();
+  const { data: user } = useGetMe();
   const tabs = [t('tasks.allTasks'), t('tasks.myTasks')];
-  const [, setActiveTab] = useState(tabs[0]);
+  const [activeTab, setActiveTab] = useState(tabs[0]);
 
+  const { data: allTasks = [], isLoading: allTasksLoading } = useGetTasks();
 
-  const {data: tasks = []} = useGetTasks();
+  // Для волонтеров используем /tasks/assigned, для нуждающихся - /tasks/my
+  const getMyTasksFn = user?.role === 'volunteer'
+    ? () => taskApi.getAssignedTasks()
+    : () => taskApi.getMyTasks();
+
+  const { data: myTasks = [], isLoading: myTasksLoading } = useQueryWithErrorHandling({
+    queryKey: [QUERY_KEYS.MY_TASKS, user?.role],
+    queryFn: getMyTasksFn,
+    enabled: !!user, // Запрос выполняется только если пользователь загружен
+  });
+
+  // Фильтруем задачи для волонтеров: в "All tasks" показываем только свободные (ACTIVE и без назначенного волонтера)
+  const filteredAllTasks = useMemo(() => {
+    if (user?.role === 'volunteer' && activeTab === tabs[0]) {
+      return allTasks.filter(task =>
+        task.status === TaskStatus.ACTIVE && !task.assignedVolunteerId
+      );
+    }
+    return allTasks;
+  }, [allTasks, user?.role, activeTab, tabs]);
+
+  const tasks = useMemo(() => {
+    return activeTab === tabs[0] ? filteredAllTasks : myTasks;
+  }, [activeTab, filteredAllTasks, myTasks, tabs]);
+
+  const isLoading = activeTab === tabs[0] ? allTasksLoading : myTasksLoading;
 
   const handleSettingsClick = () => {
     if (user?.role) {
       navigate(`/${user.role}/settings`);
     }
   };
-
 
   return (
     <section className={'mb-12'}>
@@ -47,9 +76,9 @@ export const TasksPage: FC = () => {
             />
           ]}
         />
-        <Tabs tabs={tabs} onChange={setActiveTab}/>
+        <Tabs tabs={tabs} onChange={setActiveTab} />
         <div className="px-4 py-6">
-          <TaskList tasks={tasks}/>
+          <TaskList tasks={tasks} isLoading={isLoading} emptyType={activeTab === tabs[0] ? 'all' : 'my'} />
         </div>
       </div>
     </section>

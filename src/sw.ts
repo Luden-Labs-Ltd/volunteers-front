@@ -306,9 +306,22 @@ self.addEventListener('notificationclick', (event: NotificationEvent) => {
   event.notification.close();
 
   const notificationData = event.notification.data;
-  const urlToOpen = notificationData?.taskId
-    ? `/tasks/${notificationData.taskId}`
-    : '/tasks';
+  
+  // Определяем путь на основе типа уведомления
+  let urlToOpen = '/tasks';
+  if (notificationData?.taskId) {
+    const notificationType = notificationData.type;
+    // task_response - для нуждающихся (когда волонтер откликается)
+    // response_approved/rejected - для волонтеров (когда их одобрили/отклонили)
+    if (notificationType === 'task_response') {
+      urlToOpen = `/needy/tasks/${notificationData.taskId}`;
+    } else if (notificationType === 'response_approved' || notificationType === 'response_rejected') {
+      urlToOpen = `/volunteer/tasks/${notificationData.taskId}`;
+    } else {
+      // Для других типов используем универсальный путь
+      urlToOpen = `/tasks/${notificationData.taskId}`;
+    }
+  }
 
   event.waitUntil(
     self.clients

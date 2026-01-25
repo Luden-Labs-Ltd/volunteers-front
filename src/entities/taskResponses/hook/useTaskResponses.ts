@@ -1,6 +1,6 @@
 import { useQueryWithErrorHandling } from "@/shared/api/hook/use-query-with-error-handling";
 import { taskResponseApi } from "../api";
-import { TaskResponse } from "@/features/respond-to-task/model";
+import { TaskResponse } from "@/entities/task/model/types";
 
 export const useTaskResponses = (taskId: string) => {
     return useQueryWithErrorHandling<TaskResponse[], Error>({

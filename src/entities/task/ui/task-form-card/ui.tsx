@@ -1,8 +1,8 @@
 import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Controller } from "react-hook-form";
-import {Input, Switch, Textarea} from "@/shared/ui";
-import {createTaskSchema} from "@/pages/needy-categories/model/schema.ts";
+import { Input, Switch, Textarea } from "@/shared/ui";
+import { createTaskSchema } from "@/pages/needy-categories/model/schema.ts";
 import { z } from "zod";
 
 type CreateTaskFormValues = z.infer<typeof createTaskSchema>;

@@ -14,17 +14,24 @@ export const cityApi = {
   getCities: async (): Promise<City[]> => {
     const response = await apiClient.request<City[]>('/cities');
     // Валидация ответа
-    return validateApiResponse(
+    const validated = validateApiResponse(
       response,
       (data): data is City[] => isArray(data) && data.every(city => 
         isObject(city) && 
         validateRequiredFields(city, ['id', 'name', 'latitude', 'longitude']) && 
         isValidUUID(city.id) &&
-        typeof city.latitude === 'number' &&
-        typeof city.longitude === 'number'
+        (typeof city.latitude === 'number' || typeof city.latitude === 'string') &&
+        (typeof city.longitude === 'number' || typeof city.longitude === 'string')
       ),
       'Invalid cities list response format'
     );
+    
+    // Преобразуем строки в числа, если нужно
+    return validated.map(city => ({
+      ...city,
+      latitude: typeof city.latitude === 'string' ? parseFloat(city.latitude) : city.latitude,
+      longitude: typeof city.longitude === 'string' ? parseFloat(city.longitude) : city.longitude,
+    }));
   },
 
   getCity: async (id: string): Promise<City> => {

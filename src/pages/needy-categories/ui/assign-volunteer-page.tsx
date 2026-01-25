@@ -12,8 +12,8 @@ export const AssignVolunteerPage = () => {
     const { data: responses, isLoading } = useTaskResponses(id || "");
     const { data: task, isLoading: taskLoading } = useGetTaskById(id);
 
-    if (isLoading || taskLoading) return <div>Loading...</div>;
-    if (!id) return <div>Task ID is required</div>;
+    if (isLoading || taskLoading) return <div>{t('common.loading') || 'Loading...'}</div>;
+    if (!id) return <div>{t('taskResponses.taskIdRequired') || 'Task ID is required'}</div>;
 
     const taskTitle = task?.title || t('taskResponses.task') || 'Задача';
 
