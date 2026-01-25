@@ -76,51 +76,51 @@ export const CandidatesList = ({ taskId, response }: CandidatesListProps) => {
                     }}
                     onClick={() => setIsDetailsModalOpen(true)}
                 />
-            
-            {isPending && (
-                <div className="flex gap-2 px-2">
-                    <Button
-                        variant="primary"
-                        size="md"
-                        fullWidth
-                        onClick={handleApprove}
-                        disabled={approveMutation.isPending || rejectMutation.isPending}
-                    >
-                        {approveMutation.isPending 
-                            ? (t('taskResponses.approving') || 'Одобрение...')
-                            : (t('taskResponses.approve') || 'Одобрить')
-                        }
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="md"
-                        fullWidth
-                        onClick={handleReject}
-                        disabled={approveMutation.isPending || rejectMutation.isPending}
-                    >
-                        {rejectMutation.isPending
-                            ? (t('taskResponses.rejecting') || 'Отклонение...')
-                            : (t('taskResponses.reject') || 'Отклонить')
-                        }
-                    </Button>
-                </div>
-            )}
-            
-            {isApproved && (
-                <div className="px-2">
-                    <div className="text-sm text-green-600 font-medium">
-                        {t('taskResponses.approved') || '✓ Одобрен'}
+
+                {isPending && (
+                    <div className="flex gap-2 px-2">
+                        <Button
+                            variant="primary"
+                            size="md"
+                            fullWidth
+                            onClick={handleApprove}
+                            disabled={approveMutation.isPending || rejectMutation.isPending}
+                        >
+                            {approveMutation.isPending
+                                ? (t('taskResponses.approving') || 'Одобрение...')
+                                : (t('taskResponses.approve') || 'Одобрить')
+                            }
+                        </Button>
+                        <Button
+                            variant="outline"
+                            size="md"
+                            fullWidth
+                            onClick={handleReject}
+                            disabled={approveMutation.isPending || rejectMutation.isPending}
+                        >
+                            {rejectMutation.isPending
+                                ? (t('taskResponses.rejecting') || 'Отклонение...')
+                                : (t('taskResponses.reject') || 'Отклонить')
+                            }
+                        </Button>
                     </div>
-                </div>
-            )}
-            
-            {isRejected && (
-                <div className="px-2">
-                    <div className="text-sm text-red-600 font-medium">
-                        {t('taskResponses.rejected') || '✗ Отклонен'}
+                )}
+
+                {isApproved && (
+                    <div className="px-2">
+                        <div className="text-sm text-green-600 font-medium">
+                            {t('taskResponses.approved') || '✓ Одобрен'}
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
+
+                {isRejected && (
+                    <div className="px-2">
+                        <div className="text-sm text-red-600 font-medium">
+                            {t('taskResponses.rejected') || '✗ Отклонен'}
+                        </div>
+                    </div>
+                )}
             </div>
             <VolunteerDetailsModal
                 isOpen={isDetailsModalOpen}
