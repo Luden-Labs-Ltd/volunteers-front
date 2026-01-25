@@ -118,7 +118,7 @@ export const OnboardingPage: FC = () => {
     switch (currentStep) {
       case 'program':
         return (
-          <ProgrammPage/>
+          <ProgramPage/>
         );
 
       case 'skills':
