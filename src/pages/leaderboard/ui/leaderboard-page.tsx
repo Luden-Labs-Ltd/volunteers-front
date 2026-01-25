@@ -6,6 +6,7 @@ import trophy1 from './assets/Gemini_Generated_Image_87xzbo87xzbo87xz 1.png';
 import trophy2 from './assets/Gemini_Generated_Image_87xzbo87xzbo87xz 1 (1).png';
 import trophy3 from './assets/Gemini_Generated_Image_87xzbo87xzbo87xz 1 (2).png';
 import trophyIllustration from './assets/Gemini_Generated_Image_fjh4ihfjh4ihfjh4 1.png';
+import {Container} from "@/shared/ui/container";
 
 interface Community {
     id: string;
@@ -46,12 +47,10 @@ export const LeaderboardPage: FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-white">
+        <Container className={'pt-15 bg-light-blue-gradient'}>
             <Header
                 title={t('leaderboard.title')}
-                rightActions={[
-                    // <IconUser key="settings" />
-                ]}
+                className={'pt-15 pb-5 text-center'}
             />
             <div className="px-4 py-8">
                 <div className="max-w-md mx-auto">
@@ -170,6 +169,6 @@ export const LeaderboardPage: FC = () => {
                     </Card>
                 </div>
             </div>
-        </div>
+        </Container>
     );
 };

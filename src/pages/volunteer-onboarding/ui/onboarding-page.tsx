@@ -391,7 +391,7 @@ export const OnboardingPage: FC = () => {
                     id="privacy"
                     checked={data.privacyAccepted}
                     onChange={(e) => setData( (prev) => ({...prev, privacyAccepted: e.target.checked}))}
-                    className="mt-1 w-5 h-5 rounded accent-primary border-gray-300 text-primary focus:ring-primary"
+                    className="mt-1 w-5 h-5 rounded-md accent-primary border-gray-300 text-primary focus:ring-primary"
                   />
                   <label htmlFor="privacy" className="text-sm text-gray-700">
                     {t('onboarding.privacyConfirm')}{' '}
