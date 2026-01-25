@@ -2,7 +2,7 @@ import {Container} from "@/shared/ui/container";
 import backgroundImage from "@/pages/volunteer-onboarding/ui/assets/wheel.webp";
 import {t} from "i18next";
 
-export const ProgrammPage = () => {
+export const ProgramPage = () => {
   return (
     <Container>
       {/* Иллюстрация */}

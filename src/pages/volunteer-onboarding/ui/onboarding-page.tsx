@@ -6,7 +6,7 @@ import backgroundImage from './assets/wheel.webp';
 import thankYouImage from './assets/thankYou.webp';
 import {ProgressSteps} from './progress-steps';
 import {Container} from '@/shared/ui/container'
-import {ProgrammPage} from "@/pages/volunteer-onboarding/ui/programm-page.tsx";
+import {ProgramPage} from "@/pages/volunteer-onboarding/ui/program-page.tsx";
 
 type OnboardingStep = 'program' | 'skills' | 'city' | 'profile' | 'contact' | 'photo' | 'thank-you';
 
