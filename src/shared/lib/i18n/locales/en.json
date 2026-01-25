@@ -31,7 +31,9 @@
     "enterPhone": "Enter your phone number to continue",
     "enterCode": "Enter the code sent to your phone",
     "codeSentTo": "Code sent to",
-    "changePhone": "Change phone number"
+    "changePhone": "Change phone number",
+    "sessionExpired": "Session Expired",
+    "sessionExpiredDescription": "Please log in again"
   },
   "tasks": {
     "title": "Tasks",
@@ -257,9 +259,5 @@
     "unknown": "An unknown error occurred",
     "network": "Network Error",
     "networkDescription": "Unable to connect to the server. Please check your internet connection"
-  },
-  "auth": {
-    "sessionExpired": "Session Expired",
-    "sessionExpiredDescription": "Please log in again"
   }
 }

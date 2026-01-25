@@ -54,44 +54,26 @@ export const TaskFormCard = ({ register, control, errors }: TaskFormCardType) =>
                         name="scheduledDate"
                         control={control}
                         render={({ field: { value, onChange } }) => (
-                            <label className="relative">
-                                <input
-                                    type="date"
-                                    value={value || ''}
-                                    onChange={(e) => onChange(e.target.value)}
-                                    className="absolute opacity-0 w-0 h-0"
-                                    id="scheduledDate"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => document.getElementById('scheduledDate')?.click()}
-                                    className={`py-2 px-4 bg-[#EBF7FF] rounded-3xl text-[#373737] text-[16px] font-normal ${value ? 'bg-[#004573] text-white' : ''}`}
-                                >
-                                    {value ? new Date(value).toLocaleDateString() : t("taskDetails.labelDate")}
-                                </button>
-                            </label>
+                            <input
+                                type="date"
+                                value={value || ''}
+                                onChange={(e) => onChange(e.target.value)}
+                                className={`py-2 px-4 bg-[#EBF7FF] rounded-3xl text-[#373737] text-[16px] font-normal border border-transparent focus:outline-none focus:ring-2 focus:ring-[#004573] cursor-pointer min-w-[120px] ${value ? 'bg-[#004573] text-white' : ''}`}
+                                title={t("taskDetails.labelDate")}
+                            />
                         )}
                     />
                     <Controller
                         name="scheduledTime"
                         control={control}
                         render={({ field: { value, onChange } }) => (
-                            <label className="relative">
-                                <input
-                                    type="time"
-                                    value={value || ''}
-                                    onChange={(e) => onChange(e.target.value)}
-                                    className="absolute opacity-0 w-0 h-0"
-                                    id="scheduledTime"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => document.getElementById('scheduledTime')?.click()}
-                                    className={`py-2 px-4 bg-[#EBF7FF] rounded-3xl text-[#373737] text-[16px] font-normal ${value ? 'bg-[#004573] text-white' : ''}`}
-                                >
-                                    {value || t("taskDetails.labelTime")}
-                                </button>
-                            </label>
+                            <input
+                                type="time"
+                                value={value || ''}
+                                onChange={(e) => onChange(e.target.value)}
+                                className={`py-2 px-4 bg-[#EBF7FF] rounded-3xl text-[#373737] text-[16px] font-normal border border-transparent focus:outline-none focus:ring-2 focus:ring-[#004573] cursor-pointer min-w-[100px] ${value ? 'bg-[#004573] text-white' : ''}`}
+                                title={t("taskDetails.labelTime")}
+                            />
                         )}
                     />
                 </div>

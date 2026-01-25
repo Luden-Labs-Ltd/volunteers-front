@@ -1,6 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import {TabsForLayout} from "@/pages/needy-categories/components/tab.tsx";
+import { TabsForLayout } from "@/pages/needy-categories/components/tab.tsx";
 
 export const NeedyLayout = () => {
     const { t } = useTranslation();

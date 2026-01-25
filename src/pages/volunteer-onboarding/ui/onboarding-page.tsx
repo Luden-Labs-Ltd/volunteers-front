@@ -34,6 +34,7 @@ export const OnboardingPage: FC = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [currentStep, setCurrentStep] = useState<OnboardingStep>('program');
     const [isGeolocating, setIsGeolocating] = useState(false);
+    const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
     const [data, setData] = useState<OnboardingData>({
         programId: null,
         skills: [], // Теперь храним ID навыков
@@ -141,6 +142,17 @@ export const OnboardingPage: FC = () => {
             return;
         }
 
+        // Валидация обязательных полей
+        if (!data.firstName || !data.lastName) {
+            toast.error(t('onboarding.requiredFields') || 'Заполните имя и фамилию');
+            return;
+        }
+
+        if (!data.agreementAccepted) {
+            toast.error(t('onboarding.agreementRequired') || 'Необходимо принять соглашение');
+            return;
+        }
+
         try {
             // Обновляем профиль пользователя с данными онбординга
             await apiClient.request(`/user/${currentUser.id}`, {
@@ -153,6 +165,7 @@ export const OnboardingPage: FC = () => {
                     photo: data.photo || undefined,
                     cityId: data.cityId || undefined,
                     skills: data.skills.length > 0 ? data.skills : undefined,
+                    programId: data.programId || undefined,
                 }),
             });
 
@@ -181,6 +194,7 @@ export const OnboardingPage: FC = () => {
             return;
         }
 
+        setIsUploadingPhoto(true);
         try {
             // Показываем preview сразу
             const reader = new FileReader();
@@ -189,15 +203,25 @@ export const OnboardingPage: FC = () => {
             };
             reader.readAsDataURL(file);
 
-            // Загружаем изображение на сервер
-            const uploadedImage = await imageApi.upload(file, 'volunteers');
+            // Загружаем изображение на сервер с таймаутом
+            const uploadPromise = imageApi.upload(file, 'volunteers');
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Timeout: загрузка изображения заняла слишком много времени')), 30000)
+            );
+
+            const uploadedImage = await Promise.race([uploadPromise, timeoutPromise]) as Awaited<ReturnType<typeof imageApi.upload>>;
 
             // Обновляем данные с URL загруженного изображения
             setData((prev) => ({ ...prev, photo: uploadedImage.url }));
             toast.success(t('onboarding.imageUploaded') || 'Изображение загружено');
         } catch (error) {
             console.error('Error uploading image:', error);
-            toast.error(t('onboarding.imageUploadError') || 'Ошибка загрузки изображения');
+            const errorMessage = error instanceof Error ? error.message : 'Неизвестная ошибка';
+            toast.error(t('onboarding.imageUploadError') || `Ошибка загрузки изображения: ${errorMessage}`);
+            // Сбрасываем preview при ошибке
+            setData((prev) => ({ ...prev, photo: null }));
+        } finally {
+            setIsUploadingPhoto(false);
         }
     };
 
@@ -550,10 +574,18 @@ export const OnboardingPage: FC = () => {
                             </p>
                             <div className="flex justify-center">
                                 <div
-                                    className="cursor-pointer relative"
-                                    onClick={() => fileInputRef.current?.click()}
+                                    className={`relative ${isUploadingPhoto ? 'cursor-wait opacity-50' : 'cursor-pointer'}`}
+                                    onClick={() => {
+                                        if (!isUploadingPhoto) {
+                                            fileInputRef.current?.click();
+                                        }
+                                    }}
                                 >
-                                    {data.photo ? (
+                                    {isUploadingPhoto ? (
+                                        <div className="w-[252px] h-[252px] rounded-full bg-primary-50 flex items-center justify-center border-4 border-primary-50 shadow-lg">
+                                            <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-500 border-t-transparent"></div>
+                                        </div>
+                                    ) : data.photo ? (
                                         <img
                                             src={data.photo}
                                             alt="Profile"
