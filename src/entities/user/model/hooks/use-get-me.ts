@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import { UserWithRoleData } from "../types";
 import { authApi } from "@/entities/auth/api";
 import { getToken, removeToken, removeRefreshToken } from "@/shared/lib/auth";

@@ -20,10 +20,8 @@ export interface Task {
   id: string;
   programId: string;
   needyId: string;
-
   needy?: Needy;
   category?: Category;
-
   type: string;
   title: string;
   description: string;
@@ -31,7 +29,6 @@ export interface Task {
   points: number;
   status: TaskStatus;
   categoryId?: string;
-  category?: TaskCategory,
   skillIds?: string[];
   firstResponseMode: boolean;
   assignedVolunteerId?: string;
