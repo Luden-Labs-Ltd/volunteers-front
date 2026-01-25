@@ -2,9 +2,8 @@ import { apiClient } from '@/shared/api';
 import {
   PointsBalance,
   PointsTransactionsResponse,
-  PointsTransaction,
 } from '../model/types';
-import { validateApiResponse, isObject, isNumber, isArray, validateRequiredFields, isValidUUID } from '@/shared/lib/validation';
+import { validateApiResponse, isObject, isNumber, isArray } from '@/shared/lib/validation';
 
 export const pointsApi = {
   getBalance: async (): Promise<number> => {

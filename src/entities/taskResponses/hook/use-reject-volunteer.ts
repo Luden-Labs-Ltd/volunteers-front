@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { taskResponseApi } from '../api/task-response-api';
 import { useMutationWithErrorHandling } from '@/shared/api/hook/use-mutation-with-error-handling';
 import { TaskResponse } from '@/features/respond-to-task/model';
@@ -19,7 +19,7 @@ export const useRejectVolunteer = () => {
     mutationFn: async ({ taskId, volunteerId }) => {
       return taskResponseApi.rejectVolunteer(taskId, volunteerId);
     },
-    onSuccess: (data, variables) => {
+    onSuccess: (_data, variables) => {
       // Инвалидируем кэш задач и откликов
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.TASKS] });
       queryClient.invalidateQueries({ queryKey: ['task-responses', variables.taskId] });

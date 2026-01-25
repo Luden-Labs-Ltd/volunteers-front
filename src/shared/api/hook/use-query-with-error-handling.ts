@@ -2,7 +2,6 @@
  * Обертка для useQuery с автоматической обработкой ошибок
  */
 import { useQuery, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
-import { handleApiError, handleNetworkError } from '@/shared/lib/error-handler';
 import { ApiException } from '@/shared/api/types';
 
 export function useQueryWithErrorHandling<TData = unknown, TError = unknown>(
@@ -10,17 +9,6 @@ export function useQueryWithErrorHandling<TData = unknown, TError = unknown>(
 ): UseQueryResult<TData, TError> {
   return useQuery<TData, TError>({
     ...options,
-    onError: (error: TError) => {
-      // Обрабатываем ошибки
-      if (error instanceof ApiException) {
-        handleApiError(error);
-      } else {
-        handleNetworkError(error);
-      }
-      
-      // Вызываем пользовательский обработчик, если он есть
-      options.onError?.(error);
-    },
     retry: (failureCount, error) => {
       // Не повторяем запрос при 401, 403, 404 ошибках
       if (error instanceof ApiException) {

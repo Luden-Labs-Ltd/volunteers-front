@@ -1,7 +1,7 @@
 /**
  * Обертка для useMutation с автоматической обработкой ошибок
  */
-import { useMutation, UseMutationOptions, UseMutationResult } from '@tanstack/react-query';
+import { useMutation, UseMutationOptions, UseMutationResult, MutationFunctionContext } from '@tanstack/react-query';
 import { handleApiError, handleNetworkError } from '@/shared/lib/error-handler';
 import { ApiException } from '@/shared/api/types';
 
@@ -10,7 +10,7 @@ export function useMutationWithErrorHandling<TData = unknown, TError = unknown, 
 ): UseMutationResult<TData, TError, TVariables, TContext> {
   return useMutation<TData, TError, TVariables, TContext>({
     ...options,
-    onError: (error: TError, variables: TVariables, context: TContext) => {
+    onError: (error: TError, variables: TVariables, onMutateResult: TContext | undefined, context: MutationFunctionContext) => {
       // Обрабатываем ошибки
       if (error instanceof ApiException) {
         handleApiError(error);
@@ -19,7 +19,7 @@ export function useMutationWithErrorHandling<TData = unknown, TError = unknown, 
       }
       
       // Вызываем пользовательский обработчик, если он есть
-      options.onError?.(error, variables, context);
+      options.onError?.(error, variables, onMutateResult, context);
     },
   });
 }

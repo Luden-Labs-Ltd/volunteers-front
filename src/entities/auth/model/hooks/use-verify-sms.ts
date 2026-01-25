@@ -6,6 +6,7 @@ import { VerifySmsRequest, AuthResponse } from '../types';
 import { setToken, setRefreshToken } from '@/shared/lib/auth';
 import { useMutationWithErrorHandling } from '@/shared/api/hook/use-mutation-with-error-handling';
 import { validateApiResponse, isObject, validateRequiredFields } from '@/shared/lib/validation';
+import { handleApiError } from '@/shared/lib/error-handler';
 
 export function useVerifySms() {
   const queryClient = useQueryClient();

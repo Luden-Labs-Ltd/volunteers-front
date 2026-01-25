@@ -18,17 +18,9 @@ const queryClient = new QueryClient({
         return failureCount < 1;
       },
       staleTime: 5 * 60 * 1000,
-      onError: (error) => {
-        // Глобальная обработка ошибок для всех queries
-        if (error instanceof ApiException) {
-          handleApiError(error);
-        } else {
-          handleNetworkError(error);
-        }
-      },
     },
     mutations: {
-      onError: (error) => {
+      onError: (error: unknown, _variables: unknown, _onMutateResult: unknown, _context: unknown) => {
         // Глобальная обработка ошибок для всех mutations
         if (error instanceof ApiException) {
           handleApiError(error);
