@@ -43,13 +43,38 @@ export const AssignVolunteerPage = () => {
             <div className="pt-[250px] pb-[90px]">
                 <div>
                     {responses && responses.length > 0 ? (
-                        responses.map((response) => (
-                            <CandidatesList 
-                                key={response.id || response.volunteerId} 
-                                taskId={id}
-                                response={response}
-                            />
-                        ))
+                        <>
+                            {/* Показываем pending отклики первыми */}
+                            {responses
+                                .filter((response) => response.status === 'pending')
+                                .map((response) => (
+                                    <CandidatesList 
+                                        key={response.id || response.volunteerId} 
+                                        taskId={id}
+                                        response={response}
+                                    />
+                                ))}
+                            {/* Показываем одобренные отклики */}
+                            {responses
+                                .filter((response) => response.status === 'approved')
+                                .map((response) => (
+                                    <CandidatesList 
+                                        key={response.id || response.volunteerId} 
+                                        taskId={id}
+                                        response={response}
+                                    />
+                                ))}
+                            {/* Показываем отклоненные отклики (опционально, можно скрыть) */}
+                            {responses
+                                .filter((response) => response.status === 'rejected')
+                                .map((response) => (
+                                    <CandidatesList 
+                                        key={response.id || response.volunteerId} 
+                                        taskId={id}
+                                        response={response}
+                                    />
+                                ))}
+                        </>
                     ) : (
                         <div className="px-4 py-8 text-center text-gray-500">
                             {t('taskResponses.noResponses') || 'Нет откликов от волонтеров'}

@@ -10,4 +10,6 @@ export const createTaskSchema = z.object({
     firstResponseMode: z.boolean(),
     categoryId: z.string(),
     skillIds: z.array(z.string()),
+    scheduledDate: z.string().optional(),
+    scheduledTime: z.string().optional(),
 });

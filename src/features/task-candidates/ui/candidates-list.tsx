@@ -4,6 +4,7 @@ import { useApproveVolunteer, useRejectVolunteer } from "@/entities/taskResponse
 import { Button } from "@/shared/ui";
 import { useTranslation } from "react-i18next";
 import { TaskResponse } from "@/features/respond-to-task/model";
+import { useNavigate } from "react-router-dom";
 
 interface CandidatesListProps {
     taskId: string;
@@ -12,6 +13,7 @@ interface CandidatesListProps {
 
 export const CandidatesList = ({ taskId, response }: CandidatesListProps) => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const { data: user, isLoading } = useUserById(response.volunteerId);
     const approveMutation = useApproveVolunteer();
     const rejectMutation = useRejectVolunteer();
@@ -21,10 +23,20 @@ export const CandidatesList = ({ taskId, response }: CandidatesListProps) => {
     const isPending = response.status === 'pending';
 
     const handleApprove = () => {
-        approveMutation.mutate({
-            taskId,
-            volunteerId: response.volunteerId,
-        });
+        approveMutation.mutate(
+            {
+                taskId,
+                volunteerId: response.volunteerId,
+            },
+            {
+                onSuccess: () => {
+                    // После успешного одобрения возвращаемся на список задач
+                    setTimeout(() => {
+                        navigate('/needy/tasks');
+                    }, 1000); // Небольшая задержка для показа toast уведомления
+                },
+            }
+        );
     };
 
     const handleReject = () => {

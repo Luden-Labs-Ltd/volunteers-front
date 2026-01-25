@@ -61,10 +61,24 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
             firstResponseMode: false,
             skillIds: skillsIds,
             categoryId: categoryId,
+            scheduledDate: undefined,
+            scheduledTime: undefined,
         }
     });
 
     const onSubmit = (data: CreateTaskFormValues) => {
+        // Формируем details с датой и временем, если они указаны
+        let details = "";
+        if (data.scheduledDate || data.scheduledTime) {
+            const dateTimeParts = [];
+            if (data.scheduledDate) {
+                dateTimeParts.push(`Дата: ${new Date(data.scheduledDate).toLocaleDateString()}`);
+            }
+            if (data.scheduledTime) {
+                dateTimeParts.push(`Время: ${data.scheduledTime}`);
+            }
+            details = dateTimeParts.join(", ");
+        }
 
         const payload: CreateTaskDto = {
             programId: "32a8ae3b-d7df-4d37-bb0c-ee2ad7824499",
@@ -72,7 +86,7 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
             type: data.title,
             title: data.title,
             description: data.description,
-            details: "",
+            details: details,
             skillIds: data.skillIds,
             categoryId: data.categoryId,
             firstResponseMode: data.firstResponseMode,

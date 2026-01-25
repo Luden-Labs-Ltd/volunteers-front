@@ -7,6 +7,7 @@ import thankYouImage from './assets/Tal_background_--ar_11_--v_7_201dcc33-c3b1-4
 import { ProgressSteps } from './progress-steps';
 import { useGetCities } from '@/entities/city';
 import { useGetMe } from '@/entities/user/model/hooks/use-get-me';
+import { imageApi } from '@/entities/image';
 import { apiClient } from '@/shared/api';
 import { toast } from 'sonner';
 
@@ -32,6 +33,7 @@ export const OnboardingPage: FC = () => {
     const navigate = useNavigate();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [currentStep, setCurrentStep] = useState<OnboardingStep>('program');
+    const [isGeolocating, setIsGeolocating] = useState(false);
     const [data, setData] = useState<OnboardingData>({
         programId: null,
         skills: [], // Теперь храним ID навыков
@@ -47,19 +49,26 @@ export const OnboardingPage: FC = () => {
         photo: null,
     });
 
+    // Загружаем города из API
+    const { data: cities = [], isLoading: citiesLoading } = useGetCities();
+
+    // Загружаем данные текущего пользователя
+    const { data: currentUser } = useGetMe();
+
     const steps: OnboardingStep[] = ['program', 'skills', 'city', 'profile', 'contact', 'photo', 'thank-you'];
     const currentStepIndex = steps.indexOf(currentStep);
 
     // Запрос геолокации при переходе на шаг city
     useEffect(() => {
-        if (currentStep === 'city' && !data.cityId && !isGeolocating && navigator.geolocation) {
+        if (currentStep === 'city' && !data.cityId && !isGeolocating && navigator.geolocation && cities.length > 0) {
             setIsGeolocating(true);
             navigator.geolocation.getCurrentPosition(
                 async (position) => {
                     const { latitude, longitude } = position.coords;
                     // Находим ближайший город по координатам
-                    let nearestCity: { id: string; distance: number } | null = null;
-                    
+                    type NearestCity = { id: string; distance: number };
+                    let nearestCity: NearestCity | null = null;
+
                     cities.forEach((city) => {
                         if (city.latitude && city.longitude) {
                             // Простой расчет расстояния (формула гаверсинуса)
@@ -69,21 +78,24 @@ export const OnboardingPage: FC = () => {
                             const a =
                                 Math.sin(dLat / 2) * Math.sin(dLat / 2) +
                                 Math.cos((latitude * Math.PI) / 180) *
-                                    Math.cos((city.latitude * Math.PI) / 180) *
-                                    Math.sin(dLon / 2) *
-                                    Math.sin(dLon / 2);
+                                Math.cos((city.latitude * Math.PI) / 180) *
+                                Math.sin(dLon / 2) *
+                                Math.sin(dLon / 2);
                             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
                             const distance = R * c;
-                            
+
                             if (!nearestCity || distance < nearestCity.distance) {
                                 nearestCity = { id: city.id, distance };
                             }
                         }
                     });
-                    
-                    if (nearestCity && nearestCity.distance < 50) { // В пределах 50км
-                        setData((prev) => ({ ...prev, cityId: nearestCity!.id }));
-                        toast.success(t('onboarding.cityDetected') || 'Город определен автоматически');
+
+                    if (nearestCity) {
+                        const { id, distance } = nearestCity;
+                        if (distance < 50) { // В пределах 50км
+                            setData((prev) => ({ ...prev, cityId: id }));
+                            toast.success(t('onboarding.cityDetected') || 'Город определен автоматически');
+                        }
                     }
                     setIsGeolocating(false);
                 },
@@ -130,16 +142,17 @@ export const OnboardingPage: FC = () => {
         }
 
         try {
-            // Обновляем профиль пользователя с данными онбординга, включая cityId и skills
+            // Обновляем профиль пользователя с данными онбординга
             await apiClient.request(`/user/${currentUser.id}`, {
                 method: 'PATCH',
                 body: JSON.stringify({
                     firstName: data.firstName,
                     lastName: data.lastName,
-                    about: data.about,
-                    photo: data.photo,
-                    cityId: data.cityId,
-                    skills: data.skills,
+                    phone: data.phone || undefined,
+                    about: data.about || undefined,
+                    photo: data.photo || undefined,
+                    cityId: data.cityId || undefined,
+                    skills: data.skills.length > 0 ? data.skills : undefined,
                 }),
             });
 
@@ -152,14 +165,39 @@ export const OnboardingPage: FC = () => {
         }
     };
 
-    const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handlePhotoSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file) {
+        if (!file) return;
+
+        // Валидация типа файла
+        if (!file.type.startsWith('image/')) {
+            toast.error(t('onboarding.invalidImageType') || 'Пожалуйста, выберите изображение');
+            return;
+        }
+
+        // Валидация размера (макс 10MB)
+        if (file.size > 10 * 1024 * 1024) {
+            toast.error(t('onboarding.imageTooLarge') || 'Размер файла не должен превышать 10MB');
+            return;
+        }
+
+        try {
+            // Показываем preview сразу
             const reader = new FileReader();
             reader.onloadend = () => {
                 setData((prev) => ({ ...prev, photo: reader.result as string }));
             };
             reader.readAsDataURL(file);
+
+            // Загружаем изображение на сервер
+            const uploadedImage = await imageApi.upload(file, 'volunteers');
+
+            // Обновляем данные с URL загруженного изображения
+            setData((prev) => ({ ...prev, photo: uploadedImage.url }));
+            toast.success(t('onboarding.imageUploaded') || 'Изображение загружено');
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            toast.error(t('onboarding.imageUploadError') || 'Ошибка загрузки изображения');
         }
     };
 
@@ -445,7 +483,7 @@ export const OnboardingPage: FC = () => {
                                         className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary disabled:bg-gray-100 disabled:cursor-not-allowed"
                                     >
                                         <option value="">
-                                            {isGeolocating 
+                                            {isGeolocating
                                                 ? (t('onboarding.detectingLocation') || 'Определение местоположения...')
                                                 : (t('onboarding.cityPlaceholder') || 'Выберите город')
                                             }
@@ -463,10 +501,10 @@ export const OnboardingPage: FC = () => {
                                     )}
                                 </div>
                                 {/* <div> */}
-                                    {/* <label className="block text-sm font-medium text-gray-700 mb-2">
+                                {/* <label className="block text-sm font-medium text-gray-700 mb-2">
                                         {t('onboarding.phone')}
                                     </label> */}
-                                    {/* <div className="flex items-center gap-2">
+                                {/* <div className="flex items-center gap-2">
                                         <div className="flex items-center gap-1 px-3 py-3 border border-gray-300 rounded-l-2xl bg-gray-50">
                                             <span className="text-lg">🇮🇱</span>
                                             <span className="text-sm text-gray-600">+972</span>

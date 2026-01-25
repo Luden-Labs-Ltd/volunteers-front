@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { taskApi } from "@/entities/task/api";
 import { Task } from "@/entities/task/model/types";
+import { QUERY_KEYS } from "@/shared/api/hook/query-keys";
 
 enum TaskStatus {
     ACTIVE = 'active',
@@ -18,7 +19,7 @@ interface GroupedTasks {
 
 export const useMyTasksGrouped = () => {
     const { data: tasks, isLoading, isError, error, refetch } = useQuery({
-        queryKey: ['my-tasks'],
+        queryKey: [QUERY_KEYS.MY_TASKS],
         queryFn: taskApi.getMyTasks,
     });
 
