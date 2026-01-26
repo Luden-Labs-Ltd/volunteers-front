@@ -11,6 +11,7 @@ import { imageApi } from '@/entities/image';
 import { apiClient } from '@/shared/api';
 import { toast } from 'sonner';
 import { useGetSkills } from '@/entities/skills/hook';
+import {ProgramPage} from "@/pages/volunteer-onboarding/ui/program-page.tsx";
 
 type OnboardingStep = 'program' | 'skills' | 'city' | 'profile' | 'contact' | 'photo' | 'thank-you';
 
@@ -352,26 +353,7 @@ export const OnboardingPage: FC = () => {
         switch (currentStep) {
             case 'program':
                 return (
-                    <>
-                        {/* Иллюстрация */}
-                        <div className="mb-8 -mx-4">
-                            <img
-                                src={backgroundImage}
-                                alt="Onboarding illustration"
-                                className="w-full h-auto object-contain"
-                            />
-                        </div>
-
-                        {/* Текст */}
-                        <div className="text-center px-4">
-                            <h1 className="text-3xl font-bold text-primary mb-4">
-                                {t('onboarding.selectProgram')}
-                            </h1>
-                            <p className="text-gray-600 text-base leading-relaxed">
-                                {t('onboarding.selectProgramDescription')}
-                            </p>
-                        </div>
-                    </>
+                  <ProgramPage/>
                 );
 
             case 'skills':
