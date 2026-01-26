@@ -12,6 +12,7 @@ import { apiClient } from '@/shared/api';
 import { toast } from 'sonner';
 import { useGetSkills } from '@/entities/skills/hook';
 import {ProgramPage} from "@/pages/volunteer-onboarding/ui/program-page.tsx";
+import {Container} from "@/shared/ui/container";
 
 type OnboardingStep = 'program' | 'skills' | 'city' | 'profile' | 'contact' | 'photo' | 'thank-you';
 
@@ -811,19 +812,19 @@ export const OnboardingPage: FC = () => {
 
 
     return (
-        <div className="min-h-screen bg-white flex flex-col">
+        <div className="min-h-screen bg-light-blue-gradient flex flex-col">
             <div className={`flex-1 px-4 ${currentStep === 'program' ? 'pb-24 pt-8' : 'pb-24 pt-8'}`}>
                 <div className="max-w-md mx-auto">
                     {/* Progress Steps - показываем на всех шагах кроме program */}
                     {currentStep !== 'program' && (
-                        <>
+                        <Container>
                             <div className="mb-8">
-                                <h1 className="text-2xl font-bold text-primary mb-2">
+                                <h1 className="text-3xl font-bold text-deepBlue mb-2">
                                     Eshkol Volunteers
                                 </h1>
                             </div>
                             <ProgressSteps currentStepIndex={currentStepIndex} totalSteps={steps.length} />
-                        </>
+                        </Container>
                     )}
 
                     {/* Step Content */}
@@ -832,45 +833,21 @@ export const OnboardingPage: FC = () => {
             </div>
 
             {/* Navigation Buttons - всегда внизу */}
-            <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200 z-20">
+            <div className="fixed bottom-0 left-0 right-0 px-5 pt-5 pb-11 bg-white border-t border-gray-200 z-20">
                 <div className="max-w-md mx-auto">
-                    {currentStep === 'program' ? (
-                        <Button
-                            fullWidth
-                            size="lg"
-                            onClick={handleNext}
-                            disabled={!canProceed()}
-                            className="shadow-lg"
-                        >
-                            {t('onboarding.iAmWheelButton')}
-                        </Button>
-                    ) : (
-                        <div className="flex gap-3">
-                            {currentStepIndex > 0 && (
-                                <Button variant="outline" fullWidth onClick={handleBack}>
-                                    {t('common.back')}
-                                </Button>
-                            )}
-                            {currentStep === 'thank-you' ? (
-                                <Button
-                                    fullWidth
-                                    size="lg"
-                                    onClick={handleSubmit}
-                                >
-                                    {t('onboarding.finish') || t('common.next') || 'Завершить'}
-                                </Button>
-                            ) : (
-                                <Button
-                                    fullWidth
-                                    size="lg"
-                                    onClick={handleNext}
-                                    disabled={!canProceed()}
-                                >
-                                    {t('common.next')}
-                                </Button>
-                            )}
-                        </div>
-                    )}
+                    <Button
+                      fullWidth
+                      size="lg"
+                      onClick={currentStep === 'thank-you' ? handleSubmit : handleNext}
+                      disabled={!canProceed()}
+                      className="shadow-lg"
+                    >
+                        {currentStep === 'program'
+                          ? t('onboarding.iAmWheelButton')
+                          : currentStep === 'thank-you'
+                            ? t('common.next')
+                            : t('common.next')}
+                    </Button>
                 </div>
             </div>
         </div>
