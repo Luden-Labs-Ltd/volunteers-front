@@ -174,7 +174,7 @@ export const LeaderboardPage: FC = () => {
                                 alt="2nd place"
                                 className="w-14 h-14 object-contain"
                               />
-                              <div className="absolute top-[8px] left-1/2 -translate-x-1/2 text-white text-lg font-bold">
+                              <div className="absolute top-[8px] left-1/2 -translate-x-1/2 text-white text-lg font-bold [text-shadow:_-1px_-1px_0_#000,_1px_-1px_0_#000,_-1px_1px_0_#000,_1px_1px_0_#000]">
                                 2
                               </div>
                             </div>
@@ -199,7 +199,7 @@ export const LeaderboardPage: FC = () => {
                                 alt="1st place"
                                 className="w-20 h-20 object-contain"
                               />
-                              <div className="absolute top-[16px] left-1/2 -translate-x-1/2 text-white text-lg font-bold">
+                              <div className="absolute top-[16px] left-1/2 -translate-x-1/2 text-white text-lg font-bold [text-shadow:_-1px_-1px_0_#000,_1px_-1px_0_#000,_-1px_1px_0_#000,_1px_1px_0_#000]">
                                 1
                               </div>
                             </div>
@@ -224,7 +224,7 @@ export const LeaderboardPage: FC = () => {
                                 alt="3rd place"
                                 className="w-14 h-14 object-contain"
                               />
-                              <div className="absolute top-[8px] left-1/2 -translate-x-1/2 text-white text-lg font-bold">
+                              <div className="absolute top-[8px] left-1/2 -translate-x-1/2 text-white text-lg font-bold [text-shadow:_-1px_-1px_0_#000,_1px_-1px_0_#000,_-1px_1px_0_#000,_1px_1px_0_#000]">
                                 3
                               </div>
                             </div>
