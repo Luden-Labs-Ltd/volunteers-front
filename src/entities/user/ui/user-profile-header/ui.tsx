@@ -11,7 +11,7 @@ export const UserProfileHeader = ({ user }: UserProfileHeaderType) => {
     const isVerified = user.status === "approved";
     const location = user.role === 'volunteer' && user.profile && 'city' in user.profile && user.profile.city
         ? user.profile.city.name
-        : '';
+        : 'unknow';
     return (
         <div className="w-full flex flex-col items-center px-4 mb-6">
             <div className="relative mb-5">

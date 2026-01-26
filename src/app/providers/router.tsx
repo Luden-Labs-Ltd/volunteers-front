@@ -76,13 +76,13 @@ export const Router: FC = () => {
             <Route path="details" element={<TaskDetailsPage />} />
             <Route path="tasks" element={<NeedyTasksPage />} />
             <Route path="tasks/:id/assign" element={<AssignVolunteerPage />} />
-              <Route
+            <Route
                   path="/needy/tasks/:taskId/volunteer/:volunteerId/approve"
                   element={<CandidateApprovePage />}
-              />
+            />
+            <Route path="/needy/tasks/:taskId" element={<VolunteerTaskDetailsPage />} />
           </Route>
           <Route path="/needy/tasks" element={<TasksPage />} />
-          <Route path="/needy/tasks/:taskId" element={<VolunteerTaskDetailsPage />} />
           <Route path="/needy/settings" element={<SettingsPage />} />
         </Route>
 

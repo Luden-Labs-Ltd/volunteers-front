@@ -32,14 +32,12 @@ export const CategorySkillsPage = () => {
                 selectedIds={selectedSkills}
                 onToggle={handleToggleSkill}
             />
-            <div className="fixed z-[1000] bottom-[71px] left-0 right-0 w-full max-w-[395px] mx-auto px-5 py-4 bg-white">
-                <div className="pointer-events-auto bg-white">
+            <div className="fixed bottom-[69px] left-1/2 -translate-x-1/2 z-[50] w-full max-w-[393px]">
+                <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-[50] w-full max-w-[393px] bg-white px-5 py-4">
                     <Button
-                        className={"py-4 border border-[#162A43] shadow-[1px_1px_0_0_#162A43,3px_3px_0_0_#162A43] text-[20px]"}
-                        variant="primary"
-                        fullWidth
                         onClick={handleFindVolunteer}
                         disabled={selectedSkills.length === 0}
+                        className="w-full h-[56px] rounded-xl border border-[#162A43] bg-[#004573] text-white shadow-[3px_3px_0_0_#162A43] text-[20px] font-medium"
                     >
                         {t("categorySkillsView.submitButton")}
                     </Button>
@@ -53,6 +51,7 @@ export const CategorySkillsPage = () => {
                     </div>
                 </div>
             </div>
+
         </div>
     )
 }
