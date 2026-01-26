@@ -168,12 +168,15 @@ export const LeaderboardPage: FC = () => {
                         {topThree.length >= 2 && (
                           <div className="flex flex-col items-center flex-1 relative">
                             <div className="absolute right-0 top-0 bottom-0 w-px bg-[#F2F2F2]"></div>
-                            <div className="mt-11 mb-3">
+                            <div className="relative inline-flex items-center justify-center mt-11">
                               <img
                                 src={getTrophyImage(2)}
                                 alt="2nd place"
                                 className="w-14 h-14 object-contain"
                               />
+                              <div className="absolute top-[8px] left-1/2 -translate-x-1/2 text-white text-lg font-bold">
+                                2
+                              </div>
                             </div>
                             <div className="text-center">
                               <p className="font-bold text-gray-900 text-base mb-1">
@@ -215,12 +218,15 @@ export const LeaderboardPage: FC = () => {
                         {/* 3-е место */}
                         {topThree.length >= 3 && (
                           <div className="flex flex-col items-center flex-1">
-                            <div className="mt-11 mb-3">
+                            <div className="relative inline-flex items-center justify-center mt-11">
                               <img
                                 src={getTrophyImage(3)}
                                 alt="3rd place"
                                 className="w-14 h-14 object-contain"
                               />
+                              <div className="absolute top-[8px] left-1/2 -translate-x-1/2 text-white text-lg font-bold">
+                                3
+                              </div>
                             </div>
                             <div className="text-center">
                               <p className="font-bold text-gray-900 text-base mb-1">
