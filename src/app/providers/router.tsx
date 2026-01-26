@@ -76,7 +76,10 @@ export const Router: FC = () => {
             <Route path="details" element={<TaskDetailsPage />} />
             <Route path="tasks" element={<NeedyTasksPage />} />
             <Route path="tasks/:id/assign" element={<AssignVolunteerPage />} />
-            <Route path="tasks/volunteer/:id/approve" element={<CandidateApprovePage />} />
+              <Route
+                  path="/needy/tasks/:taskId/volunteer/:volunteerId/approve"
+                  element={<CandidateApprovePage />}
+              />
           </Route>
           <Route path="/needy/tasks" element={<TasksPage />} />
           <Route path="/needy/tasks/:taskId" element={<VolunteerTaskDetailsPage />} />

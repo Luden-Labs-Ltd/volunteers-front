@@ -57,7 +57,7 @@ export const CandidatesList = ({ response }: CandidatesListProps) => {
             <div className="flex flex-col mb-4 gap-3">
                 <VolunteerCard
                     volunteer={user}
-                    onClick={() => navigate(`/needy/tasks/volunteer/${user?.id}/approve`)}
+                    onClick={() => navigate(`/needy/tasks/${response.taskId}/volunteer/${user.id}/approve`)}
                 />
 
                 {/*{isPending && (*/}
