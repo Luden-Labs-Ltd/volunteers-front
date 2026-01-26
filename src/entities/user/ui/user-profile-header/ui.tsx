@@ -1,16 +1,17 @@
-import {User} from "@/entities/user";
+import {UserWithProfile} from "@/entities/user";
 import {Icon} from "@/shared/ui";
 
 type UserProfileHeaderType = {
-    user: User;
-    location?: string;
+    user: UserWithProfile;
 }
 
-export const UserProfileHeader = ({ user, location = "Kisufim" }: UserProfileHeaderType) => {
+export const UserProfileHeader = ({ user }: UserProfileHeaderType) => {
     const displayName = [user.firstName, user.lastName].filter(Boolean).join(" ");
     const photoUrl = (user.photo || "").replace(/^"|"$/g, '');
     const isVerified = user.status === "approved";
-
+    const location = user.role === 'volunteer' && user.profile && 'city' in user.profile && user.profile.city
+        ? user.profile.city.name
+        : '';
     return (
         <div className="w-full flex flex-col items-center px-4 mb-6">
             <div className="relative mb-5">

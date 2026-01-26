@@ -1,111 +1,73 @@
-import {useNavigate, useParams} from "react-router-dom";
-import {useUserById} from "@/entities/user/model/hooks/use-get-user-by-id.ts";
-import {Button, Icon} from "@/shared/ui";
-import {UserProfileHeader} from "@/entities/user/ui/user-profile-header";
-import {VolunteerAreasCard} from "@/entities/user/ui/volunteer-areas-card";
-import {VolunteerReviewsCard} from "@/entities/user/ui/volunteer-reviews-card";
+import { useNavigate, useParams } from "react-router-dom";
+import { useUserById } from "@/entities/user/model/hooks/use-get-user-by-id.ts";
+import { Button, Icon } from "@/shared/ui";
+import { UserProfileHeader } from "@/entities/user/ui/user-profile-header";
+import { VolunteerAreasCard } from "@/entities/user/ui/volunteer-areas-card";
+import { VolunteerReviewsCard } from "@/entities/user/ui/volunteer-reviews-card";
 
 export const CandidateApprovePage = () => {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const { data: user } = useUserById(id || "");
+
     if (!user) return <div>User not found</div>;
 
-    const areas = [
-        {
-            id: 1,
-            name: "Maintenance",
-            tasksCount: 6,
-            icon: "️🛠",
-            bgColor: "bg-[#FAD9F5]",
-        },
-        {
-            id: 2,
-            name: "Technology",
-            tasksCount: 3,
-            icon: "🖥️",
-            bgColor: "bg-[#BFEAFE]",
-        },
-        {
-            id: 3,
-            name: "Electricity",
-            tasksCount: 3,
-            icon: "💡",
-            bgColor: "bg-[#FEF5C7]",
-        },
-        {
-            id: 4,
-            name: "Repair",
-            tasksCount: 4,
-            icon: "",
-            bgColor: "bg-[#FAD9F5]",
-        },
-        {
-            id: 5,
-            name: "Babysitting",
-            tasksCount: 9,
-            icon: "",
-            bgColor: "bg-[#FEF5C7]",
-        },
-        {
-            id: 6,
-            name: "Private lessons",
-            tasksCount: 12,
-            icon: "",
-            bgColor: "bg-[#FAD9F5]",
-        },
-        {
-            id: 7,
-            name: "Cleanings",
-            tasksCount: 3,
-            icon: "",
-            bgColor: "bg-[#BFEAFE]",
-        },
-    ];
+    const realSkills = user.role === 'volunteer' && user.profile && 'skills' in user.profile
+        ? (user.profile.skills || []).map((skill) => ({
+            id: skill.id,
+            name: skill.name,
+            iconSvg: skill.iconSvg,
+            tasksCount: 0,
+        }))
+        : [];
+
     const reviews = [
         {
             id: 1,
             authorName: "Sarah M.",
             rating: 5,
-            text: "Yossi was an excellent plumber! He arrived quickly, solved the problem professionally, and was very courteous. I highly recommend him to anyone needing plumbing services."
+            text: "Yossi was an excellent plumber! He arrived quickly, solved the problem professionally."
         },
     ];
 
     return (
-        <div className="w-full max-w-[393px] min-h-screen m-auto relative bg-white  px-[20px]">
-            <div className="fixed top-0 left-0 right-0 z-[50] w-full max-w-[398px] mx-auto bg-gradient-to-b from-blue-50 to-white pt-16 pb-4 px-5">
-                <div className="grid grid-cols-[48px_1fr_48px] items-center">
-                    <div className="mb-5">
+        <div className="w-full max-w-[393px] min-h-screen mx-auto relative bg-white overflow-x-hidden">
+            <div className="fixed top-0 left-1/2 -translate-x-1/2 z-[50] w-full max-w-[397px] bg-gradient-to-b from-blue-50 to-white pt-16 pb-2 px-[20px]">
+                <div className="relative w-full flex items-center justify-center min-h-[48px]">
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2">
                         <Button
+                            className={"mb-5"}
                             icon={<Icon iconId="icon-arrow-back" />}
                             variant="transition"
                             size="sm"
                             onClick={() => navigate(-1)}
                         />
                     </div>
-                    <h1 className="text-[24px] text-[#004573] font-medium text-center leading-tight">
-                        Volunteer for the plumber role
+                    <h1 className="text-[24px] text-[#004573] font-bold leading-[1.2] text-center tracking-tight">
+                        Volunteer for <br/>your task
                     </h1>
-                    <div />
                 </div>
             </div>
-            <div className="pt-[190px] pb-[170px]">
-                {/*Иконка пользвателя*/}
+            <div className="pt-[150px] pb-[150px] px-[20px]">
                 <UserProfileHeader user={user} />
-                {/*Таски*/}
-                <VolunteerAreasCard areas={areas} />
-                {/*Отзывы*/}
+
+                <div className="flex justify-between items-center p-3 rounded-xl border shadow-[1px_1px_0_0_#F2F2F2,2px_2px_0_0_#F2F2F2] mb-3 mt-3 bg-white">
+                    <span className="text-[18px] font-medium text-[#393939]">Completed tasks</span>
+                    <span className="text-[16px] font-normal text-[#737373]">0 tasks</span>
+                </div>
+
+                <VolunteerAreasCard areas={realSkills} />
                 <VolunteerReviewsCard reviews={reviews} />
             </div>
-            {/*<div className="fixed z-[1000] bottom-[calc(72px+env(safe-area-inset-bottom))] left-0 right-0 w-full py-4 max-w-[395px] mx-auto bg-white">*/}
-            {/*    <Button*/}
-            {/*        className={"py-4 border border-[#162A43] shadow-[1px_1px_0_0_#162A43,3px_3px_0_0_#162A43]"}*/}
-            {/*        variant="primary"*/}
-            {/*        fullWidth*/}
-            {/*    >*/}
-            {/*        Approve and Sync Arrival*/}
-            {/*    </Button>*/}
-            {/*</div>*/}
+            <div className="fixed bottom-[69px] left-1/2 -translate-x-1/2 z-[50] w-full max-w-[393px]">
+                <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-[50] w-full max-w-[393px] bg-transparent px-5 py-4">
+                    <Button
+                        className="w-full h-[56px] rounded-xl border border-[#162A43] bg-[#004573] text-white shadow-[3px_3px_0_0_#162A43] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0_0_#162A43] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all"
+                    >
+                        Approve and Sync Arrival
+                    </Button>
+                </div>
+            </div>
         </div>
     );
 };
