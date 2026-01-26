@@ -11,6 +11,7 @@ import trophy1 from './assets/Gemini_Generated_Image_87xzbo87xzbo87xz 1.png';
 import trophy2 from './assets/Gemini_Generated_Image_87xzbo87xzbo87xz 1 (1).png';
 import trophy3 from './assets/Gemini_Generated_Image_87xzbo87xzbo87xz 1 (2).png';
 import trophyIllustration from './assets/Gemini_Generated_Image_fjh4ihfjh4ihfjh4 1.png';
+import {Container} from "@/shared/ui/container";
 
 export const LeaderboardPage: FC = () => {
     const { t } = useTranslation();
@@ -93,8 +94,9 @@ export const LeaderboardPage: FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-white">
+        <Container className={'pt-15 bg-light-blue-gradient flex flex-col'}>
             <Header
+              className={'pt-15 pb-5 text-center'}
                 title={t('leaderboard.title')}
                 rightActions={[
                     <IconButton
@@ -305,6 +307,6 @@ export const LeaderboardPage: FC = () => {
                     )}
                 </div>
             </div>
-        </div>
+        </Container>
     );
 };

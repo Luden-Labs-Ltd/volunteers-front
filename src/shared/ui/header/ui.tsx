@@ -25,7 +25,7 @@ export const Header: FC<HeaderProps> = ({
   return (
     <header
       className={cn(
-        'w-full bg-white border-b border-gray-200 px-4 pt-[9vh] pb-[5vh]',
+        'w-full px-4 pt-[9vh] pb-[5vh]',
         'flex items-center justify-between',
         className
       )}
