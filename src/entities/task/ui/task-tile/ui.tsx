@@ -1,12 +1,10 @@
 import {Task} from "@/entities/task";
-import {TASKS_IMAGES} from "@/entities/task/lib/TASKS_IMAGES.ts";
 
 type TaskTileType = {
     task:Task
 }
 
 export const TaskTile = ({task}:TaskTileType)=> {
-    const mockImage = TASKS_IMAGES[task.category?.name || ""]
     return (
         <button
             className="flex flex-col items-center gap-3 w-[110px]"
@@ -16,12 +14,6 @@ export const TaskTile = ({task}:TaskTileType)=> {
                     <img
                         src={task.category.image.url}
                         alt={task.category.name}
-                        className="w-full h-full object-cover"
-                    />
-                ) : mockImage ? (
-                    <img
-                        src={mockImage}
-                        alt={task.type}
                         className="w-full h-full object-cover"
                     />
                 ) : task.category?.iconSvg ? (

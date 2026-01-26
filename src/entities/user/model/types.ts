@@ -135,6 +135,20 @@ export type UserWithProfile = {
         id: string;
         userId: string;
         cityId?: string;
+        programId?: string;
+        program?: {
+            id: string;
+            name: string;
+            [key: string]: unknown;
+        };
+        creatorId?: string;
+        address?: string;
+        creator?: {
+            id: string;
+            firstName: string | null;
+            lastName: string | null;
+            [key: string]: unknown;
+        };
         points?: number;
         completedTasksCount?: number;
         rating?: number | null;

@@ -1,5 +1,4 @@
 import {Task} from "@/entities/task";
-import {TASKS_IMAGES} from "@/entities/task/lib/TASKS_IMAGES.ts";
 
 type PopularTaskTileType = {
     popularTask: Task
@@ -7,7 +6,6 @@ type PopularTaskTileType = {
 }
 
 export const PopularTaskTile = ({popularTask, place}: PopularTaskTileType) => {
-    const mockImage = TASKS_IMAGES[popularTask.category?.name || ""]
 
     return (
         <button
@@ -18,12 +16,6 @@ export const PopularTaskTile = ({popularTask, place}: PopularTaskTileType) => {
                     <img
                         src={popularTask.category.image.url}
                         alt={popularTask.category.name}
-                        className="w-full h-full object-cover"
-                    />
-                ) : mockImage ? (
-                    <img
-                        src={mockImage}
-                        alt={popularTask.type}
                         className="w-full h-full object-cover"
                     />
                 ) : popularTask.category?.iconSvg ? (
