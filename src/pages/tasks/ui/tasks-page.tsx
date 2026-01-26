@@ -16,7 +16,7 @@ export const TasksPage: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { data: user } = useGetMe();
-  const tabs = [t('tasks.allTasks'), t('tasks.myTasks')];
+  const tabs = useMemo(() => [t('tasks.allTasks'), t('tasks.myTasks')], [t]);
   const [activeTab, setActiveTab] = useState(tabs[0]);
 
   const { data: allTasks = [], isLoading: allTasksLoading } = useGetTasks();

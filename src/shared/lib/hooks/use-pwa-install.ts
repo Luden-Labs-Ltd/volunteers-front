@@ -15,11 +15,11 @@ export const usePWAInstall = () => {
 
   useEffect(() => {
     const detectPlatform = (): Platform => {
-      const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+      const userAgent = navigator.userAgent || navigator.vendor || (window as Window & { opera?: string }).opera;
       
-      const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !(window as any).MSStream;
+      const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !(window as Window & { MSStream?: boolean }).MSStream;
       const isAndroid = /android/i.test(userAgent);
-      const isStandalone = (window.navigator as any).standalone === true;
+      const isStandalone = (window.navigator as Navigator & { standalone?: boolean }).standalone === true;
       
       if (isIOS || isStandalone) {
         return 'ios';
@@ -43,7 +43,7 @@ export const usePWAInstall = () => {
         setIsInstalled(true);
         return true;
       }
-      if ((window.navigator as any).standalone === true) {
+      if ((window.navigator as Navigator & { standalone?: boolean }).standalone === true) {
         setIsInstalled(true);
         return true;
       }

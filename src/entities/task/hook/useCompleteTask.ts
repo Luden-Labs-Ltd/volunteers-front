@@ -3,19 +3,25 @@ import { taskApi } from "@/entities/task";
 import { QUERY_KEYS } from "@/shared/api/hook/query-keys.ts";
 import { useMutationWithErrorHandling } from "@/shared/api/hook/use-mutation-with-error-handling";
 import { validateApiResponse, isObject, validateRequiredFields } from "@/shared/lib/validation";
-import { Task } from "@/entities/task/model/types";
+import { Task, TaskApproveRole } from "@/entities/task/model/types";
+import { useGetMe } from "@/entities/user";
 
 export const useCompleteTask = () => {
   const queryClient = useQueryClient();
+  const { data: user } = useGetMe();
 
   return useMutationWithErrorHandling<Task, Error, string>({
     mutationFn: async (taskId: string) => {
       if (!taskId) {
         throw new Error('Task ID is required');
       }
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-        const response = await taskApi.approveCompletion(taskId, { role: 'volunteer' });
+      
+      if (!user?.role) {
+        throw new Error('User role is required');
+      }
+
+      const role = user.role === 'needy' ? TaskApproveRole.NEEDY : TaskApproveRole.VOLUNTEER;
+      const response = await taskApi.approveCompletion(taskId, { role });
       // Валидация ответа
       return validateApiResponse(
         response,

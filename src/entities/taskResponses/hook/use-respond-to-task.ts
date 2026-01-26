@@ -24,11 +24,11 @@ export const useRespondToTask = () => {
       queryClient.invalidateQueries({ queryKey: ['volunteer-responses'] });
       toast.success(t('volunteerTask.respond.success') || 'Вы откликнулись на задачу');
     },
-    onError: (error: any, taskId) => {
+    onError: (error: Error | unknown, taskId) => {
       let message = t('volunteerTask.respond.error') || 'Ошибка при отклике на задачу';
       
       // Обрабатываем специфичные ошибки
-      if (error?.message) {
+      if (error instanceof Error && error.message) {
         if (error.message.includes('not in the same program')) {
           message = t('volunteerTask.respond.differentProgram') || 'Вы не можете откликнуться на эту задачу, так как она относится к другой программе, в которой вы не участвуете.';
         } else if (error.message.includes('already responded')) {

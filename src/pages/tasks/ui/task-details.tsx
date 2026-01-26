@@ -9,7 +9,7 @@ import { useCompleteTask } from '@/entities/task/hook/useCompleteTask';
 import { useGetMe } from '@/entities/user';
 import { useUserById } from '@/entities/user/model/hooks/use-get-user-by-id';
 import { useTaskResponses, useVolunteerResponse, useRespondToTask } from '@/entities/taskResponses/hook';
-import { TaskStatus, TaskResponseStatus } from '@/entities/task/model/types';
+import { TaskStatus, TaskResponseStatus, TaskApproveRole } from '@/entities/task/model/types';
 import { VolunteerCard } from '@/entities/user/ui/volunteer-card';
 import smsIcon from '@/shared/assets/images/sms.webp';
 import phoneIcon from '@/shared/assets/images/phone.webp';
@@ -54,8 +54,15 @@ export const TaskDetailsPage = () => {
     return volunteerPrograms.some((program) => program.id === task.programId);
   }, [task?.programId, user]);
 
-  // Определяем, можно ли завершить задачу (только если назначена и в статусе IN_PROGRESS)
-  const canComplete = isAssignedToMe && task?.status === TaskStatus.IN_PROGRESS;
+  // Определяем, можно ли завершить задачу
+  // Для волонтера: если задача назначена ему и в статусе IN_PROGRESS
+  // Для нуждающегося: если задача в статусе IN_PROGRESS и назначен волонтер
+  const canCompleteAsVolunteer = isAssignedToMe && task?.status === TaskStatus.IN_PROGRESS;
+  const canCompleteAsNeedy = user?.role === 'needy' && 
+                              task?.status === TaskStatus.IN_PROGRESS && 
+                              task?.assignedVolunteerId &&
+                              !task.approveBy?.includes(TaskApproveRole.NEEDY);
+  const canComplete = canCompleteAsVolunteer || canCompleteAsNeedy;
 
   // Определяем, можно ли откликнуться (если не назначена, не откликался, задача активна, и в той же программе)
   const canRespond =
@@ -106,7 +113,11 @@ export const TaskDetailsPage = () => {
             loop={false}
             className="w-full h-1/2"
             onComplete={() => {
-              navigate(`/volunteer/tasks/${taskId}/completed`)
+              if (user?.role === 'needy') {
+                navigate(`/needy/tasks`);
+              } else {
+                navigate(`/volunteer/tasks/${taskId}/completed`);
+              }
             }}
           />
         </div>

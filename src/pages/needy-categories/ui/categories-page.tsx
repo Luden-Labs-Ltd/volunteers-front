@@ -7,8 +7,7 @@ import {useNavigate} from "react-router-dom";
 import {useCreateTaskStore} from "@/features/create-task/model/store.ts";
 
 
-export const CategoriesPage = ({
-}) => {
+export const CategoriesPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { categoryId, setCategoryId } = useCreateTaskStore();

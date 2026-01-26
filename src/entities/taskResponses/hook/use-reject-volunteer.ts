@@ -32,10 +32,10 @@ export const useRejectVolunteer = () => {
         }
       );
     },
-    onError: (error: any) => {
+    onError: (error: Error | unknown) => {
       let message = t('taskResponses.rejectError') || 'Ошибка при отклонении волонтера';
       
-      if (error?.message) {
+      if (error instanceof Error && error.message) {
         if (error.message.includes('not found')) {
           message = t('taskResponses.responseNotFound') || 'Отклик не найден';
         } else if (error.message.includes('forbidden') || error.message.includes('not allowed')) {

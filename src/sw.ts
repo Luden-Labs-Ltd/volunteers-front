@@ -14,18 +14,18 @@ const isDev = self.registration?.scope?.includes('localhost') ||
               self.registration?.scope?.includes('192.168.');
 
 // Утилита для условного логирования
-const log = (...args: any[]) => {
+const log = (...args: unknown[]) => {
   if (isDev) {
     console.log(...args);
   }
 };
 
-const logError = (...args: any[]) => {
+const logError = (...args: unknown[]) => {
   // Ошибки всегда логируем
   console.error(...args);
 };
 
-const logWarn = (...args: any[]) => {
+const logWarn = (...args: unknown[]) => {
   // Предупреждения всегда логируем
   console.warn(...args);
 };
@@ -164,7 +164,7 @@ self.addEventListener('push', (event: PushEvent) => {
           body: string;
           icon?: string;
           badge?: string;
-          data?: Record<string, any>;
+          data?: Record<string, unknown>;
           tag?: string;
         };
 

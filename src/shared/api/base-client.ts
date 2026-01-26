@@ -112,23 +112,18 @@ export class ApiClient {
 
     // Обработка 401 ошибки - попытка обновить токены
     if (response.status === 401 && token) {
-      try {
-        await this.refreshTokens();
-        
-        // Повторяем запрос с новым токеном
-        const newToken = getToken();
-        if (newToken) {
-          headers.Authorization = `Bearer ${newToken}`;
-        }
-
-        response = await fetch(`${this.baseUrl}${endpoint}`, {
-          ...options,
-          headers,
-        });
-      } catch (error) {
-        // Если refresh не удался, токены уже очищены и произошел редирект
-        throw error;
+      await this.refreshTokens();
+      
+      // Повторяем запрос с новым токеном
+      const newToken = getToken();
+      if (newToken) {
+        headers.Authorization = `Bearer ${newToken}`;
       }
+
+      response = await fetch(`${this.baseUrl}${endpoint}`, {
+        ...options,
+        headers,
+      });
     }
 
     if (!response.ok) {

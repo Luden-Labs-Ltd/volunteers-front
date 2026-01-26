@@ -32,10 +32,10 @@ export const useApproveVolunteer = () => {
         }
       );
     },
-    onError: (error: any) => {
+    onError: (error: Error | unknown) => {
       let message = t('taskResponses.approveError') || 'Ошибка при одобрении волонтера';
       
-      if (error?.message) {
+      if (error instanceof Error && error.message) {
         if (error.message.includes('not active')) {
           message = t('taskResponses.taskNotActive') || 'Задача больше не активна. Возможно, она уже назначена другому волонтеру или завершена.';
         } else if (error.message.includes('not found')) {
