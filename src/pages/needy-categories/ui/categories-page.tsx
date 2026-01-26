@@ -14,7 +14,6 @@ export const CategoriesPage = () => {
     const handleNext = () => {
         navigate("/needy/skills");
     };
-
     return (
         <div className="pt-[120px] pb-[calc(150px+env(safe-area-inset-bottom))]">
             {/* Инпут с ИИ + текст */}
@@ -65,7 +64,7 @@ export const CategoriesPage = () => {
                         variant="primary"
                         fullWidth
                         onClick={handleNext}
-                        disabled={!setCategoryId}
+                        disabled={!categoryId}
                     >
                         {t("categoriesNeedy.nextButton")}
                     </Button>
