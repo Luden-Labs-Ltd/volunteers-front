@@ -29,6 +29,7 @@ interface OnboardingData {
     phone: string;
     about: string;
     photo: string | null;
+    privacyAccepted: boolean;
 }
 
 export const OnboardingPage: FC = () => {
@@ -58,6 +59,7 @@ export const OnboardingPage: FC = () => {
         phone: '',
         about: '',
         photo: null,
+        privacyAccepted: false
     });
 
     // Загружаем города из API
@@ -339,7 +341,8 @@ export const OnboardingPage: FC = () => {
             case 'profile':
                 return data.agreementAccepted;
             case 'contact':
-                return data.firstName.trim() !== '' && data.cityId !== null;
+                return (data.firstName.trim() !== '' &&
+                  data.cityId !== null && data.privacyAccepted)
             case 'photo':
                 return true; // Фото опционально
             case 'thank-you':
@@ -723,9 +726,11 @@ export const OnboardingPage: FC = () => {
                                 {/* </div> */}
                                 <div className="flex items-start gap-3 pt-2">
                                     <input
-                                        type="checkbox"
-                                        id="privacy"
-                                        className="mt-1 w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary"
+                                      type="checkbox"
+                                      id="privacy"
+                                      checked={data.privacyAccepted}
+                                      onChange={(e) => setData( (prev) => ({...prev, privacyAccepted: e.target.checked}))}
+                                      className="mt-1 w-5 h-5 rounded-md accent-primary border-gray-300 text-primary focus:ring-primary"
                                     />
                                     <label htmlFor="privacy" className="text-sm text-gray-700">
                                         {t('onboarding.privacyConfirm')}{' '}
