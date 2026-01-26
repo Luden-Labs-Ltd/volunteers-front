@@ -236,20 +236,20 @@ export const LeaderboardPage: FC = () => {
                             <Card className="mb-4 p-4 bg-blue-50 border-0">
                                 <div className="flex flex-col items-center">
                                     {/* Иллюстрация сверху */}
-                                    <div className="mb-4 -mt-8">
                                         <img
                                             src={trophyIllustration}
                                             alt="Trophy illustration"
                                             className="w-32 h-32 object-contain"
                                         />
-                                    </div>
 
-                                    <h2 className="text-lg font-bold text-primary mb-2 text-center">
-                                        {t('leaderboard.wantToWin')}
-                                    </h2>
-                                    <p className="text-sm text-primary mb-4 text-center">
-                                        {t('leaderboard.addVolunteersDescription')}
-                                    </p>
+                                    <div className={'flex flex-col items-center gap-1 mt-4 mb-4'}>
+                                        <h2 className="text-base font-medium text-primary mb-0 text-center">
+                                            {t('leaderboard.wantToWin')}
+                                        </h2>
+                                        <p className="text-sm font-normal text-primary mb-0 text-center max-w-[20rem] mx-auto">
+                                            {t('leaderboard.addVolunteersDescription')}
+                                        </p>
+                                    </div>
                                     <button
                                         onClick={handleCopyInvite}
                                         className="w-full bg-white border border-[#004573] border-b-4 border-r-4 text-primary font-bold py-3 px-6 rounded-[12px] hover:bg-gray-50 transition-colors"
