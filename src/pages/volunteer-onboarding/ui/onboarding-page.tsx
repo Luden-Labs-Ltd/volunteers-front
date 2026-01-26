@@ -365,7 +365,8 @@ export const OnboardingPage: FC = () => {
                                 <p className="text-gray-600">{t('common.loading') || 'Loading skills...'}</p>
                             </div>
                         ) : (
-                            <>
+                            <Container className={'flex flex-col items-stretch gap-3 pt-4'}>
+                                <h6 className={'text-deepBlue text-lg font-medium'}>What am I good at?</h6>
                                 {allSkills.length > 0 && (
                                     <div className="mb-4">
                                         <Input
@@ -404,7 +405,8 @@ export const OnboardingPage: FC = () => {
                                 const isSelected = data.skills.includes(skill.id);
                                 return (
                                     <Card
-                                        key={skill.id}
+                                      variant="elevated"
+                                      key={skill.id}
                                         className={`cursor-pointer transition-all relative ${isSelected
                                             ? 'ring-2 ring-primary border-2 border-primary'
                                             : 'border border-gray-200'
@@ -419,36 +421,39 @@ export const OnboardingPage: FC = () => {
                                         }}
                                     >
                                         <div className="p-4 flex items-center gap-4">
-                                            {isSelected && (
-                                                <div className="absolute top-2 right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                                                    <svg
-                                                        className="w-4 h-4 text-white"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        viewBox="0 0 24 24"
-                                                    >
-                                                        <path
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            strokeWidth={2}
-                                                            d="M5 13l4 4L19 7"
-                                                        />
-                                                    </svg>
-                                                </div>
-                                            )}
-                                            <div className={`w-12 h-12 ${skill.color} rounded-xl flex items-center justify-center text-2xl flex-shrink-0`}>
+
+                                            <div
+                                              className={`w-12 h-12 ${skill.color} rounded-xl flex items-center justify-center text-2xl flex-shrink-0`}>
                                                 {skill.icon}
                                             </div>
                                             <h3 className="font-semibold text-base text-gray-900">
                                                 {skill.name}
                                             </h3>
+                                            {isSelected && (
+                                              <div className="ml-auto w-5 h-5 bg-primary rounded-md flex items-center justify-center">
+                                                  <svg
+                                                    className="w-4 h-4 text-white"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                  >
+                                                      <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M5 13l4 4L19 7"
+                                                      />
+                                                  </svg>
+                                              </div>
+                                            )}
+
                                         </div>
                                     </Card>
                                 );
                             })}
                         </div>
                                 )}
-                            </>
+                            </Container>
                         )}
                     </>
                 );
