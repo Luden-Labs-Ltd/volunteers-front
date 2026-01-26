@@ -94,9 +94,9 @@ export const LeaderboardPage: FC = () => {
     };
 
     return (
-        <Container className={'pt-15 bg-light-blue-gradient flex flex-col'}>
+        <Container className={'h-screen bg-light-blue-gradient flex flex-col'}>
             <Header
-              className={'pt-15 pb-5 text-center'}
+              className={'pt-15 pb-5 text-center flex-shrink-0'}
                 title={t('leaderboard.title')}
                 rightActions={[
                     <IconButton
@@ -115,7 +115,7 @@ export const LeaderboardPage: FC = () => {
                     />
                 ]}
             />
-            <div className="px-4 py-8">
+            <div className="flex-1 overflow-y-auto px-4 py-8 pb-40">
                 <div className="max-w-md mx-auto">
                     {isLoading ? (
                         <div className="text-center py-8 text-gray-500">
@@ -293,18 +293,31 @@ export const LeaderboardPage: FC = () => {
                             )}
 
                             {/* Кнопка перехода к задачам */}
-                            <div className="mt-6">
-                                <Button
-                                    size="lg"
-                                    fullWidth
-                                    variant="secondary"
-                                    onClick={() => navigate('/volunteer')}
-                                >
-                                    {t('tasks.title')}
-                                </Button>
-                            </div>
+                            {/*<div className="mt-6">*/}
+                            {/*    <Button*/}
+                            {/*        size="lg"*/}
+                            {/*        fullWidth*/}
+                            {/*        variant="secondary"*/}
+                            {/*        onClick={() => navigate('/volunteer')}*/}
+                            {/*    >*/}
+                            {/*        {t('tasks.title')}*/}
+                            {/*    </Button>*/}
+                            {/*</div>*/}
+
                         </>
                     )}
+                </div>
+            </div>
+            <div className="fixed bottom-0 left-0 right-0 px-5 pt-5 pb-11 bg-white border-t border-gray-200 z-20">
+                <div className="max-w-md mx-auto">
+                    <Button
+                      size="lg"
+                      fullWidth
+                      variant="secondary"
+                      onClick={() => navigate('/volunteer')}
+                    >
+                        {t('tasks.title')}
+                    </Button>
                 </div>
             </div>
         </Container>

@@ -2,7 +2,6 @@ import { FC, useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Button, Card, Input } from '@/shared/ui';
-import backgroundImage from './assets/wheel.webp';
 import thankYouImage from './assets/thankYou.webp';
 import { ProgressSteps } from './progress-steps';
 import { useGetCities } from '@/entities/city';
@@ -232,12 +231,6 @@ export const OnboardingPage: FC = () => {
             // Очищаем ошибки при успешном переходе
             setFieldErrors({});
             setCurrentStep(nextStep);
-        }
-    };
-
-    const handleBack = () => {
-        if (currentStepIndex > 0) {
-            setCurrentStep(steps[currentStepIndex - 1]);
         }
     };
 
