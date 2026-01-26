@@ -7,9 +7,9 @@ import { useGetLeaderboard } from '@/entities/city/hook/use-get-leaderboard';
 import type { CityLeaderboardStats } from '@/entities/city/api/city-api';
 import { toast } from 'sonner';
 import userIcon from '@/shared/assets/images/userIcon.webp';
-import trophy1 from './assets/Gemini_Generated_Image_87xzbo87xzbo87xz 1.png';
-import trophy2 from './assets/Gemini_Generated_Image_87xzbo87xzbo87xz 1 (1).png';
-import trophy3 from './assets/Gemini_Generated_Image_87xzbo87xzbo87xz 1 (2).png';
+import trophySilver from './assets/trophySilver.webp';
+import trophyGold from './assets/trophyGold.webp';
+import trophyBronze from './assets/trophyBronze.webp';
 import trophyIllustration from './assets/Gemini_Generated_Image_fjh4ihfjh4ihfjh4 1.png';
 import {Container} from "@/shared/ui/container";
 
@@ -83,13 +83,13 @@ export const LeaderboardPage: FC = () => {
     const getTrophyImage = (rank: number) => {
         switch (rank) {
             case 1:
-                return trophy1;
+                return trophyGold;
             case 2:
-                return trophy2;
+                return trophySilver;
             case 3:
-                return trophy3;
+                return trophyBronze;
             default:
-                return trophy1;
+                return trophyGold;
         }
     };
 
