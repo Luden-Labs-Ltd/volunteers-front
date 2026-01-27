@@ -242,7 +242,7 @@ export const TaskDetailsPage = () => {
             </Card>
           </div>
         </div>
-        <div className={' flex flex-col gap-3 mt-auto'}>
+        <div className={' flex flex-col gap-3'}>
           {/* Кнопка "Завершить выполнение" - только если задача назначена */}
           {canComplete && (
             <Button
