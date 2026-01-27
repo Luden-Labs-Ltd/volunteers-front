@@ -147,16 +147,6 @@ export const TaskDetailsPage = () => {
                   {t('taskResponses.assignedVolunteer')}
                 </p>
                 <VolunteerCard
-                  location={
-                    assignedVolunteer.role === 'volunteer' && assignedVolunteer.profile && 'city' in assignedVolunteer.profile && assignedVolunteer.profile.city
-                      ? assignedVolunteer.profile.city.name
-                      : ''
-                  }
-                  skills={
-                    assignedVolunteer.role === 'volunteer' && assignedVolunteer.profile && 'skills' in assignedVolunteer.profile
-                      ? (assignedVolunteer.profile.skills || []).map((skill: { name: string }) => skill.name)
-                      : []
-                  }
                   volunteer={{
                     ...assignedVolunteer,
                     firstName: assignedVolunteer.firstName,
