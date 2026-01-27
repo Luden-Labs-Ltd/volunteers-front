@@ -129,7 +129,7 @@ export const TaskDetailsPage = () => {
           onBack={() => navigate(backPath)}
         />
       </div>
-      <section className="flex flex-col min-h-screen pt-24 px-5 text-center gap-4">
+      <section className="flex flex-col min-h-screen pt-24 px-5 text-center gap-4 bg-light-blue-gradient">
         <div className={'flex flex-col gap-8'}>
           <img
             src={mission_illustration}
