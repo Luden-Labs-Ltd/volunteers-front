@@ -1,3 +1,5 @@
+import {UserWithProfile} from "@/entities/user";
+
 export enum TaskStatus {
   ACTIVE = 'active',
   IN_PROGRESS = 'in_progress',
@@ -32,6 +34,7 @@ export interface Task {
   skillIds?: string[];
   firstResponseMode: boolean;
   assignedVolunteerId?: string;
+  assignedVolunteer: UserWithProfile;
   approveBy: TaskApproveRole[];
   cityId?: string;
   address?: string;

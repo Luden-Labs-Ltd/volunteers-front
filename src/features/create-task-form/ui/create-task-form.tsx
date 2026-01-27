@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
-import { Button } from "@/shared/ui";
+import {Button} from "@/shared/ui";
 import { TaskFormCard } from "@/entities/task/ui/task-form-card";
 import { taskApi } from "@/entities/task/api";
 import { CreateTaskDto, Task } from "@/entities/task/model/types";
@@ -132,25 +132,21 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
                 {t("taskDetails.selectedSkills")}
             </h2>
             <SelectSkills ids={skillsIds} />
-            <div className="fixed z-[1000] bottom-0 left-0 right-0 w-full max-w-[398px] mx-auto bg-white border-t border-blue-50 px-[20px]">
-                <div className="pointer-events-auto bg-white mt-5">
+            <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-[50] w-full max-w-[393px]">
+                <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-[50] w-full max-w-[393px] bg-white px-5 py-4">
                     <Button
-                        className={"py-4 border border-[#162A43] shadow-[1px_1px_0_0_#162A43,3px_3px_0_0_#162A43] text-[20px] mb-2"}
-                        variant="primary"
-                        fullWidth
                         type="submit"
                         disabled={isPending}
+                        className="w-full h-[56px] rounded-xl border border-[#162A43] bg-[#004573] text-white shadow-[3px_3px_0_0_#162A43] text-[20px] font-medium"
                     >
                         {t("taskDetails.buttonGoToTasks")}
                     </Button>
+
                     <Button
-                        className={"py-4 text-[20px] border-none mb-[20px] active:bg-transparent focus:bg-transparent"}
-                        variant="text"
-                        fullWidth
-                        type="button"
                         onClick={onBack}
+                        className="w-full mt-3 h-[56px] rounded-xl bg-white text-[#004573] text-[20px] font-medium active:bg-white hover:bg-white focus:bg-white"
                     >
-                    {t("taskDetails.labelAnythingElse")}
+                        {t("taskDetails.labelAnythingElse")}
                     </Button>
                 </div>
             </div>

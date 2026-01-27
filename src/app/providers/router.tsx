@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthPage } from '@/pages/auth/ui';
-import { TasksPage, TaskPreviewPage } from '@/pages/tasks/ui';
+import {TasksPage, TaskPreviewPage, TaskCompletionFeedbackPage} from '@/pages/tasks/ui';
 import { TaskDetailsPage as VolunteerTaskDetailsPage } from '@/pages/tasks/ui/task-details';
 import { TaskCompletedPage } from '@/pages/tasks/ui/task-completed';
 import { UIKitPage } from '@/pages/ui-kit/ui';
@@ -17,7 +17,9 @@ import {
   CategorySkillsPage,
   NeedyTasksPage,
   TaskDetailsPage,
+  CandidateApprovePage,
 } from '@/pages/needy-categories/ui';
+import {VolunteerProfilePage} from "@/pages/volunteer-profile/ui";
 
 export const Router: FC = () => {
   return (
@@ -75,10 +77,16 @@ export const Router: FC = () => {
             <Route path="details" element={<TaskDetailsPage />} />
             <Route path="tasks" element={<NeedyTasksPage />} />
             <Route path="tasks/:id/assign" element={<AssignVolunteerPage />} />
+            <Route
+                  path="/needy/tasks/:taskId/volunteer/:volunteerId/approve"
+                  element={<CandidateApprovePage />}
+            />
+            <Route path="/needy/tasks/:taskId" element={<VolunteerTaskDetailsPage />} />
           </Route>
           <Route path="/needy/tasks" element={<TasksPage />} />
-          <Route path="/needy/tasks/:taskId" element={<VolunteerTaskDetailsPage />} />
+          <Route path="/needy/taskCompletionFeedbackPage" element={<TaskCompletionFeedbackPage />} />
           <Route path="/needy/settings" element={<SettingsPage />} />
+          <Route path="/volunteer/:id" element={<VolunteerProfilePage />} />
         </Route>
 
 

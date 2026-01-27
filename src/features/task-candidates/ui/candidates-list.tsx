@@ -1,132 +1,92 @@
-import { useState } from "react";
-import { useUserById } from "@/entities/user/model/hooks/use-get-user-by-id.ts";
-import { VolunteerCard } from "@/entities/user/ui/volunteer-card";
-import { useApproveVolunteer, useRejectVolunteer } from "@/entities/taskResponses/hook";
-import { Button } from "@/shared/ui";
-import { useTranslation } from "react-i18next";
 import { TaskResponse } from "@/entities/task/model/types";
-import { useNavigate } from "react-router-dom";
-import { VolunteerDetailsModal } from "@/features/volunteer-details";
+import { CandidateItem } from "@/features/task-candidates/ui/candidate-item.tsx";
 
-interface CandidatesListProps {
-    taskId: string;
-    response: TaskResponse;
+type CandidatesListType = {
+    responses: TaskResponse[];
 }
 
-export const CandidatesList = ({ taskId, response }: CandidatesListProps) => {
-    const { t } = useTranslation();
-    const navigate = useNavigate();
-    const { data: user, isLoading } = useUserById(response.volunteerId);
-    const approveMutation = useApproveVolunteer();
-    const rejectMutation = useRejectVolunteer();
-    const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+export const CandidatesList = ({ responses }: CandidatesListType) => {
+    const pendingResponses = responses.filter((r) => r.status === 'pending');
+    const approvedResponses = responses.filter((r) => r.status === 'approved');
+    const rejectedResponses = responses.filter((r) => r.status === 'rejected');
 
-    const isApproved = response.status === 'approved';
-    const isRejected = response.status === 'rejected';
-    const isPending = response.status === 'pending';
-
-    const handleApprove = () => {
-        approveMutation.mutate(
-            {
-                taskId,
-                volunteerId: response.volunteerId,
-            },
-            {
-                onSuccess: () => {
-                    // После успешного одобрения возвращаемся на страницу задачи
-                    setTimeout(() => {
-                        navigate(`/needy/tasks/${taskId}`, { replace: true });
-                    }, 1500); // Задержка для показа toast уведомления
-                },
-            }
+    if (responses.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center py-10 text-center">
+                <div className="w-16 h-16 mb-4 bg-gray-50 rounded-full flex items-center justify-center">
+                    <span className="text-3xl">📭</span>
+                </div>
+                <h3 className="text-[18px] font-medium text-[#393939] mb-1">
+                    No requests yet
+                </h3>
+            </div>
         );
-    };
-
-    const handleReject = () => {
-        rejectMutation.mutate({
-            taskId,
-            volunteerId: response.volunteerId,
-        });
-    };
-
-    if (isLoading) return <div>Loading...</div>;
-    if (!user) return null;
-
-    // Получаем навыки из профиля волонтера
-    const skills = user.role === 'volunteer' && user.profile && 'skills' in user.profile
-        ? (user.profile.skills || []).map((skill: { name: string }) => skill.name)
-        : [];
-
-    // Получаем город из профиля волонтера
-    const cityName = user.role === 'volunteer' && user.profile && 'city' in user.profile && user.profile.city
-        ? user.profile.city.name
-        : '';
+    }
 
     return (
-        <>
-            <div className="flex flex-col mb-4 gap-3">
-                <VolunteerCard
-                    location={cityName}
-                    skills={skills}
-                    volunteer={{
-                        ...user,
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        photo: user.photo,
-                    }}
-                    onClick={() => setIsDetailsModalOpen(true)}
-                />
-
-                {isPending && (
-                    <div className="flex gap-2 px-2">
-                        <Button
-                            variant="primary"
-                            size="md"
-                            fullWidth
-                            onClick={handleApprove}
-                            disabled={approveMutation.isPending || rejectMutation.isPending}
-                        >
-                            {approveMutation.isPending
-                                ? (t('taskResponses.approving') || 'Одобрение...')
-                                : (t('taskResponses.approve') || 'Одобрить')
-                            }
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="md"
-                            fullWidth
-                            onClick={handleReject}
-                            disabled={approveMutation.isPending || rejectMutation.isPending}
-                        >
-                            {rejectMutation.isPending
-                                ? (t('taskResponses.rejecting') || 'Отклонение...')
-                                : (t('taskResponses.reject') || 'Отклонить')
-                            }
-                        </Button>
-                    </div>
-                )}
-
-                {isApproved && (
-                    <div className="px-2">
-                        <div className="text-sm text-green-600 font-medium">
-                            {t('taskResponses.approved') || '✓ Одобрен'}
-                        </div>
-                    </div>
-                )}
-
-                {isRejected && (
-                    <div className="px-2">
-                        <div className="text-sm text-red-600 font-medium">
-                            {t('taskResponses.rejected') || '✗ Отклонен'}
-                        </div>
-                    </div>
-                )}
+        <div className="flex flex-col gap-8 pb-10">
+            <div>
+                <h3 className="text-sm uppercase text-[#004573] font-bold tracking-wider mb-3 px-1 flex items-center gap-2">
+                    Approved Volunteer
+                    <span className="bg-[#E3F2FD] text-[#004573] text-[14px] rounded-md px-2 py-0.5">
+                        {approvedResponses.length}
+                    </span>
+                </h3>
+                <div className="flex flex-col gap-3 min-h-[10px]">
+                    {approvedResponses.length > 0 ? (
+                        approvedResponses.map((response) => (
+                            <CandidateItem
+                                key={response.id || response.volunteerId}
+                                response={response}
+                            />
+                        ))
+                    ) : (
+                        <span className="text-xs pl-1">No approved volunteers</span>
+                    )}
+                </div>
             </div>
-            <VolunteerDetailsModal
-                isOpen={isDetailsModalOpen}
-                onClose={() => setIsDetailsModalOpen(false)}
-                volunteer={user}
-            />
-        </>
+
+            <div>
+                <h3 className="text-sm uppercase text-[#828282] font-bold tracking-wider mb-3 px-1 flex items-center gap-2">
+                    New Requests
+                    <span className="bg-[#F2F2F2] text-[#828282] text-[14px] rounded-md px-2 py-0.5">
+                        {pendingResponses.length}
+                    </span>
+                </h3>
+                <div className="flex flex-col gap-3 min-h-[10px]">
+                    {pendingResponses.length > 0 ? (
+                        pendingResponses.map((response) => (
+                            <CandidateItem
+                                key={response.id || response.volunteerId}
+                                response={response}
+                            />
+                        ))
+                    ) : (
+                        <span className="text-xs pl-1">No new Requests volunteers</span>
+                    )}
+                </div>
+            </div>
+
+            <div>
+                <h3 className="text-sm uppercase text-[#EB5757] font-bold tracking-wider mb-3 px-1 flex items-center gap-2">
+                    Declined
+                    <span className="bg-[#FFE5E5] text-[#EB5757] text-[14px] rounded-md px-2 py-0.5">
+                        {rejectedResponses.length}
+                    </span>
+                </h3>
+                <div className="flex flex-col gap-3 min-h-[10px] opacity-60">
+                    {rejectedResponses.length > 0 ? (
+                        rejectedResponses.map((response) => (
+                            <CandidateItem
+                                key={response.id || response.volunteerId}
+                                response={response}
+                            />
+                        ))
+                    ) : (
+                        <span className="text-xs pl-1">No declined volunteers</span>
+                    )}
+                </div>
+            </div>
+        </div>
     );
 };
