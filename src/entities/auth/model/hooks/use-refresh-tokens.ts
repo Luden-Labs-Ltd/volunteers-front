@@ -35,8 +35,8 @@ export function useRefreshTokens() {
     onError: (error: unknown) => {
       console.error('Ошибка обновления токенов:', error);
 
-      toast.error(t('auth.sessionExpired') || 'Сессия истекла', {
-        description: t('auth.sessionExpiredDescription') || 'Пожалуйста, войдите в систему заново',
+      toast.error(t('auth.sessionExpired'), {
+        description: t('auth.sessionExpiredDescription'),
         duration: 5000,
       });
 

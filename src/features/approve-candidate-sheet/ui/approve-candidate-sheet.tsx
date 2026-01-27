@@ -2,6 +2,7 @@ import {ApproveCandidateSheetProps, useModalControl} from "@/features/approve-ca
 import {useGetMe} from "@/entities/user";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useMemo, useState} from "react";
+import { useTranslation } from "react-i18next";
 import { SuccessView } from "./success-view";
 import { UserProfileHeader } from "@/entities/user/ui/user-profile-header";
 import { ConfirmationView } from "./confirmation-view";
@@ -14,6 +15,7 @@ onClose,
 volunteer,
 taskId
 }: ApproveCandidateSheetProps) => {
+    const { t } = useTranslation();
     const { data: me } = useGetMe();
     const navigate = useNavigate();
     const [isSuccess, setIsSuccess] = useState(false);
@@ -45,20 +47,20 @@ taskId
         navigate("/needy/tasks");
     };
     const volunteerName = useMemo(
-        () => [volunteer.firstName, volunteer.lastName].filter(Boolean).join(" ") || "Volunteer",
-        [volunteer]
+        () => [volunteer.firstName, volunteer.lastName].filter(Boolean).join(" ") || t('volunteer.title'),
+        [volunteer, t]
     );
 
     const requesterData = useMemo(() => {
         const rawPhoto = (me?.photo ?? "").toString().replace(/^"|"$/g, "").trim();
         const fallback = `https://api.dicebear.com/7.x/avataaars/svg?seed=${me?.id}`;
         return {
-            name: [me?.firstName, me?.lastName].filter(Boolean).join(" ") || "Me",
+            name: [me?.firstName, me?.lastName].filter(Boolean).join(" ") || t('common.profile'),
             phone: me?.phone || "",
             avatar: rawPhoto || fallback,
             fallbackAvatar: fallback,
         };
-    }, [me]);
+    }, [me, t]);
 
     return (
         <div

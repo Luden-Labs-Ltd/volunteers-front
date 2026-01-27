@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useUserById } from "@/entities/user/model/hooks/use-get-user-by-id.ts";
 import { Button, Icon } from "@/shared/ui";
 import { UserProfileHeader } from "@/entities/user/ui/user-profile-header";
@@ -9,13 +10,14 @@ import {ApproveCandidateSheet} from "@/features/approve-candidate-sheet/ui";
 import {UserWithVolunteerData} from "@/entities/user";
 
 export const CandidateApprovePage = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { taskId, volunteerId } = useParams<{ taskId: string; volunteerId: string }>();
     const { data: user } = useUserById(volunteerId || "");
     const volunteer = user as UserWithVolunteerData;
 
     const [isSheetOpen, setIsSheetOpen] = useState(false);
-    if (!volunteer) return <div>User not found</div>;
+    if (!volunteer) return <div>{t('taskResponses.userNotFound')}</div>;
     const realSkills =
         volunteer.role === "volunteer" && volunteer.profile && "skills" in volunteer.profile
             ? (volunteer.profile.skills || []).map((skill) => ({
@@ -50,9 +52,8 @@ export const CandidateApprovePage = () => {
                             onClick={() => navigate(-1)}
                         />
                     </div>
-                    <h1 className="text-[24px] text-[#004573] font-bold leading-[1.2] text-center tracking-tight">
-                        Volunteer for <br />
-                        your task
+                    <h1 className="text-[24px] text-[#004573] font-bold leading-[1.2] text-center tracking-tight whitespace-pre-line">
+                        {t('taskResponses.volunteerForYourTask')}
                     </h1>
                 </div>
             </div>
@@ -61,8 +62,8 @@ export const CandidateApprovePage = () => {
                 <UserProfileHeader user={volunteer} />
 
                 <div className="flex justify-between items-center p-3 rounded-xl border shadow-[1px_1px_0_0_#F2F2F2,2px_2px_0_0_#F2F2F2] mb-3 mt-3 bg-white">
-                    <span className="text-[18px] font-medium text-[#393939]">Completed tasks</span>
-                    <span className="text-[16px] font-normal text-[#737373]">{volunteer.profile.completedTasksCount} tasks</span>
+                    <span className="text-[18px] font-medium text-[#393939]">{t('taskResponses.completedTasks')}</span>
+                    <span className="text-[16px] font-normal text-[#737373]">{volunteer.profile.completedTasksCount} {t('taskResponses.tasks')}</span>
                 </div>
 
                 <VolunteerAreasCard areas={realSkills} />
@@ -75,7 +76,7 @@ export const CandidateApprovePage = () => {
                         onClick={handleOpenSheet}
                         className="w-full h-[56px] rounded-xl border border-[#162A43] bg-[#004573] text-white shadow-[3px_3px_0_0_#162A43] text-[20px] font-medium"
                     >
-                        Approve and Sync Arrival
+                        {t('taskResponses.approveAndSyncArrival')}
                     </Button>
                 </div>
             </div>

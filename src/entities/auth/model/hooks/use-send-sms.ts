@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { authApi } from '../../api';
 import { SendSmsRequest, SendSmsResponse } from '../types';
@@ -5,6 +6,8 @@ import { useMutationWithErrorHandling } from '@/shared/api/hook/use-mutation-wit
 import { validateApiResponse, isObject } from '@/shared/lib/validation';
 
 export function useSendSms() {
+  const { t } = useTranslation();
+  
   return useMutationWithErrorHandling<SendSmsResponse, Error, SendSmsRequest>({
     mutationFn: async (data: SendSmsRequest) => {
       const response = await authApi.sendSms(data);
@@ -18,15 +21,15 @@ export function useSendSms() {
     },
     onSuccess: (_, variables) => {
       const isDev = variables.isDev;
-      toast.success('SMS код отправлен!', {
+      toast.success(t('auth.codeSent'), {
         description: isDev
-          ? 'Режим разработки: код отправлен в консоль'
-          : 'Проверьте ваш телефон и введите полученный код',
+          ? t('auth.codeSentDescription')
+          : t('auth.codeSentDescriptionProduction'),
         duration: 5000,
       });
 
       if (isDev) {
-        console.log('🔧 DEV MODE: SMS код отправлен для номера', variables.phoneNumber);
+        console.log('🔧 DEV MODE: SMS code sent for number', variables.phoneNumber);
       }
     },
   });

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
-import {Button} from "@/shared/ui";
+import { Button } from "@/shared/ui";
 import { TaskFormCard } from "@/entities/task/ui/task-form-card";
 import { taskApi } from "@/entities/task/api";
 import { CreateTaskDto, Task } from "@/entities/task/model/types";
@@ -14,6 +14,10 @@ import { QUERY_KEYS } from "@/shared/api/hook/query-keys.ts";
 import { useMutationWithErrorHandling } from "@/shared/api/hook/use-mutation-with-error-handling";
 import { validateApiResponse, isObject, validateRequiredFields } from "@/shared/lib/validation";
 import { toast } from "sonner";
+import { categoryApi } from "@/entities/category/api";
+import { useQueryWithErrorHandling } from "@/shared/api/hook/use-query-with-error-handling";
+import { useCreateTaskStore } from "@/features/create-task/model/store.ts";
+import { useEffect } from "react";
 
 type CreateTaskFormProps = {
     skillsIds: string[];
@@ -27,22 +31,31 @@ type CreateTaskFormValues = z.infer<typeof createTaskSchema>;
 export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: CreateTaskFormProps) => {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
-    const { data: user } = useGetMe()
+    const { data: user } = useGetMe();
+    const { aiGeneratedData, setAiGeneratedData } = useCreateTaskStore();
+
+    // Получаем категорию для использования её названия как type
+    const { data: categories } = useQueryWithErrorHandling({
+        queryKey: ['categories'],
+        queryFn: async () => categoryApi.getCategories(),
+    });
+
+    const selectedCategory = categories?.find(cat => cat.id === categoryId);
     const { mutate, isPending } = useMutationWithErrorHandling<Task, Error, CreateTaskDto>({
         mutationFn: async (data: CreateTaskDto) => {
             // Валидация входных данных
             if (!data.programId || !data.needyId || !data.title || !data.description) {
                 throw new Error('Missing required task fields');
             }
-            
+
             const response = await taskApi.createTask(data);
-            
+
             // Валидация ответа
             return validateApiResponse(
                 response,
                 (data): data is Task => {
-                    return isObject(data) && 
-                           validateRequiredFields(data, ['id', 'programId', 'needyId', 'title', 'description', 'status']);
+                    return isObject(data) &&
+                        validateRequiredFields(data, ['id', 'programId', 'needyId', 'title', 'description', 'status']);
                 },
                 'Invalid task creation response format'
             );
@@ -50,28 +63,44 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.TASKS] });
             queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.MY_TASKS] });
+            setAiGeneratedData(undefined); // Очищаем AI-сгенерированные данные после успешного создания
             onSuccess();
         },
     });
-    const { register, control, handleSubmit, formState: { errors } } = useForm<CreateTaskFormValues>({
+    const { register, control, handleSubmit, formState: { errors }, reset } = useForm<CreateTaskFormValues>({
         resolver: zodResolver(createTaskSchema),
         mode: "onChange",
         defaultValues: {
-            title: "",
-            description: "",
-            firstResponseMode: false,
-            skillIds: skillsIds,
-            categoryId: categoryId,
+            title: aiGeneratedData?.title || "",
+            description: aiGeneratedData?.description || "",
+            firstResponseMode: aiGeneratedData?.firstResponseMode ?? false,
+            skillIds: aiGeneratedData?.skillIds && aiGeneratedData.skillIds.length > 0 ? aiGeneratedData.skillIds : skillsIds,
+            categoryId: aiGeneratedData?.categoryId || categoryId,
             scheduledDate: undefined,
             scheduledTime: undefined,
         }
     });
 
+    // Обновляем форму при изменении AI-сгенерированных данных
+    useEffect(() => {
+        if (aiGeneratedData) {
+            reset({
+                title: aiGeneratedData.title || "",
+                description: aiGeneratedData.description || "",
+                firstResponseMode: aiGeneratedData.firstResponseMode ?? false,
+                skillIds: aiGeneratedData.skillIds && aiGeneratedData.skillIds.length > 0 ? aiGeneratedData.skillIds : skillsIds,
+                categoryId: aiGeneratedData.categoryId || categoryId,
+                scheduledDate: undefined,
+                scheduledTime: undefined,
+            });
+        }
+    }, [aiGeneratedData, reset, skillsIds, categoryId]);
+
     const onSubmit = async (data: CreateTaskFormValues) => {
         try {
             // Получаем programId из профиля пользователя
             if (!user || user.role !== 'needy') {
-                toast.error(t('errors.forbidden') || 'Только нуждающиеся могут создавать задачи');
+                toast.error(t('errors.forbidden'));
                 return;
             }
 
@@ -88,34 +117,39 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
                 return;
             }
 
-        // Формируем details с датой и временем, если они указаны
-        let details = "";
-        if (data.scheduledDate || data.scheduledTime) {
-            const dateTimeParts = [];
-            if (data.scheduledDate) {
-                dateTimeParts.push(`Дата: ${new Date(data.scheduledDate).toLocaleDateString()}`);
+            // Формируем details с датой и временем, если они указаны
+            let details = "";
+            if (data.scheduledDate || data.scheduledTime) {
+                const dateTimeParts = [];
+                if (data.scheduledDate) {
+                    dateTimeParts.push(`Дата: ${new Date(data.scheduledDate).toLocaleDateString()}`);
+                }
+                if (data.scheduledTime) {
+                    dateTimeParts.push(`Время: ${data.scheduledTime}`);
+                }
+                details = dateTimeParts.join(", ");
             }
-            if (data.scheduledTime) {
-                dateTimeParts.push(`Время: ${data.scheduledTime}`);
-            }
-            details = dateTimeParts.join(", ");
-        }
 
-        const payload: CreateTaskDto = {
+            // Используем type из AI-сгенерированных данных, если есть
+            // Иначе используем название категории или title как fallback
+            const taskType = aiGeneratedData?.type || selectedCategory?.name || data.title;
+
+            const payload: CreateTaskDto = {
                 programId: programId,
                 needyId: user.id,
-            type: data.title,
-            title: data.title,
-            description: data.description,
-            details: details,
-            skillIds: data.skillIds,
-            categoryId: data.categoryId,
-            firstResponseMode: data.firstResponseMode,
-        };
-        mutate(payload);
+                type: taskType,
+                title: data.title,
+                description: data.description,
+                details: aiGeneratedData?.details || details || undefined,
+                points: aiGeneratedData?.points,
+                skillIds: data.skillIds,
+                categoryId: data.categoryId,
+                firstResponseMode: data.firstResponseMode,
+            };
+            mutate(payload);
         } catch (error) {
             console.error('Error in onSubmit:', error);
-            const errorMessage = error instanceof Error ? error.message : t('errors.general') || 'Произошла ошибка';
+            const errorMessage = error instanceof Error ? error.message : t('errors.general');
             toast.error(errorMessage);
         }
     };

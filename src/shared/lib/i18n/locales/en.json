@@ -33,7 +33,16 @@
     "codeSentTo": "Code sent to",
     "changePhone": "Change phone number",
     "sessionExpired": "Session Expired",
-    "sessionExpiredDescription": "Please log in again"
+    "sessionExpiredDescription": "Please log in again",
+    "welcome": "Welcome!",
+    "welcomeDescription": "Hello, {{name}}! You have successfully logged in",
+    "codeSent": "SMS code sent!",
+    "codeSentDescription": "Development mode: code sent to console",
+    "codeSentDescriptionProduction": "Check your phone and enter the code you received",
+    "loginError": "Login Error",
+    "loginErrorDescription": "Invalid response data from server",
+    "loginErrorSaveDescription": "Failed to save authorization data",
+    "invalidResponse": "Invalid response data from server"
   },
   "tasks": {
     "title": "Tasks",
@@ -55,7 +64,16 @@
     "inProgress": "In Progress",
     "completed": "Completed",
     "cancelled": "Cancelled",
-    "allPrograms": "All Programs"
+    "allPrograms": "All Programs",
+    "waitingForVolunteers": "Waiting for volunteers",
+    "volunteersFound": "Volunteers found"
+  },
+  "task": {
+    "assignSuccess": "Volunteer assigned successfully!",
+    "assignSuccessDescription": "Task moved to 'In Progress' status",
+    "assignError": "Error assigning volunteer",
+    "taskNotFound": "Task not found",
+    "alreadyAssigned": "This task is already assigned to another volunteer"
   },
   "volunteer": {
     "title": "Volunteer",
@@ -149,7 +167,9 @@
     "citiesLoadError": "Error loading cities. Please refresh the page.",
     "detectingLocation": "Detecting location...",
     "geolocating": "Determining nearest city...",
-    "finish": "Finish"
+    "finish": "Finish",
+    "cityDetected": "City detected automatically",
+    "cityPlaceholder": "Select city"
   },
   "pwa": {
     "title": "Install App",
@@ -208,7 +228,19 @@
     "responseRejectedTitle": "Response Rejected",
     "responseRejectedBody": "Your response to task \"{{taskTitle}}\" has been rejected",
     "assignmentCancelled": "Task Assignment Cancelled",
-    "taskStatusUpdated": "Task Status Updated"
+    "taskStatusUpdated": "Task Status Updated",
+    "newNotification": "New Notification",
+    "newNotificationBody": "You have a new notification",
+    "notificationError": "Notification Error",
+    "testNotification": "Test Notification",
+    "testNotificationBody": "If you see this notification, push notifications are working correctly!",
+    "testNotificationSent": "Test notification sent!",
+    "testNotificationSentDescription": "Check if the notification appeared",
+    "testNotificationError": "Error sending test notification",
+    "testNotificationErrorDescription": "Failed to send notification",
+    "sendTest": "Send test notification",
+    "testing": "Testing",
+    "testNotificationDescription": "Send a test notification to verify the system is working. The notification will arrive even if you are on the page."
   },
   "taskResponses": {
     "volunteerToHelp": "Volunteers to help",
@@ -233,7 +265,16 @@
     "task": "Task",
     "taskIdRequired": "Task ID is required",
     "assignedVolunteer": "Assigned Volunteer",
-    "taskOwner": "Task Owner"
+    "taskOwner": "Task Owner",
+    "volunteerForYourTask": "Volunteer for\nyour task",
+    "completedTasks": "Completed tasks",
+    "tasks": "tasks",
+    "approveAndSyncArrival": "Approve and Sync Arrival",
+    "userNotFound": "User not found",
+    "shareContactDetails": "In order for {{volunteerName}} to come, the system will now share your contact details with him:",
+    "confirmAndShareDetails": "Confirm and Share Details",
+    "volunteerApprovedTitle": "The volunteer has been\napproved! You will be\ncontacted soon.",
+    "backToMyTasks": "Back to my tasks"
   },
   "volunteerDetails": {
     "title": "Volunteer Details",
@@ -254,13 +295,18 @@
   "categoriesNeedy": {
     "headerTitle": "How can we help?",
     "aiPrompt": "Share what happened, and AI will create the task for you to edit and approve before saving.",
+    "aiPromptRequired": "Please enter a description of what you need help with",
+    "sendButton": "Send",
     "searchPlaceholder": "e.g., help with grocery shopping...",
+    "searchCategoriesPlaceholder": "Search categories...",
     "recentTasksTitle": "My Recent Tasks",
     "categoriesTitle": "Search by Categories",
     "mostRequestedTitle": "Most requested in the community",
     "nextButton": "Next",
     "tabMyTasks": "My Tasks",
-    "tabRequestHelp": "Request Help"
+    "tabRequestHelp": "Request Help",
+    "noCategories": "No categories available",
+    "noCategoriesFound": "No categories found matching your search"
   },
   "categorySkillsView": {
     "headerTitle": "What exactly do you need?",
@@ -316,6 +362,13 @@
       "worldBetter": "Thanks to you, our world is a better place!",
       "returnToTasks": "Return to tasks."
     }
+  },
+  "taskCompletion": {
+    "thanksForUpdate": "Thanks for the update! 😊",
+    "feedbackDescription": "We can't wait to hear your thoughts! Your feedback will be visible only to those who are looking for help, so it can truly make a difference.",
+    "feedbackPlaceholder": "For example: great work...",
+    "backToTasks": "Back to my tasks",
+    "successCrown": "Success Crown"
   },
   "errors": {
     "validation": "Validation Error",

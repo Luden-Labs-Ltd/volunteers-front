@@ -15,7 +15,7 @@ export const AssignVolunteerPage = () => {
     if (isLoading || taskLoading) return <div>{t('common.loading') || 'Loading...'}</div>;
     if (!id) return <div>{t('taskResponses.taskIdRequired') || 'Task ID is required'}</div>;
 
-    const taskTitle = task?.title || t('taskResponses.task') || 'Задача';
+    const taskTitle = task?.title || t('taskResponses.task');
 
     return (
         <div className="w-full max-w-[393px] min-h-screen m-auto relative bg-white">

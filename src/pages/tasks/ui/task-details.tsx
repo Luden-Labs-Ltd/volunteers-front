@@ -144,7 +144,7 @@ export const TaskDetailsPage = () => {
             {user?.role === 'needy' && task?.assignedVolunteerId && assignedVolunteer && (
               <Card variant={'elevated'} className={'p-4 flex flex-col gap-3 items-start text-left w-full'}>
                 <p className="text-textGray font-normal text-lg font-medium mb-2">
-                  {t('taskResponses.assignedVolunteer') || 'Назначенный волонтер:'}
+                  {t('taskResponses.assignedVolunteer')}
                 </p>
                 <VolunteerCard
                   location={
@@ -170,7 +170,7 @@ export const TaskDetailsPage = () => {
             <Card variant={'elevated'} className={'p-4 flex flex-col gap-3 items-start text-left w-full'}>
               <p className="text-textGray font-normal">
                 {user?.role === 'needy'
-                  ? (t('taskResponses.taskOwner') || 'Владелец задачи:')
+                  ? t('taskResponses.taskOwner')
                   : t('volunteerTask.details.contactTitle')
                 }
               </p>
@@ -181,7 +181,7 @@ export const TaskDetailsPage = () => {
               {isAssignedToMe && task.status === TaskStatus.IN_PROGRESS && task.address && (
                 <div className="w-full">
                   <p className="text-textGray font-normal text-sm mb-1">
-                    {t('volunteerTask.details.address') || 'Адрес:'}
+                    {t('volunteerTask.details.address')}
                   </p>
                   <p className="text-textGray font-medium">
                     {task.address}
@@ -283,7 +283,7 @@ export const TaskDetailsPage = () => {
                 });
               }}
             >
-              {t('volunteerTask.details.respondButton') || 'Я готов взять ее'}
+              {t('volunteerTask.details.respondButton')}
             </Button>
           )}
 
@@ -294,10 +294,10 @@ export const TaskDetailsPage = () => {
             !isInSameProgram && (
               <div className="text-center py-4">
                 <Badge variant="warning">
-                  {t('volunteerTask.details.differentProgram') || 'Другая программа'}
+                  {t('volunteerTask.details.differentProgram')}
                 </Badge>
                 <p className="text-sm text-gray-600 mt-2">
-                  {t('volunteerTask.details.differentProgramDescription') || 'Вы не можете откликнуться на эту задачу, так как она относится к другой программе, в которой вы не участвуете.'}
+                  {t('volunteerTask.details.differentProgramDescription')}
                 </p>
               </div>
             )}
@@ -306,10 +306,10 @@ export const TaskDetailsPage = () => {
           {volunteerResponse && responseStatus === TaskResponseStatus.PENDING && (
             <div className="text-center py-4">
               <Badge variant="default">
-                {t('volunteerTask.details.waitingApproval') || 'Ожидание одобрения'}
+                {t('volunteerTask.details.waitingApproval')}
               </Badge>
               <p className="text-sm text-gray-600 mt-2">
-                {t('volunteerTask.details.waitingApprovalDescription') || 'Ваш отклик отправлен. Ожидайте одобрения от нуждающегося.'}
+                {t('volunteerTask.details.waitingApprovalDescription')}
               </p>
             </div>
           )}
@@ -318,7 +318,7 @@ export const TaskDetailsPage = () => {
           {volunteerResponse && responseStatus === TaskResponseStatus.REJECTED && (
             <div className="text-center py-4">
               <Badge variant="warning">
-                {t('volunteerTask.details.rejected') || 'Отклик отклонен'}
+                {t('volunteerTask.details.rejected')}
               </Badge>
             </div>
           )}

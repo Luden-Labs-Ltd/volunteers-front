@@ -25,20 +25,20 @@ export const useAssignVolunteer = () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.TASKS, taskId] });
 
             toast.success(
-                t('task.assignSuccess') || 'Волонтер успешно назначен!',
+                t('task.assignSuccess'),
                 {
-                    description: t('task.assignSuccessDescription') || 'Задача переведена в статус "В работе"',
+                    description: t('task.assignSuccessDescription'),
                 }
             );
         },
         onError: (error: Error | unknown) => {
-            let message = t('task.assignError') || 'Ошибка при назначении волонтера';
+            let message = t('task.assignError');
 
             if (error instanceof Error && error.message) {
                 if (error.message.includes('not found')) {
-                    message = t('task.taskNotFound') || 'Задача не найдена';
+                    message = t('task.taskNotFound');
                 } else if (error.message.includes('already assigned')) {
-                    message = t('task.alreadyAssigned') || 'Эта задача уже назначена другому волонтеру';
+                    message = t('task.alreadyAssigned');
                 } else {
                     message = error.message;
                 }

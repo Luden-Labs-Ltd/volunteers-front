@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {Button, Textarea} from '@/shared/ui';
 import crownIllustration from '../assets/taskFeedback/Crown.webp';
 
 export const TaskCompletionFeedbackPage = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [feedback, setFeedback] = useState('');
 
@@ -18,22 +20,21 @@ export const TaskCompletionFeedbackPage = () => {
                 <div className="w-full max-w-[327px] aspect-square flex items-center justify-center mb-6">
                     <img
                         src={crownIllustration}
-                        alt="Success Crown"
+                        alt={t('taskCompletion.successCrown')}
                         className="w-full h-full object-contain"
                     />
                 </div>
                 <h1 className="text-[24px] font-medium text-black text-center mb-3 leading-tight tracking-tight">
-                    Thanks for the update! 😊
+                    {t('taskCompletion.thanksForUpdate')}
                 </h1>
                 <p className="text-[16px] text-[#4F4F4F] text-center font-normal mb-8">
-                    We can’t wait to hear your thoughts! Your feedback will be visible only to those who are looking for help, so it can truly
-                    make a difference.
+                    {t('taskCompletion.feedbackDescription')}
                 </p>
                 <div className="w-full mb-auto">
                     <Textarea
                         value={feedback}
                         onChange={(e) => setFeedback(e.target.value)}
-                        placeholder="For example: great work..."
+                        placeholder={t('taskCompletion.feedbackPlaceholder')}
                         className="w-full h-[52px] px-4 py-3.5 rounded-xl border border-[#F3F3F3]
                          bg-white text-[16px] placeholder:text-[#C4C4C4] focus:outline-none overflow-hidden shadow-[1px_1px_0_0_#F3F3F3,3px_3px_0_0_#F3F3F3]"
                         style={{ minHeight: '52px' }}
@@ -45,7 +46,7 @@ export const TaskCompletionFeedbackPage = () => {
                         className="w-full h-[56px] rounded-xl bg-[#004573] text-white text-[18px] font-semibold
                        border border-[#002640]  shadow-[1px_1px_0_0_#002640,3px_3px_0_0_#002640]"
                     >
-                        Back to my tasks
+                        {t('taskCompletion.backToTasks')}
                     </Button>
                 </div>
             </div>

@@ -80,7 +80,9 @@
     "citiesLoadError": "שגיאה בטעינת ערים. אנא רענן את הדף.",
     "detectingLocation": "מזהה מיקום...",
     "geolocating": "קובע את העיר הקרובה ביותר...",
-    "finish": "סיום"
+    "finish": "סיום",
+    "cityDetected": "העיר זוהתה אוטומטית",
+    "cityPlaceholder": "בחר עיר"
   },
   "auth": {
     "title": "התחברות",
@@ -95,7 +97,16 @@
     "enterPhone": "הכנס את מספר הטלפון שלך כדי להמשיך",
     "enterCode": "הכנס את הקוד שנשלח לטלפון שלך",
     "codeSentTo": "קוד נשלח ל",
-    "changePhone": "שנה מספר טלפון"
+    "changePhone": "שנה מספר טלפון",
+    "welcome": "ברוכים הבאים!",
+    "welcomeDescription": "שלום, {{name}}! התחברת בהצלחה",
+    "codeSent": "קוד SMS נשלח!",
+    "codeSentDescription": "מצב פיתוח: קוד נשלח לקונסול",
+    "codeSentDescriptionProduction": "בדוק את הטלפון שלך והכנס את הקוד שקיבלת",
+    "loginError": "שגיאת התחברות",
+    "loginErrorDescription": "נתונים לא תקינים מהשרת",
+    "loginErrorSaveDescription": "נכשל בשמירת נתוני ההרשאה",
+    "invalidResponse": "נתוני תגובה לא תקינים מהשרת"
   },
   "tasks": {
     "title": "משימות",
@@ -117,7 +128,16 @@
     "inProgress": "בטיפול",
     "completed": "הושלם",
     "cancelled": "בוטל",
-    "allPrograms": "כל התוכניות"
+    "allPrograms": "כל התוכניות",
+    "waitingForVolunteers": "ממתין למתנדבים",
+    "volunteersFound": "נמצאו מתנדבים"
+  },
+  "task": {
+    "assignSuccess": "מתנדב הוקצה בהצלחה!",
+    "assignSuccessDescription": "המשימה הועברה לסטטוס 'בטיפול'",
+    "assignError": "שגיאה בהקצאת מתנדב",
+    "taskNotFound": "משימה לא נמצאה",
+    "alreadyAssigned": "משימה זו כבר הוקצתה למתנדב אחר"
   },
   "volunteer": {
     "title": "מתנדב",
@@ -223,7 +243,19 @@
     "responseRejectedTitle": "תגובה נדחתה",
     "responseRejectedBody": "התגובה שלך למשימה \"{{taskTitle}}\" נדחתה",
     "assignmentCancelled": "הקצאת משימה בוטלה",
-    "taskStatusUpdated": "סטטוס משימה עודכן"
+    "taskStatusUpdated": "סטטוס משימה עודכן",
+    "newNotification": "התראה חדשה",
+    "newNotificationBody": "יש לך התראה חדשה",
+    "notificationError": "שגיאת התראה",
+    "testNotification": "התראה לבדיקה",
+    "testNotificationBody": "אם אתה רואה את ההתראה הזו, התראות push עובדות כראוי!",
+    "testNotificationSent": "התראה לבדיקה נשלחה!",
+    "testNotificationSentDescription": "בדוק אם ההתראה הופיעה",
+    "testNotificationError": "שגיאה בשליחת התראה לבדיקה",
+    "testNotificationErrorDescription": "נכשל בשליחת התראה",
+    "sendTest": "שלח התראה לבדיקה",
+    "testing": "בדיקה",
+    "testNotificationDescription": "שלח התראה לבדיקה כדי לוודא שהמערכת עובדת. ההתראה תגיע גם אם אתה נמצא בדף."
   },
   "taskResponses": {
     "volunteerToHelp": "מתנדבים לעזור",
@@ -248,7 +280,16 @@
     "task": "משימה",
     "taskIdRequired": "נדרש מזהה משימה",
     "assignedVolunteer": "מתנדב מוקצה",
-    "taskOwner": "בעל המשימה"
+    "taskOwner": "בעל המשימה",
+    "volunteerForYourTask": "מתנדב למשימה\nשלך",
+    "completedTasks": "משימות שהושלמו",
+    "tasks": "משימות",
+    "approveAndSyncArrival": "אשר וסנכרן הגעה",
+    "userNotFound": "משתמש לא נמצא",
+    "shareContactDetails": "כדי ש-{{volunteerName}} יגיע, המערכת תשתף כעת את פרטי הקשר שלך איתו:",
+    "confirmAndShareDetails": "אשר ושתף פרטים",
+    "volunteerApprovedTitle": "המתנדב אושר!\nתיצור איתך קשר\nבקרוב.",
+    "backToMyTasks": "חזור למשימות שלי"
   },
   "volunteerDetails": {
     "title": "פרטי מתנדב",
@@ -269,13 +310,18 @@
   "categoriesNeedy": {
     "headerTitle": "איך נוכל לעזור?",
     "aiPrompt": "שתף מה קרה, והבינה המלאכותית תיצור את המשימה עבורך כדי שתוכל לערוך ולאשר לפני השמירה.",
+    "aiPromptRequired": "אנא הזן תיאור של מה שאתה צריך עזרה",
+    "sendButton": "שלח",
     "searchPlaceholder": "למשל, עזרה בקניות במכולת...",
+    "searchCategoriesPlaceholder": "חפש קטגוריות...",
     "recentTasksTitle": "המשימות האחרונות שלי",
     "categoriesTitle": "חיפוש לפי קטגוריות",
     "mostRequestedTitle": "המבוקשים ביותר בקהילה",
     "nextButton": "הבא",
     "tabMyTasks": "המשימות שלי",
-    "tabRequestHelp": "בקשת עזרה"
+    "tabRequestHelp": "בקשת עזרה",
+    "noCategories": "אין קטגוריות זמינות",
+    "noCategoriesFound": "לא נמצאו קטגוריות התואמות לחיפוש שלך"
   },
   "categorySkillsView": {
     "headerTitle": "מה בדיוק דרוש לכם?",
@@ -331,6 +377,13 @@
       "worldBetter": "בזכותך, העולם שלנו הוא מקום טוב יותר!",
       "returnToTasks": "חזור למשימות."
     }
+  },
+  "taskCompletion": {
+    "thanksForUpdate": "תודה על העדכון! 😊",
+    "feedbackDescription": "אנחנו לא יכולים לחכות לשמוע את המחשבות שלך! המשוב שלך יהיה גלוי רק למי שמחפש עזרה, כך שהוא באמת יכול לעשות הבדל.",
+    "feedbackPlaceholder": "למשל: עבודה מצוינת...",
+    "backToTasks": "חזור למשימות שלי",
+    "successCrown": "כתר הצלחה"
   },
   "errors": {
     "validation": "שגיאת אימות",

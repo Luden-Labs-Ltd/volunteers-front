@@ -80,8 +80,8 @@ export async function sendTestNotification(
     {
       method: 'POST',
       body: JSON.stringify({
-        title: title || '🧪 Тестовое уведомление',
-        body: body || 'Это тестовое push-уведомление для проверки работы системы',
+        title: title || '🧪 Test Notification',
+        body: body || 'This is a test push notification to verify the system is working',
       }),
     },
   );

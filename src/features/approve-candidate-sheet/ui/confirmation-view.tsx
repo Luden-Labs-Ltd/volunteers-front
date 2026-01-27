@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Button } from "@/shared/ui";
 
 interface ConfirmationViewProps {
@@ -19,10 +20,11 @@ fallbackAvatar,
 onConfirm,
 onCancel,
 }: ConfirmationViewProps) => {
+    const { t } = useTranslation();
     return (
         <>
             <p className="mt-2 text-[16px] leading-snug text-[#393939] font-normal text-center">
-                In order for {volunteerName} to come, the system will now share your contact details with him:
+                {t('taskResponses.shareContactDetails', { volunteerName })}
             </p>
 
             <div className="mt-4 space-y-3 rounded-xl border shadow-[3px_3px_0_0_#F2F2F2] px-2 border-[#F2F2F2]">
@@ -46,7 +48,7 @@ onCancel,
                     onClick={onConfirm}
                     className="w-full h-[56px] rounded-xl border border-[#162A43] bg-[#004573] text-white shadow-[3px_3px_0_0_#162A43] text-[20px] font-medium"
                 >
-                    Confirm and Share Details
+                    {t('taskResponses.confirmAndShareDetails')}
                 </Button>
             </div>
 
@@ -54,7 +56,7 @@ onCancel,
                 onClick={onCancel}
                 className="w-full mt-3 h-[44px] text-[20px] font-medium text-[#004573]"
             >
-                Cancel
+                {t('common.cancel')}
             </button>
         </>
     );

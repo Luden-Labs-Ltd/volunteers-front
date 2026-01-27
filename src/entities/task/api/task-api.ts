@@ -97,6 +97,28 @@ export const taskApi = {
     );
   },
 
+  generateTaskFromAi: async (prompt: string): Promise<Partial<CreateTaskDto>> => {
+    if (!prompt || prompt.trim().length === 0) {
+      throw new Error('Prompt is required');
+    }
+    
+    const response = await apiClient.request<Partial<CreateTaskDto>>('/tasks/ai-generate', {
+      method: 'POST',
+      body: JSON.stringify({ prompt }),
+    });
+    
+    // Валидация ответа
+    return validateApiResponse(
+      response,
+      (data): data is Partial<CreateTaskDto> => {
+        return isObject(data) && 
+               typeof data.title === 'string' &&
+               typeof data.description === 'string';
+      },
+      'Invalid AI generation response format'
+    );
+  },
+
   createTask: async (data: CreateTaskDto): Promise<Task> => {
     // Валидация входных данных
     if (!data.programId || !isValidUUID(data.programId)) {

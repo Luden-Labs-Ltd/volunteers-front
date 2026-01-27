@@ -26,20 +26,20 @@ export const useRejectVolunteer = () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.MY_TASKS] });
       
       toast.success(
-        t('taskResponses.rejectSuccess') || 'Волонтер отклонен',
+        t('taskResponses.rejectSuccess'),
         {
-          description: t('taskResponses.rejectSuccessDescription') || 'Отклик волонтера отклонен',
+          description: t('taskResponses.rejectSuccessDescription'),
         }
       );
     },
     onError: (error: Error | unknown) => {
-      let message = t('taskResponses.rejectError') || 'Ошибка при отклонении волонтера';
+      let message = t('taskResponses.rejectError');
       
       if (error instanceof Error && error.message) {
         if (error.message.includes('not found')) {
-          message = t('taskResponses.responseNotFound') || 'Отклик не найден';
+          message = t('taskResponses.responseNotFound');
         } else if (error.message.includes('forbidden') || error.message.includes('not allowed')) {
-          message = t('taskResponses.rejectForbidden') || 'У вас нет прав для отклонения этого волонтера';
+          message = t('taskResponses.rejectForbidden');
         } else {
           message = error.message;
         }
