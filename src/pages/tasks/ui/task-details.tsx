@@ -122,11 +122,14 @@ export const TaskDetailsPage = () => {
           />
         </div>
       )}
-      <Header
-        backButton
-        onBack={() => navigate(backPath)}
-      />
-      <section className="flex flex-col min-h-screen pt-24 pb-24 px-5 text-center gap-4">
+      <div className={"fixed top-0 left-0 w-full z-50"}>
+        <Header
+          className={'pt-24'}
+          backButton
+          onBack={() => navigate(backPath)}
+        />
+      </div>
+      <section className="flex flex-col min-h-screen pt-24 px-5 text-center gap-4">
         <div className={'flex flex-col gap-8'}>
           <img
             src={mission_illustration}

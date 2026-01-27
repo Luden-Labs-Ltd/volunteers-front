@@ -23,10 +23,12 @@ export const TaskPreviewPage = () => {
       <div className={'flex flex-col gap-8'}>
         <img src={mission_illustration} alt="mission" />
         <div className={'flex flex-col gap-3'}>
-          <Header
-            title={t('volunteerTask.preview.title')}
-            className="border-none bg-transparent py-0"
-          />
+
+            <Header
+              title={t('volunteerTask.preview.title')}
+              className="border-none bg-transparent py-0"
+            />
+
           <Card className="bg-transparent border-none shadow-none">
             <p>{t('volunteerTask.preview.description')}</p>
           </Card>
