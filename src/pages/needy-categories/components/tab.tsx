@@ -26,7 +26,7 @@ export const TabsForLayout = () => {
     };
 
     return (
-        <div className="fixed z-[9999] bottom-0 left-0 right-0 w-full max-w-[398px] mx-auto pointer-events-none">
+        <div className="fixed z-[9999] bottom-0 left-0 right-0 w-full mx-auto pointer-events-none">
             <div className="bg-white border-t border-blue-50 relative pointer-events-auto">
                 <div className="px-16 pt-2 pb-6 flex items-center justify-between bg-white relative z-20">
                     <button
