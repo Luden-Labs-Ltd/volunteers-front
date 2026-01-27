@@ -15,6 +15,13 @@ export const TaskCard: FC<TaskCardProps> = ({task, image}) => {
     navigate(`/volunteer/tasks/${task.id}/preview`)
   }
 
+  const STATUS_LABELS: Record<Task['status'], string> = {
+    active: 'Waiting for Info',
+    in_progress: 'Info Received · Action Required',
+    completed: 'Completed',
+    cancelled: 'Cancelled',
+  }
+
   return (
     <div
       className='flex items-center justify-between border border-[#e0e7ff] rounded-2xl p-4 shadow-[2px_2px_0_0_#e0e7ff] bg-white'
@@ -32,7 +39,7 @@ export const TaskCard: FC<TaskCardProps> = ({task, image}) => {
             ${task.status === 'cancelled' && 'bg-pastel-pink '}
           `}
         >
-          {task.status}
+          {STATUS_LABELS[task.status]}
         </span>
 
         <h3 className="font-sans font-medium text-lg text-[#000] truncate">
