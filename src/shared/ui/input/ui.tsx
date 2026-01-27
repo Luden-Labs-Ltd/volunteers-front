@@ -48,11 +48,6 @@ className,
           </div>
         )}
       </div>
-      {error && (
-        <p className="text-sm text-red-500 mt-1">
-          {error}
-        </p>
-      )}
     </div>
   );
 });

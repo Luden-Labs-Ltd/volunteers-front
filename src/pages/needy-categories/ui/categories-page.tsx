@@ -2,7 +2,7 @@ import { TaskScroll } from "@/features/task-scroll/ui";
 import {useTranslation} from "react-i18next";
 import {CategorySelector} from "@/features/select-categories/ui";
 import {PopularTaskScroll} from "@/features/popular-task-scroll/ui";
-import {Button} from "@/shared/ui";
+import {Button, Icon} from "@/shared/ui";
 import {useNavigate} from "react-router-dom";
 import {useCreateTaskStore} from "@/features/create-task/model/store.ts";
 
@@ -14,17 +14,13 @@ export const CategoriesPage = () => {
     const handleNext = () => {
         navigate("/needy/skills");
     };
-
     return (
-        <div className="pt-[120px] pb-[150px]">
+        <div className="pt-[120px] pb-[calc(150px+env(safe-area-inset-bottom))]">
             {/* Инпут с ИИ + текст */}
             <div className={"flex flex-col justify-center items-center px-[20px]"}>
                 <div className="relative w-full max-w-[353px]">
                     <div className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none">
-                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 6.62646L15.2411 15.3854L24 18.6265L15.2411 21.8676L12 30.6265L8.75891 21.8676L0 18.6265L8.75891 15.3854L12 6.62646Z" fill="#DDF1FF"/>
-                            <path d="M24 0L25.6205 4.37946L30 6L25.6205 7.62054L24 12L22.3795 7.62054L18 6L22.3795 4.37946L24 0Z" fill="#DDF1FF"/>
-                        </svg>
+                        <Icon className={"mt-0.5"} iconId={"icon-ai"}/>
                     </div>
                     <input
                         type="text"
@@ -62,17 +58,17 @@ export const CategoriesPage = () => {
             </h2>
             <PopularTaskScroll />
 
-            <div className="fixed z-[1000] bottom-[72px] left-0 right-0 w-full py-4 max-w-[395px] mx-auto bg-white">
+            <div className="fixed bottom-[69px] left-1/2 -translate-x-1/2 z-[50] w-full">
+                <div className="w-full bg-white px-5 py-4 z-[0]">
                     <Button
-                        className={"py-4 border border-[#162A43] shadow-[1px_1px_0_0_#162A43,3px_3px_0_0_#162A43]"}
-                        variant="primary"
-                        fullWidth
                         onClick={handleNext}
-                        disabled={!setCategoryId}
+                        className="w-full h-[56px] rounded-xl border border-[#162A43] bg-[#004573] text-white shadow-[3px_3px_0_0_#162A43] text-[20px] font-medium focus:ring-0 focus:ring-offset-0 focus:outline-none"
                     >
                         {t("categoriesNeedy.nextButton")}
                     </Button>
+                </div>
             </div>
+
         </div>
     );
 };

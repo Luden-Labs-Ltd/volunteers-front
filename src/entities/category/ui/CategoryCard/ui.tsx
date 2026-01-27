@@ -1,5 +1,4 @@
 import {Category} from "@/entities/category/model";
-import {CATEGORY_IMAGES} from "@/entities/category/lib/CATEGORY_IMAGES.ts";
 
 type CategoryCardType = {
     category: Category;
@@ -8,7 +7,6 @@ type CategoryCardType = {
 }
 
 export const CategoryCard = ({ category, isSelected, onClick }: CategoryCardType) => {
-    const mockImage = CATEGORY_IMAGES[category.name];
     return (
         <button
             onClick={onClick}
@@ -22,12 +20,6 @@ export const CategoryCard = ({ category, isSelected, onClick }: CategoryCardType
             {category.image?.url ? (
                 <img
                     src={category.image.url}
-                    alt={category.name}
-                    className="w-full h-[137px] object-cover"
-                />
-            ) : mockImage ? (
-                <img
-                    src={mockImage}
                     alt={category.name}
                     className="w-full h-[137px] object-cover"
                 />

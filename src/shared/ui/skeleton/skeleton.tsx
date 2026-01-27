@@ -1,4 +1,4 @@
-import { cn } from "@/shared/lib/utils"; // Проверь путь к cn!
+import { cn } from "@/shared/lib/utils";
 
 function Skeleton({
 className,

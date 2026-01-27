@@ -1,0 +1,1 @@
+export { VolunteerAreasCard } from "./ui.tsx"
