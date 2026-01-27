@@ -58,7 +58,7 @@ export const TaskFormCard = ({ register, control, errors }: TaskFormCardType) =>
                                 type="date"
                                 value={value || ''}
                                 onChange={(e) => onChange(e.target.value)}
-                                className={`py-2 px-4 bg-[#EBF7FF] rounded-3xl text-[#373737] text-[16px] font-normal border border-transparent focus:outline-none focus:ring-2 focus:ring-[#004573] cursor-pointer min-w-[120px] ${value ? 'bg-[#004573] text-white' : ''}`}
+                                className={`py-2 px-2 w-[120px] bg-[#EBF7FF] rounded-xl text-[#373737] text-[16px] font-normal border border-transparent focus:outline-none focus:ring-2 focus:ring-[#004573] cursor-pointer min-w-[120px] ${value ? 'bg-[#004573]' : ''}`}
                                 title={t("taskDetails.labelDate")}
                             />
                         )}
@@ -71,7 +71,7 @@ export const TaskFormCard = ({ register, control, errors }: TaskFormCardType) =>
                                 type="time"
                                 value={value || ''}
                                 onChange={(e) => onChange(e.target.value)}
-                                className={`py-2 px-4 bg-[#EBF7FF] rounded-3xl text-[#373737] text-[16px] font-normal border border-transparent focus:outline-none focus:ring-2 focus:ring-[#004573] cursor-pointer min-w-[100px] ${value ? 'bg-[#004573] text-white' : ''}`}
+                                className={`py-2 px-4 bg-[#EBF7FF] rounded-xl text-[#373737] text-[16px] font-normal border border-transparent focus:outline-none focus:ring-2 focus:ring-[#004573] cursor-pointer min-w-[100px] ${value ? 'bg-[#004573]' : ''}`}
                                 title={t("taskDetails.labelTime")}
                             />
                         )}

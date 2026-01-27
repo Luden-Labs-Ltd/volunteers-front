@@ -1,80 +1,27 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { useState, useMemo } from 'react';
-import Lottie from 'lottie-react';
-import mission_illustration from '@/shared/assets/images/mission_illustration.webp';
-import { Button, Card, Badge, Header } from '@/shared/ui';
-import { useGetTaskById } from '@/entities/task/hook/useGetTaskId';
-import { useCompleteTask } from '@/entities/task/hook/useCompleteTask';
-import { useGetMe } from '@/entities/user';
-import { useUserById } from '@/entities/user/model/hooks/use-get-user-by-id';
-import { useTaskResponses, useVolunteerResponse, useRespondToTask } from '@/entities/taskResponses/hook';
-import { TaskStatus, TaskResponseStatus, TaskApproveRole } from '@/entities/task/model/types';
-import { VolunteerCard } from '@/entities/user/ui/volunteer-card';
-import smsIcon from '@/shared/assets/images/sms.webp';
-import phoneIcon from '@/shared/assets/images/phone.webp';
-import watsappIcon from '@/shared/assets/images/watsapp.webp';
+import Lottie from "lottie-react";
+import {Button, Icon} from '@/shared/ui';
+import {UserProfileHeader} from "@/entities/user/ui/user-profile-header";
 import successAnimation from '@/shared/assets/animations/confetti.json';
+import {ContactActions} from "@/entities/user/ui/contact-actions";
+import {CancelVolunteerSheet} from "@/features/cancel-volunteer-sheet/ui";
+import {useTaskDetailsPage} from "@/pages/tasks/modal";
+import {VolunteerInfoCard} from "@/entities/user/ui/volunteer-info-card";
+import {TaskInfoCard} from "@/entities/task/ui/task-info-card";
 
 export const TaskDetailsPage = () => {
-  const { t } = useTranslation();
-  const [showAnimation, setShowAnimation] = useState<boolean>(false);
-  const navigate = useNavigate();
-  const { taskId } = useParams();
-  const { data: task, isLoading, isError, refetch: refetchTask } = useGetTaskById(taskId);
-  const { data: user } = useGetMe();
+    const {
+        task,
+        volunteer,
+        showAnimation,
+        isCancelSheetOpen,
+        isProcessing,
+        setIsCancelSheetOpen,
+        handleComplete,
+        handleConfirmCancel,
+        handleAnimationComplete,
+        navigate
+    } = useTaskDetailsPage();
 
-  // Получаем информацию о назначенном волонтере (для нуждающихся)
-  const { data: assignedVolunteer } = useUserById(
-    user?.role === 'needy' && task?.assignedVolunteerId ? task.assignedVolunteerId : ''
-  );
-
-  // Для нуждающихся используем useTaskResponses, для волонтеров - useVolunteerResponse
-  const { refetch: refetchResponses } = useTaskResponses(
-    user?.role === 'needy' ? (taskId || '') : ''
-  );
-  const { data: volunteerResponse, refetch: refetchVolunteerResponse } = useVolunteerResponse(
-    user?.role === 'volunteer' ? user.id : undefined,
-    user?.role === 'volunteer' ? (taskId || '') : undefined
-  );
-
-  const { mutate: completeTask, isPending: isCompleting } = useCompleteTask();
-  const { mutate: respondToTask, isPending: isResponding } = useRespondToTask();
-
-  // Проверяем, назначена ли задача волонтеру
-  const isAssignedToMe = task?.assignedVolunteerId === user?.id;
-
-  // Определяем путь назад в зависимости от роли
-  const backPath = user?.role === 'needy' ? '/needy/tasks' : '/volunteer/tasks';
-
-  // Проверяем, находится ли волонтер в той же программе, что и задача
-  const isInSameProgram = useMemo(() => {
-    if (!task?.programId || user?.role !== 'volunteer') return false;
-    const volunteerPrograms = user.profile?.programs || [];
-    return volunteerPrograms.some((program) => program.id === task.programId);
-  }, [task?.programId, user]);
-
-  // Определяем, можно ли завершить задачу
-  // Для волонтера: если задача назначена ему и в статусе IN_PROGRESS
-  // Для нуждающегося: если задача в статусе IN_PROGRESS и назначен волонтер
-  const canCompleteAsVolunteer = isAssignedToMe && task?.status === TaskStatus.IN_PROGRESS;
-  const canCompleteAsNeedy = user?.role === 'needy' && 
-                              task?.status === TaskStatus.IN_PROGRESS && 
-                              task?.assignedVolunteerId &&
-                              !task.approveBy?.includes(TaskApproveRole.NEEDY);
-  const canComplete = canCompleteAsVolunteer || canCompleteAsNeedy;
-
-  // Определяем, можно ли откликнуться (если не назначена, не откликался, задача активна, и в той же программе)
-  const canRespond =
-    !isAssignedToMe &&
-    !volunteerResponse &&
-    task?.status === TaskStatus.ACTIVE &&
-    isInSameProgram;
-
-  // Определяем статус отклика
-  const responseStatus = volunteerResponse?.status;
-
-  if (!taskId) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
@@ -262,68 +209,57 @@ export const TaskDetailsPage = () => {
             </Button>
           )}
 
-          {/* Кнопка "Я готов взять ее" - если можно откликнуться */}
-          {canRespond && (
-            <Button
-              size={'lg'}
-              fullWidth
-              variant={'secondary'}
-              disabled={isResponding}
-              onClick={() => {
-                respondToTask(taskId, {
-                  onSuccess: () => {
-                    // Принудительно обновляем данные после отклика
-                    if (user?.role === 'volunteer') {
-                      refetchVolunteerResponse();
-                    } else {
-                      refetchResponses();
-                    }
-                    refetchTask();
-                  },
-                });
-              }}
-            >
-              {t('volunteerTask.details.respondButton') || 'Я готов взять ее'}
-            </Button>
-          )}
+            <div className="pt-[120px] pb-[210px] px-[20px]">
+                <div className={"flex justify-center mb-7"}>
+                    <span className={"bg-[#D8FFD6] p-1 rounded-xl text-[16px] font-normal"}>Volunteer found</span>
+                </div>
+                {volunteer ? (
+                    <UserProfileHeader user={volunteer} />
+                ) : (
+                    <div>Loading volunteer...</div>
+                )}
+                <ContactActions phone={volunteer?.phone}/>
+                <TaskInfoCard volunteer={volunteer}/>
+                <VolunteerInfoCard task={task} />
+            </div>
 
-          {/* Предупреждение, если волонтер не в той же программе */}
-          {!isAssignedToMe &&
-            !volunteerResponse &&
-            task?.status === TaskStatus.ACTIVE &&
-            !isInSameProgram && (
-              <div className="text-center py-4">
-                <Badge variant="warning">
-                  {t('volunteerTask.details.differentProgram') || 'Другая программа'}
-                </Badge>
-                <p className="text-sm text-gray-600 mt-2">
-                  {t('volunteerTask.details.differentProgramDescription') || 'Вы не можете откликнуться на эту задачу, так как она относится к другой программе, в которой вы не участвуете.'}
-                </p>
-              </div>
+            {showAnimation && (
+                <div className="fixed inset-0 z-[100] flex items-end justify-center pointer-events-none pb-16">
+                    <Lottie
+                        animationData={successAnimation}
+                        loop={false}
+                        className="w-full h-full"
+                        onComplete={handleAnimationComplete}
+                    />
+                </div>
             )}
 
-          {/* Статус ожидания одобрения */}
-          {volunteerResponse && responseStatus === TaskResponseStatus.PENDING && (
-            <div className="text-center py-4">
-              <Badge variant="default">
-                {t('volunteerTask.details.waitingApproval') || 'Ожидание одобрения'}
-              </Badge>
-              <p className="text-sm text-gray-600 mt-2">
-                {t('volunteerTask.details.waitingApprovalDescription') || 'Ваш отклик отправлен. Ожидайте одобрения от нуждающегося.'}
-              </p>
-            </div>
-          )}
+            <CancelVolunteerSheet
+                isOpen={isCancelSheetOpen}
+                onClose={() => setIsCancelSheetOpen(false)}
+                onConfirm={handleConfirmCancel}
+                volunteer={volunteer || null}
+                isProcessing={isProcessing}
+            />
 
-          {/* Статус отклонения */}
-          {volunteerResponse && responseStatus === TaskResponseStatus.REJECTED && (
-            <div className="text-center py-4">
-              <Badge variant="warning">
-                {t('volunteerTask.details.rejected') || 'Отклик отклонен'}
-              </Badge>
+            <div className="fixed bottom-[69px] left-1/2 -translate-x-1/2 z-[50] w-full max-w-[393px]">
+                <div className="w-full bg-white px-5 py-4 border-t border-gray-100">
+                    <Button
+                        className="w-full h-[48px] rounded-xl border border-[#162A43] bg-[#004573] text-white shadow-[3px_3px_0_0_#162A43] text-[20px] font-medium"
+                        onClick={handleComplete}
+                        disabled={isProcessing}
+                    >
+                        Task completed!
+                    </Button>
+                    <Button
+                        onClick={() => setIsCancelSheetOpen(true)}
+                        disabled={isProcessing}
+                        className="mt-2 w-full h-[48px] rounded-xl border border-[#162A43] bg-white text-[#004573] shadow-[3px_3px_0_0_#162A43] text-[20px] font-medium active:bg-transparent active::bg-transparent"
+                    >
+                        Cancel volunteer
+                    </Button>
+                </div>
             </div>
-          )}
         </div>
-      </section>
-    </>
-  )
+    )
 }

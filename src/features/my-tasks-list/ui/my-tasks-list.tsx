@@ -50,7 +50,7 @@ export const MyTasksList = () => {
                     </h2>
                     <div className="flex flex-col gap-3">
                         {groupedTasks.history.map(task => (
-                            <TaskBrief key={task.id} task={task} onClick={() => navigate(`/needy/tasks/${task.id}`)}/>
+                            <TaskBrief key={task.id} task={task}/>
                         ))}
                     </div>
                 </section>
