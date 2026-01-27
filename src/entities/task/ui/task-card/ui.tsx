@@ -1,16 +1,25 @@
 import {FC} from 'react';
 import {Task} from '../../model/types';
 import {useNavigate} from "react-router-dom";
+import {formatDate} from "@/shared/lib/date";
 
 interface TaskCardProps {
   task: Task;
+  image: string
 }
 
-export const TaskCard: FC<TaskCardProps> = ({task}) => {
+export const TaskCard: FC<TaskCardProps> = ({task, image}) => {
 
   const navigate = useNavigate()
   const handleClick = () => {
     navigate(`/volunteer/tasks/${task.id}/preview`)
+  }
+
+  const STATUS_LABELS: Record<Task['status'], string> = {
+    active: 'Waiting for Info',
+    in_progress: 'Info Received · Action Required',
+    completed: 'Completed',
+    cancelled: 'Cancelled',
   }
 
   return (
@@ -30,7 +39,7 @@ export const TaskCard: FC<TaskCardProps> = ({task}) => {
             ${task.status === 'cancelled' && 'bg-pastel-pink '}
           `}
         >
-          {task.status}
+          {STATUS_LABELS[task.status]}
         </span>
 
         <h3 className="font-sans font-medium text-lg text-[#000] truncate">
@@ -38,18 +47,18 @@ export const TaskCard: FC<TaskCardProps> = ({task}) => {
         </h3>
 
         <p className="font-sans font-normal text-[14px] text-[#4f4f4f]">
-          {task.points}
+          {task.address}
         </p>
 
         <p className="font-sans font-normal text-deepBlue text-[14px]">
-          {new Date(task.createdAt).toLocaleDateString()}
+          {formatDate(new Date(task.createdAt).toLocaleDateString())}
         </p>
       </div>
 
       <div
         className="w-[88px] h-[88px] rounded-xl bg-blue-50 flex items-center justify-center overflow-hidden shrink-0">
         <img
-          src="/task-placeholder.png"
+          src={image}
           alt=""
           className="w-full h-full object-cover"
         />
