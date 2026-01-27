@@ -1,6 +1,15 @@
 export type UserRole = 'volunteer' | 'needy' | 'admin';
 export type UserStatus = 'pending' | 'approved' | 'blocked' | 'rejected';
 
+export interface City {
+    id: string;
+    name: string;
+    latitude: string | number;
+    longitude: string | number;
+    location?: { type: "Point"; coordinates: [number, number] };
+    [key: string]: unknown;
+}
+
 export interface BaseUser {
     id: string;
     phone: string | null;
@@ -11,6 +20,7 @@ export interface BaseUser {
     lastName: string | null;
     photo: string | null;
     about: string | null;
+    city?: City;
     lastLoginAt: string | null;
     createdAt: string | Date;
     updatedAt: string | Date;
@@ -121,6 +131,7 @@ export interface UserWithAdminData extends BaseUser {
 export type UserWithProfile = {
     id: string;
     phone: string | null;
+    city?: City;
     email: string | null;
     role: "volunteer" | "needy" | "admin";
     status: "approved" | "pending" | "rejected" | "blocked";

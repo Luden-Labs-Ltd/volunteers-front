@@ -1,58 +1,26 @@
-import { useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
 import Lottie from "lottie-react";
-import { Button, Icon } from '@/shared/ui';
-import { useCancelAssignment, useCompleteTask, useGetTaskById } from "@/entities/task/hook";
-import { UserProfileHeader } from "@/entities/user/ui/user-profile-header";
-import { useGetMe } from "@/entities/user";
+import {Button, Icon} from '@/shared/ui';
+import {UserProfileHeader} from "@/entities/user/ui/user-profile-header";
 import successAnimation from '@/shared/assets/animations/confetti.json';
-import { ContactActions } from "@/entities/user/ui/contact-actions";
-import { useRejectVolunteer } from "@/entities/taskResponses/hook";
+import {ContactActions} from "@/entities/user/ui/contact-actions";
 import {CancelVolunteerSheet} from "@/features/cancel-volunteer-sheet/ui";
+import {useTaskDetailsPage} from "@/pages/tasks/modal";
+import {VolunteerInfoCard} from "@/entities/user/ui/volunteer-info-card";
+import {TaskInfoCard} from "@/entities/task/ui/task-info-card";
 
 export const TaskDetailsPage = () => {
-    const navigate = useNavigate();
-    const { taskId } = useParams<{ taskId: string }>();
-    const [showAnimation, setShowAnimation] = useState<boolean>(false);
-    const [isCancelSheetOpen, setIsCancelSheetOpen] = useState(false);
-    const { data: task } = useGetTaskById(taskId);
-    const { data: user } = useGetMe();
-    const { mutate: completeTask, isPending: isCompleting } = useCompleteTask();
-    const { mutate: cancelAssignment, isPending: isCanceling } = useCancelAssignment();
-    const { mutate: rejectVolunteer, isPending: isRejecting } = useRejectVolunteer();
-    const isProcessing = isCompleting || isCanceling || isRejecting;
-    const volunteer = task?.assignedVolunteer;
-    const cleanPhone = volunteer?.phone ? volunteer.phone.replace(/[^0-9+]/g, '') : '';
-
-    const handleComplete = () => {
-        if (!taskId) return;
-        completeTask(taskId, {
-            onSuccess: () => {
-                setShowAnimation(true);
-            },
-        });
-    };
-
-    const handleOpenCancelSheet = () => {
-        setIsCancelSheetOpen(true);
-    };
-    const handleConfirmCancel = () => {
-        if (!taskId || !volunteer?.id) return;
-
-        cancelAssignment(taskId, {
-            onSuccess: () => {
-                rejectVolunteer({
-                    taskId,
-                    volunteerId: volunteer.id
-                }, {
-                    onSuccess: () => {
-                        setIsCancelSheetOpen(false);
-                        navigate(-1);
-                    }
-                });
-            }
-        });
-    };
+    const {
+        task,
+        volunteer,
+        showAnimation,
+        isCancelSheetOpen,
+        isProcessing,
+        setIsCancelSheetOpen,
+        handleComplete,
+        handleConfirmCancel,
+        handleAnimationComplete,
+        navigate
+    } = useTaskDetailsPage();
 
     return (
         <div className="w-full max-w-[393px] min-h-screen mx-auto relative bg-white overflow-x-hidden">
@@ -82,69 +50,18 @@ export const TaskDetailsPage = () => {
                     <div>Loading volunteer...</div>
                 )}
                 <ContactActions phone={volunteer?.phone}/>
-                <div className="flex flex-col p-1 rounded-2xl border border-[#F2F2F2] shadow-[1px_1px_0_0_#F2F2F2,3px_3px_0_0_#F2F2F2] mb-4">
-                    <div className={"flex justify-between py-3 px-5"}>
-                        <span className={"text-[18px] font-medium text-[#4F4F4F]"}>Volunteer details</span>
-                        <Link to={`/volunteers/${volunteer?.id}`} className="text-[16px] font-normal text-[#004573]">
-                            View profile
-                        </Link>
-                    </div>
-                    <div>
-                        <div className={"flex gap-3 py-3 px-5 border-t border-[#F2F2F2]"}>
-                            <Icon iconId={"icon-phone"} />
-                            <a href={`tel:${cleanPhone}`}>
-                                {volunteer?.phone}
-                            </a>
-                        </div>
-                        <div className={"flex gap-3 py-3 px-5 border-t border-[#F2F2F2]"}>
-                            <Icon iconId={"icon-location"} />
-                            <span>{"Kisufim"}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="flex flex-col p-1 rounded-2xl border border-[#F2F2F2] shadow-[1px_1px_0_0_#F2F2F2,3px_3px_0_0_#F2F2F2]">
-                    <div className={"flex py-3 px-5"}>
-                        <span className={"text-[18px] font-medium text-[#4F4F4F]"}>Task details</span>
-                    </div>
-                    <div>
-                        <div className={"flex justify-between py-3 px-5 border-t border-[#F2F2F2]"}>
-                            <div className="flex items-center gap-3">
-                                {task?.category?.iconSvg && (
-                                    <span
-                                        className="w-6 h-6 flex items-center justify-center [&>svg]:w-full [&>svg]:h-full"
-                                        dangerouslySetInnerHTML={{ __html: task.category.iconSvg }}
-                                    />
-                                )}
-                                <span className={"text-[16px] font-normal text-[#393939]"}>{task?.title}</span>
-                            </div>
-                            {task?.firstResponseMode && (
-                                <span className={"bg-[#FFFCF2] p-1 rounded-lg text-[16px] font-normal"}>Urgent</span>
-                            )}
-                        </div>
-                        <div className={"flex gap-3 py-3 px-5 border-t border-[#F2F2F2]"}>
-                            <span className={"text-[16px] font-normal"}>
-                                Details: {task?.description}
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                <TaskInfoCard volunteer={volunteer}/>
+                <VolunteerInfoCard task={task} />
             </div>
 
             {showAnimation && (
                 <div className="fixed inset-0 z-[100] flex items-end justify-center pointer-events-none pb-16">
-                    <div className="w-full">
-                        <Lottie
-                            animationData={successAnimation}
-                            loop={false}
-                            className="w-full h-full"
-                            onComplete={() => {
-                                if (user?.role === 'needy') {
-                                    navigate(`/needy/taskCompletionFeedbackPage`);
-                                }
-                            }}
-                        />
-                    </div>
+                    <Lottie
+                        animationData={successAnimation}
+                        loop={false}
+                        className="w-full h-full"
+                        onComplete={handleAnimationComplete}
+                    />
                 </div>
             )}
 
@@ -166,7 +83,7 @@ export const TaskDetailsPage = () => {
                         Task completed!
                     </Button>
                     <Button
-                        onClick={handleOpenCancelSheet}
+                        onClick={() => setIsCancelSheetOpen(true)}
                         disabled={isProcessing}
                         className="mt-2 w-full h-[48px] rounded-xl border border-[#162A43] bg-white text-[#004573] shadow-[3px_3px_0_0_#162A43] text-[20px] font-medium active:bg-transparent active::bg-transparent"
                     >

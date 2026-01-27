@@ -19,6 +19,7 @@ import {
   TaskDetailsPage,
   CandidateApprovePage,
 } from '@/pages/needy-categories/ui';
+import {VolunteerProfilePage} from "@/pages/volunteer-profile/ui";
 
 export const Router: FC = () => {
   return (
@@ -85,6 +86,7 @@ export const Router: FC = () => {
           <Route path="/needy/tasks" element={<TasksPage />} />
           <Route path="/needy/taskCompletionFeedbackPage" element={<TaskCompletionFeedbackPage />} />
           <Route path="/needy/settings" element={<SettingsPage />} />
+          <Route path="/volunteer/:id" element={<VolunteerProfilePage />} />
         </Route>
 
 
