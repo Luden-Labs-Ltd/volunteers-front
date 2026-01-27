@@ -11,6 +11,7 @@ import { taskApi } from "@/entities/task/api";
 import { TaskStatus } from "@/entities/task/model/types";
 import { useQueryWithErrorHandling } from "@/shared/api/hook/use-query-with-error-handling";
 import { QUERY_KEYS } from "@/shared/api/hook/query-keys";
+import {Container} from "@/shared/ui/container";
 
 export const TasksPage: FC = () => {
   const { t } = useTranslation();
@@ -55,8 +56,7 @@ export const TasksPage: FC = () => {
   };
 
   return (
-    <section className={'mb-12'}>
-      <div className="min-h-screen bg-gray-50">
+      <Container className="min-h-screen bg-backgroundImage-light-blue-gradient">
         <Header
           title={t('tasks.title')}
           rightActions={[
@@ -80,7 +80,6 @@ export const TasksPage: FC = () => {
         <div className="px-4 py-6">
           <TaskList tasks={tasks} isLoading={isLoading} emptyType={activeTab === tabs[0] ? 'all' : 'my'} />
         </div>
-      </div>
-    </section>
+      </Container>
   );
 };
