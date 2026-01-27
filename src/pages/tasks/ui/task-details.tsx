@@ -135,7 +135,7 @@ export const TaskDetailsPage = () => {
             <h1 className="border-none bg-transparent py-0 text-2xl text-primary-900">
               {task?.title}
             </h1>
-            <p className="text-textGray font-normal">{taskId}</p>
+            <p className="text-textGray font-normal">{task.address}</p>
 
             {/* Информация о назначенном волонтере (для нуждающихся) */}
             {user?.role === 'needy' && task?.assignedVolunteerId && assignedVolunteer && (

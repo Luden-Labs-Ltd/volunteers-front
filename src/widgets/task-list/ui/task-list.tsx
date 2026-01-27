@@ -4,6 +4,8 @@ import { TaskCard } from '@/entities/task';
 import { Task } from '@/entities/task/model';
 import { Card } from '@/shared/ui';
 import mission_illustration from '@/shared/assets/images/mission_illustration.webp';
+import taskImage1 from '@/pages/tasks/assets/taskImage1.webp'
+import taskImage2 from '@/pages/tasks/assets/taskImage2.webp'
 
 interface TaskListProps {
   tasks: Task[];
@@ -13,6 +15,7 @@ interface TaskListProps {
 
 export const TaskList: FC<TaskListProps> = ({ tasks, isLoading = false, emptyType = 'all' }) => {
   const { t } = useTranslation();
+  const images = [taskImage1, taskImage2]
 
   if (isLoading) {
     return (
@@ -50,9 +53,13 @@ export const TaskList: FC<TaskListProps> = ({ tasks, isLoading = false, emptyTyp
 
   return (
     <div className="flex flex-col gap-3">
-      {tasks.map((task) => (
-        <TaskCard key={task.id} task={task} />
-      ))}
+      {tasks.map((task, index) => {
+        const image = images[index % images.length]
+        return (
+          <TaskCard key={task.id} task={task} image={image}/>
+        )
+        }
+      )}
     </div>
   );
 };

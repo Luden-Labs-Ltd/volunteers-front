@@ -56,7 +56,7 @@ export const TasksPage: FC = () => {
   };
 
   return (
-      <Container className="min-h-screen bg-backgroundImage-light-blue-gradient">
+      <Container className="min-h-screen bg-light-blue-gradient">
         <Header
           title={t('tasks.title')}
           rightActions={[

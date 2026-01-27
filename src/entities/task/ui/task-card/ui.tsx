@@ -4,9 +4,10 @@ import {useNavigate} from "react-router-dom";
 
 interface TaskCardProps {
   task: Task;
+  image: string
 }
 
-export const TaskCard: FC<TaskCardProps> = ({task}) => {
+export const TaskCard: FC<TaskCardProps> = ({task, image}) => {
 
   const navigate = useNavigate()
   const handleClick = () => {
@@ -49,7 +50,7 @@ export const TaskCard: FC<TaskCardProps> = ({task}) => {
       <div
         className="w-[88px] h-[88px] rounded-xl bg-blue-50 flex items-center justify-center overflow-hidden shrink-0">
         <img
-          src="/task-placeholder.png"
+          src={image}
           alt=""
           className="w-full h-full object-cover"
         />
