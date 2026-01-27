@@ -2,8 +2,7 @@ import { FC, useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Button, Card, Input } from '@/shared/ui';
-import backgroundImage from './assets/Tal_background_--ar_11_--v_7_dc9a92ad-7e25-4ad7-bfe4-618b3aa51e78_3 1.png';
-import thankYouImage from './assets/Tal_background_--ar_11_--v_7_201dcc33-c3b1-4090-9884-5f0540ec3ef3 1.png';
+import thankYouImage from './assets/thankYou.webp';
 import { ProgressSteps } from './progress-steps';
 import { useGetCities } from '@/entities/city';
 import { useGetMe } from '@/entities/user/model/hooks/use-get-me';
@@ -11,6 +10,8 @@ import { imageApi } from '@/entities/image';
 import { apiClient } from '@/shared/api';
 import { toast } from 'sonner';
 import { useGetSkills } from '@/entities/skills/hook';
+import {ProgramPage} from "@/pages/volunteer-onboarding/ui/program-page.tsx";
+import {Container} from "@/shared/ui/container";
 
 type OnboardingStep = 'program' | 'skills' | 'city' | 'profile' | 'contact' | 'photo' | 'thank-you';
 
@@ -27,6 +28,7 @@ interface OnboardingData {
     phone: string;
     about: string;
     photo: string | null;
+    privacyAccepted: boolean;
 }
 
 export const OnboardingPage: FC = () => {
@@ -56,6 +58,7 @@ export const OnboardingPage: FC = () => {
         phone: '',
         about: '',
         photo: null,
+        privacyAccepted: false
     });
 
     // Загружаем города из API
@@ -231,12 +234,6 @@ export const OnboardingPage: FC = () => {
         }
     };
 
-    const handleBack = () => {
-        if (currentStepIndex > 0) {
-            setCurrentStep(steps[currentStepIndex - 1]);
-        }
-    };
-
     const handleSubmit = async () => {
         if (!currentUser?.id) {
             toast.error(t('onboarding.userNotFound') || 'Пользователь не найден');
@@ -337,7 +334,8 @@ export const OnboardingPage: FC = () => {
             case 'profile':
                 return data.agreementAccepted;
             case 'contact':
-                return data.firstName.trim() !== '' && data.cityId !== null;
+                return (data.firstName.trim() !== '' &&
+                  data.cityId !== null && data.privacyAccepted)
             case 'photo':
                 return true; // Фото опционально
             case 'thank-you':
@@ -352,26 +350,7 @@ export const OnboardingPage: FC = () => {
         switch (currentStep) {
             case 'program':
                 return (
-                    <>
-                        {/* Иллюстрация */}
-                        <div className="mb-8 -mx-4">
-                            <img
-                                src={backgroundImage}
-                                alt="Onboarding illustration"
-                                className="w-full h-auto object-contain"
-                            />
-                        </div>
-
-                        {/* Текст */}
-                        <div className="text-center px-4">
-                            <h1 className="text-3xl font-bold text-primary mb-4">
-                                {t('onboarding.selectProgram')}
-                            </h1>
-                            <p className="text-gray-600 text-base leading-relaxed">
-                                {t('onboarding.selectProgramDescription')}
-                            </p>
-                        </div>
-                    </>
+                  <ProgramPage/>
                 );
 
             case 'skills':
@@ -382,7 +361,8 @@ export const OnboardingPage: FC = () => {
                                 <p className="text-gray-600">{t('common.loading') || 'Loading skills...'}</p>
                             </div>
                         ) : (
-                            <>
+                            <Container className={'flex flex-col items-stretch gap-3 pt-4'}>
+                                <h6 className={'text-deepBlue text-lg font-medium'}>What am I good at?</h6>
                                 {allSkills.length > 0 && (
                                     <div className="mb-4">
                                         <Input
@@ -421,7 +401,8 @@ export const OnboardingPage: FC = () => {
                                 const isSelected = data.skills.includes(skill.id);
                                 return (
                                     <Card
-                                        key={skill.id}
+                                      variant="elevated"
+                                      key={skill.id}
                                         className={`cursor-pointer transition-all relative ${isSelected
                                             ? 'ring-2 ring-primary border-2 border-primary'
                                             : 'border border-gray-200'
@@ -436,36 +417,39 @@ export const OnboardingPage: FC = () => {
                                         }}
                                     >
                                         <div className="p-4 flex items-center gap-4">
-                                            {isSelected && (
-                                                <div className="absolute top-2 right-2 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                                                    <svg
-                                                        className="w-4 h-4 text-white"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        viewBox="0 0 24 24"
-                                                    >
-                                                        <path
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            strokeWidth={2}
-                                                            d="M5 13l4 4L19 7"
-                                                        />
-                                                    </svg>
-                                                </div>
-                                            )}
-                                            <div className={`w-12 h-12 ${skill.color} rounded-xl flex items-center justify-center text-2xl flex-shrink-0`}>
+
+                                            <div
+                                              className={`w-12 h-12 ${skill.color} rounded-xl flex items-center justify-center text-2xl flex-shrink-0`}>
                                                 {skill.icon}
                                             </div>
                                             <h3 className="font-semibold text-base text-gray-900">
                                                 {skill.name}
                                             </h3>
+                                            {isSelected && (
+                                              <div className="ml-auto w-5 h-5 bg-primary rounded-md flex items-center justify-center">
+                                                  <svg
+                                                    className="w-4 h-4 text-white"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                  >
+                                                      <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M5 13l4 4L19 7"
+                                                      />
+                                                  </svg>
+                                              </div>
+                                            )}
+
                                         </div>
                                     </Card>
                                 );
                             })}
                         </div>
                                 )}
-                            </>
+                            </Container>
                         )}
                     </>
                 );
@@ -735,9 +719,11 @@ export const OnboardingPage: FC = () => {
                                 {/* </div> */}
                                 <div className="flex items-start gap-3 pt-2">
                                     <input
-                                        type="checkbox"
-                                        id="privacy"
-                                        className="mt-1 w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary"
+                                      type="checkbox"
+                                      id="privacy"
+                                      checked={data.privacyAccepted}
+                                      onChange={(e) => setData( (prev) => ({...prev, privacyAccepted: e.target.checked}))}
+                                      className="mt-1 w-5 h-5 rounded-md accent-primary border-gray-300 text-primary focus:ring-primary"
                                     />
                                     <label htmlFor="privacy" className="text-sm text-gray-700">
                                         {t('onboarding.privacyConfirm')}{' '}
@@ -812,10 +798,10 @@ export const OnboardingPage: FC = () => {
                                     className="w-full h-auto object-contain mx-auto"
                                 />
                             </div>
-                            <h2 className="text-3xl font-bold text-primary mb-4">
+                            <h2 className="text-3xl font-medium text-primary mb-4">
                                 {t('onboarding.thankYou')}
                             </h2>
-                            <p className="text-gray-700 text-base leading-relaxed px-4">
+                            <p className="text-gray-700 text-sm leading-relaxed px-4">
                                 {t('onboarding.thankYouDescription')}
                             </p>
                         </div>
@@ -829,19 +815,19 @@ export const OnboardingPage: FC = () => {
 
 
     return (
-        <div className="min-h-screen bg-white flex flex-col">
+        <div className="min-h-screen bg-light-blue-gradient flex flex-col">
             <div className={`flex-1 px-4 ${currentStep === 'program' ? 'pb-24 pt-8' : 'pb-24 pt-8'}`}>
                 <div className="max-w-md mx-auto">
                     {/* Progress Steps - показываем на всех шагах кроме program */}
                     {currentStep !== 'program' && (
-                        <>
+                        <Container>
                             <div className="mb-8">
-                                <h1 className="text-2xl font-bold text-primary mb-2">
+                                <h1 className="text-3xl font-bold text-deepBlue mb-2">
                                     Eshkol Volunteers
                                 </h1>
                             </div>
                             <ProgressSteps currentStepIndex={currentStepIndex} totalSteps={steps.length} />
-                        </>
+                        </Container>
                     )}
 
                     {/* Step Content */}
@@ -850,45 +836,21 @@ export const OnboardingPage: FC = () => {
             </div>
 
             {/* Navigation Buttons - всегда внизу */}
-            <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200 z-20">
+            <div className="fixed bottom-0 left-0 right-0 px-5 pt-5 pb-11 bg-white border-t border-gray-200 z-20">
                 <div className="max-w-md mx-auto">
-                    {currentStep === 'program' ? (
-                        <Button
-                            fullWidth
-                            size="lg"
-                            onClick={handleNext}
-                            disabled={!canProceed()}
-                            className="shadow-lg"
-                        >
-                            {t('onboarding.iAmWheelButton')}
-                        </Button>
-                    ) : (
-                        <div className="flex gap-3">
-                            {currentStepIndex > 0 && (
-                                <Button variant="outline" fullWidth onClick={handleBack}>
-                                    {t('common.back')}
-                                </Button>
-                            )}
-                            {currentStep === 'thank-you' ? (
-                                <Button
-                                    fullWidth
-                                    size="lg"
-                                    onClick={handleSubmit}
-                                >
-                                    {t('onboarding.finish') || t('common.next') || 'Завершить'}
-                                </Button>
-                            ) : (
-                                <Button
-                                    fullWidth
-                                    size="lg"
-                                    onClick={handleNext}
-                                    disabled={!canProceed()}
-                                >
-                                    {t('common.next')}
-                                </Button>
-                            )}
-                        </div>
-                    )}
+                    <Button
+                      fullWidth
+                      size="lg"
+                      onClick={currentStep === 'thank-you' ? handleSubmit : handleNext}
+                      disabled={!canProceed()}
+                      className="shadow-lg"
+                    >
+                        {currentStep === 'program'
+                          ? t('onboarding.iAmWheelButton')
+                          : currentStep === 'thank-you'
+                            ? t('common.next')
+                            : t('common.next')}
+                    </Button>
                 </div>
             </div>
         </div>
