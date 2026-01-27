@@ -77,7 +77,7 @@ export const TasksPage: FC = () => {
           ]}
         />
         <Tabs tabs={tabs} onChange={setActiveTab} />
-        <div className="px-4 py-6">
+        <div className="px-4 py-6  w-full ">
           <TaskList tasks={tasks} isLoading={isLoading} emptyType={activeTab === tabs[0] ? 'all' : 'my'} />
         </div>
       </Container>

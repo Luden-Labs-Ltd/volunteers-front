@@ -38,7 +38,7 @@ export const TaskCard: FC<TaskCardProps> = ({task}) => {
         </h3>
 
         <p className="font-sans font-normal text-[14px] text-[#4f4f4f]">
-          {task.points}
+          {/*{task.points}*/}
         </p>
 
         <p className="font-sans font-normal text-deepBlue text-[14px]">
