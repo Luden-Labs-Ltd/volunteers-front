@@ -26,7 +26,7 @@ export const CategorySkillsPage = () => {
     };
 
     return (
-        <div className="pt-[170px] pb-[240px] px-[20px]">
+        <div className="pt-[calc(170px+env(safe-area-inset-top))] pb-[240px] px-[20px]">
             <SelectSubcategoryListItems
                 className={"mt-3"}
                 selectedIds={selectedSkills}
