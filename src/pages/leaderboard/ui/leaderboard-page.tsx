@@ -94,7 +94,7 @@ export const LeaderboardPage: FC = () => {
   };
 
   return (
-    <Container className={'h-screen bg-light-blue-gradient flex flex-col'}>
+    <Container className={'mx-auto max-w-md h-screen bg-light-blue-gradient flex flex-col'}>
       <Header
         className={'pt-15 pb-5 text-center flex-shrink-0'}
         title={t('leaderboard.title')}
