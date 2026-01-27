@@ -6,17 +6,19 @@ import { UserProfileHeader } from "@/entities/user/ui/user-profile-header";
 import { VolunteerAreasCard } from "@/entities/user/ui/volunteer-areas-card";
 import { VolunteerReviewsCard } from "@/entities/user/ui/volunteer-reviews-card";
 import {ApproveCandidateSheet} from "@/features/approve-candidate-sheet/ui";
+import {UserWithVolunteerData} from "@/entities/user";
 
 export const CandidateApprovePage = () => {
     const navigate = useNavigate();
     const { taskId, volunteerId } = useParams<{ taskId: string; volunteerId: string }>();
     const { data: user } = useUserById(volunteerId || "");
-    const [isSheetOpen, setIsSheetOpen] = useState(false);
-    if (!user) return <div>User not found</div>;
+    const volunteer = user as UserWithVolunteerData;
 
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
+    if (!volunteer) return <div>User not found</div>;
     const realSkills =
-        user.role === "volunteer" && user.profile && "skills" in user.profile
-            ? (user.profile.skills || []).map((skill) => ({
+        volunteer.role === "volunteer" && volunteer.profile && "skills" in volunteer.profile
+            ? (volunteer.profile.skills || []).map((skill) => ({
                 id: skill.id,
                 name: skill.name,
                 iconSvg: skill.iconSvg,
@@ -56,11 +58,11 @@ export const CandidateApprovePage = () => {
             </div>
 
             <div className="pt-[150px] pb-[150px] px-[20px]">
-                <UserProfileHeader user={user} />
+                <UserProfileHeader user={volunteer} />
 
                 <div className="flex justify-between items-center p-3 rounded-xl border shadow-[1px_1px_0_0_#F2F2F2,2px_2px_0_0_#F2F2F2] mb-3 mt-3 bg-white">
                     <span className="text-[18px] font-medium text-[#393939]">Completed tasks</span>
-                    <span className="text-[16px] font-normal text-[#737373]">0 tasks</span>
+                    <span className="text-[16px] font-normal text-[#737373]">{volunteer.profile.completedTasksCount} tasks</span>
                 </div>
 
                 <VolunteerAreasCard areas={realSkills} />
@@ -82,7 +84,7 @@ export const CandidateApprovePage = () => {
                 taskId={taskId || ""}
                 isOpen={isSheetOpen}
                 onClose={handleCloseSheet}
-                volunteer={user}
+                volunteer={volunteer}
             />
         </div>
     );
