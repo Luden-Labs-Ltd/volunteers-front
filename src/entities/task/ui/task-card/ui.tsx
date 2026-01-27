@@ -1,6 +1,7 @@
 import {FC} from 'react';
 import {Task} from '../../model/types';
 import {useNavigate} from "react-router-dom";
+import {formatDate} from "@/shared/lib/date";
 
 interface TaskCardProps {
   task: Task;
@@ -43,7 +44,7 @@ export const TaskCard: FC<TaskCardProps> = ({task, image}) => {
         </p>
 
         <p className="font-sans font-normal text-deepBlue text-[14px]">
-          {new Date(task.createdAt).toLocaleDateString()}
+          {formatDate(new Date(task.createdAt).toLocaleDateString())}
         </p>
       </div>
 
