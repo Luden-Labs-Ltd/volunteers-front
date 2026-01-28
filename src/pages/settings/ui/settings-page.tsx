@@ -36,6 +36,14 @@ export const SettingsPage: FC = () => {
                 {user.phone}
               </p>
             )}
+            {/* Город: берем из profile.city (если есть), иначе из user.city */}
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {(((user as any).profile?.city?.name) || user.city?.name) && (
+              <p className="text-gray-600 text-sm">
+                {/*eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                {t('onboarding.city')}: {((user as any).profile?.city?.name) || user.city?.name}
+              </p>
+            )}
           </Card>
         )}
 
