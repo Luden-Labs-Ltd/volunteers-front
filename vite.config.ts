@@ -24,7 +24,7 @@ export default defineConfig({
         "apple-touch-icon.png",
       ],
       manifest: {
-        name: "Волонтерское приложение",
+        name: "Volunteer App",
         short_name: "Волонтеры",
         description: "Платформа для координации волонтерской помощи",
         theme_color: "#ffffff",
