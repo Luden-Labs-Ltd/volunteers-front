@@ -362,7 +362,10 @@
       "differentProgram": "תכנית אחרת",
       "differentProgramDescription": "אינך יכול להגיב למשימה זו מכיוון שהיא שייכת לתכנית אחרת שאינך משתתף בה.",
       "invalidLink": "קישור משימה לא חוקי",
-      "notFound": "משימה לא נמצאה"
+      "notFound": "משימה לא נמצאה",
+      "descriptionTitle": "תיאור המשימה",
+      "detailsTitle": "פרטים נוספים",
+      "skillsTitle": "כישורים נדרשים"
     },
     "respond": {
       "success": "הגבת למשימה",

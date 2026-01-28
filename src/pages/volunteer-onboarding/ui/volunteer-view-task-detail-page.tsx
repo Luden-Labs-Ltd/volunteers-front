@@ -15,6 +15,7 @@ import smsIcon from '@/shared/assets/images/sms.webp';
 import phoneIcon from '@/shared/assets/images/phone.webp';
 import watsappIcon from '@/shared/assets/images/watsapp.webp';
 import successAnimation from '@/shared/assets/animations/confetti.json';
+import { Skill } from '@/entities/category/model';
 
 export const VolunteerViewTaskDetailsPage = () => {
   const { t } = useTranslation();
@@ -149,6 +150,58 @@ export const VolunteerViewTaskDetailsPage = () => {
             </h1>
             <p className="text-textGray font-normal">{task.address}</p>
 
+            {/* Описание и навыки задачи (видно всем, независимо от назначения) */}
+            {(task.description || task.details || task.category) && (
+              <Card
+                variant={'elevated'}
+                className={'p-4 flex flex-col gap-3 items-start text-left w-full'}
+              >
+                {task.description && (
+                  <div className="w-full">
+                    <p className="text-textGray font-normal text-sm mb-1">
+                      {t('volunteerTask.details.descriptionTitle')}
+                    </p>
+                    <p className="text-textGray font-medium whitespace-pre-line">
+                      {task.description}
+                    </p>
+                  </div>
+                )}
+
+                {/* {task.details && (
+                  <div className="w-full">
+                    <p className="text-textGray font-normal text-sm mb-1">
+                      {t('volunteerTask.details.detailsTitle')}
+                    </p>
+                    <p className="text-textGray font-medium whitespace-pre-line">
+                      {task.details}
+                    </p>
+                  </div>
+                )} */}
+
+                {/*eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                {((task as any).skills?.length || task.category) && (
+                  <div className="w-full flex flex-col gap-2">
+                    <p className="text-textGray font-normal text-sm mb-1">
+                      {t('volunteerTask.details.skillsTitle')}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {task.category && (
+                        <Badge variant="default">
+                          {task.category.name}
+                        </Badge>
+                      )}
+                               {/*eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                      {(task as any).skills?.map((skill: { id: string; name: string }) => (
+                        <Badge key={skill.id} variant="secondary">
+                          {skill.name}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </Card>
+            )}
+
             {/* Информация о назначенном волонтере (для нуждающихся) */}
             {user?.role === 'needy' && task?.assignedVolunteerId && assignedVolunteer && (
               <Card variant={'elevated'} className={'p-4 flex flex-col gap-3 items-start text-left w-full'}>
@@ -232,6 +285,9 @@ export const VolunteerViewTaskDetailsPage = () => {
                   </a>
                 </>
               )}
+
+
+
               {/* Показываем заметку о завершении только для волонтеров */}
               {user?.role === 'volunteer' && (
                 <p className="text-textGray font-medium text-left w-80">

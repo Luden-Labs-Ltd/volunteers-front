@@ -347,7 +347,10 @@
       "differentProgram": "Different program",
       "differentProgramDescription": "You cannot respond to this task because it belongs to a different program that you are not participating in.",
       "invalidLink": "Invalid task link",
-      "notFound": "Task not found"
+      "notFound": "Task not found",
+      "descriptionTitle": "Task description",
+      "detailsTitle": "Additional details",
+      "skillsTitle": "Required skills"
     },
     "respond": {
       "success": "You have responded to the task",
