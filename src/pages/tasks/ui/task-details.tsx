@@ -1,16 +1,16 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { useState, useMemo } from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
+import {useMemo, useState} from 'react';
 import Lottie from 'lottie-react';
 import mission_illustration from '@/shared/assets/images/mission_illustration.webp';
-import { Button, Card, Badge, Header } from '@/shared/ui';
-import { useGetTaskById } from '@/entities/task/hook/useGetTaskId';
-import { useCompleteTask } from '@/entities/task/hook/useCompleteTask';
-import { useGetMe } from '@/entities/user';
-import { useUserById } from '@/entities/user/model/hooks/use-get-user-by-id';
-import { useTaskResponses, useVolunteerResponse, useRespondToTask } from '@/entities/taskResponses/hook';
-import { TaskStatus, TaskResponseStatus, TaskApproveRole } from '@/entities/task/model/types';
-import { VolunteerCard } from '@/entities/user/ui/volunteer-card';
+import {Badge, Button, Card, Header} from '@/shared/ui';
+import {useGetTaskById} from '@/entities/task/hook/useGetTaskId';
+import {useCompleteTask} from '@/entities/task/hook/useCompleteTask';
+import {useGetMe} from '@/entities/user';
+import {useUserById} from '@/entities/user/model/hooks/use-get-user-by-id';
+import {useRespondToTask, useTaskResponses, useVolunteerResponse} from '@/entities/taskResponses/hook';
+import {TaskApproveRole, TaskResponseStatus, TaskStatus} from '@/entities/task/model/types';
+import {VolunteerCard} from '@/entities/user/ui/volunteer-card';
 import smsIcon from '@/shared/assets/images/sms.webp';
 import phoneIcon from '@/shared/assets/images/phone.webp';
 import watsappIcon from '@/shared/assets/images/watsapp.webp';
@@ -73,6 +73,15 @@ export const TaskDetailsPage = () => {
 
   // Определяем статус отклика
   const responseStatus = volunteerResponse?.status;
+
+  console.log('STATUS', {
+    status: task?.status,
+    assignedVolunteerId: task?.assignedVolunteerId,
+    approveBy: task?.approveBy,
+    isAssignedToMe,
+  });
+
+  const canShowContacts = (Boolean(task?.assignedVolunteerId))
 
   if (!taskId) {
     return (
@@ -179,7 +188,7 @@ export const TaskDetailsPage = () => {
                 </div>
               )}
               {/* Показываем контакты только если задача назначена волонтеру или волонтер откликнулся */}
-              {(isAssignedToMe || volunteerResponse) && task.needy?.phone && (
+              {canShowContacts && task.needy?.phone && (
                 <>
                   <a href={`tel:${task.needy.phone}`}>
                     <p className={'text-deepBlue font-normal flex flex-row items-center gap-2'}>
