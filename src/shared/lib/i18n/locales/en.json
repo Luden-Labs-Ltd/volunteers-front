@@ -290,7 +290,8 @@
   "settings": {
     "title": "Settings",
     "language": "Language",
-    "selectLanguage": "Select Language"
+    "selectLanguage": "Select Language",
+    "profile": "Profile"
   },
   "categoriesNeedy": {
     "headerTitle": "How can we help?",

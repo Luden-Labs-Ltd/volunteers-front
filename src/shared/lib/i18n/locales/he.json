@@ -305,7 +305,8 @@
   "settings": {
     "title": "הגדרות",
     "language": "שפה",
-    "selectLanguage": "בחר שפה"
+    "selectLanguage": "בחר שפה",
+    "profile": "פרופיל"
   },
   "categoriesNeedy": {
     "headerTitle": "איך נוכל לעזור?",
