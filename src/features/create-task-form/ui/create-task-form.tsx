@@ -178,6 +178,7 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
 
                     <Button
                         onClick={onBack}
+                        type="button"
                         className="w-full mt-3 h-[56px] rounded-xl bg-white text-[#004573] text-[20px] font-medium active:bg-white hover:bg-white focus:bg-white"
                     >
                         {t("taskDetails.labelAnythingElse")}

@@ -5,7 +5,7 @@ import {TasksPage, TaskPreviewPage, TaskCompletionFeedbackPage} from '@/pages/ta
 import { TaskDetailsPage as VolunteerTaskDetailsPage } from '@/pages/tasks/ui/task-details';
 import { TaskCompletedPage } from '@/pages/tasks/ui/task-completed';
 import { UIKitPage } from '@/pages/ui-kit/ui';
-import { OnboardingPage } from '@/pages/volunteer-onboarding/ui';
+import {OnboardingPage, VolunteerViewTaskDetailsPage} from '@/pages/volunteer-onboarding/ui';
 import { LeaderboardPage } from '@/pages/leaderboard/ui';
 import { SettingsPage } from '@/pages/settings/ui';
 import { RoleRedirect } from './role-redirect';
@@ -50,7 +50,7 @@ export const Router: FC = () => {
           />
           <Route
             path="/volunteer/tasks/:taskId"
-            element={<VolunteerTaskDetailsPage />}
+            element={<VolunteerViewTaskDetailsPage />}
           />
           <Route
             path="/volunteer/tasks/:taskId/completed"
@@ -88,8 +88,6 @@ export const Router: FC = () => {
           <Route path="/needy/settings" element={<SettingsPage />} />
           <Route path="/volunteer/:id" element={<VolunteerProfilePage />} />
         </Route>
-
-
       </Routes>
     </BrowserRouter>
   );
