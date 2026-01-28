@@ -80,7 +80,7 @@ export const ProgressSteps: FC<ProgressStepsProps> = ({ currentStepIndex }) => {
         <div className="flex items-center justify-between mb-8">
             {steps.map((step, index) => {
                 const isActive = !allCompleted && index === progressIndex;
-                const isCompleted = allCompleted || index < progressIndex;
+                const isCompleted = allCompleted || index > progressIndex;
 
                 return (
                     <div key={step.icon} className="flex items-center flex-1">
