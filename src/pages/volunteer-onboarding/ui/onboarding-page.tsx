@@ -396,7 +396,7 @@ export const OnboardingPage: FC = () => {
                                         </p>
                                     </div>
                                 ) : (
-                        <div className="flex flex-col gap-3 overflow-y-scroll h-[500px] mb-[20px]">
+                        <div className="flex flex-col gap-3 h-[500px] mb-[20px]">
                             {skills.map((skill) => {
                                 const isSelected = data.skills.includes(skill.id);
                                 return (
