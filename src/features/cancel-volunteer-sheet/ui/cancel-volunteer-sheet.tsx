@@ -30,7 +30,6 @@ isProcessing
                 "fixed inset-0 z-[10000] left-1/2 -translate-x-1/2 w-full",
                 isOpen ? "pointer-events-auto" : "pointer-events-none",
             ].join(" ")}
-            aria-hidden={!isOpen}
         >
             <div
                 onClick={handleCloseAction}

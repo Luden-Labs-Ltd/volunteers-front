@@ -12,7 +12,7 @@ export const UserProfileHeader = ({ user }: UserProfileHeaderType) => {
     const location = user.city?.name ?? user.profile?.city?.name ?? "Unknown";
 
     return (
-        <div className="w-full flex flex-col items-center px-4 mb-6">
+        <div className="w-full flex flex-col items-center px-4">
             <div className="relative mb-5">
                 <img
                     src={photoUrl || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.id}`}

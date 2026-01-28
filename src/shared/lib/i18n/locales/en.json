@@ -384,5 +384,15 @@
     "unknown": "An unknown error occurred",
     "network": "Network Error",
     "networkDescription": "Unable to connect to the server. Please check your internet connection"
+  },
+  "taskDetailsApprove": {
+    "volunteerFound": "Volunteer found",
+    "taskCompleted": "Task completed!",
+    "cancelVolunteer": "Cancel volunteer",
+    "viewProfile": "View profile",
+    "header": "Task details",
+    "volunteerDetails": "Volunteer details",
+    "detailsLabel": "Details:",
+    "urgent": "Urgent"
   }
 }
