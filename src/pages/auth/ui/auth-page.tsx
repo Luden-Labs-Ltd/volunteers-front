@@ -44,7 +44,7 @@ export const AuthPage: FC = () => {
       console.log('📱 [Auth] Отправка SMS для номера:', phone);
       const response = await sendSmsMutation.mutateAsync({
         phoneNumber: phone,
-        isDev: isDev,
+        isDev: true,
       });
 
       console.log('✅ [Auth] SMS отправлен успешно, ответ:', response);
@@ -54,7 +54,7 @@ export const AuthPage: FC = () => {
       console.log('✅ [Auth] Поле ввода кода показано');
 
       // Сохраняем dev код если он есть в ответе
-      if (isDev && response?.code) {
+      if (true && response?.code) {
         setDevCode(response.code);
         console.log('🔧 DEV MODE: SMS код:', response.code);
       }
