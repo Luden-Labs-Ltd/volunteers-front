@@ -29,11 +29,11 @@ export const ProgressSteps: FC<ProgressStepsProps> = ({ currentStepIndex }) => {
 
     // Иконки в обратном порядке: star, person, shield, target, clock
     const steps = [
-        { icon: 'star', label: 'Step 1' },
+        { icon: 'clock', label: 'Step 5' },
         { icon: 'person', label: 'Step 2' },
         { icon: 'shield', label: 'Step 3' },
         { icon: 'target', label: 'Step 4' },
-        { icon: 'clock', label: 'Step 5' },
+        { icon: 'star', label: 'Step 1' },
     ];
 
     const getIcon = (iconName: string, isActive: boolean, isCompleted: boolean) => {
@@ -80,7 +80,7 @@ export const ProgressSteps: FC<ProgressStepsProps> = ({ currentStepIndex }) => {
         <div className="flex items-center justify-between mb-8">
             {steps.map((step, index) => {
                 const isActive = !allCompleted && index === progressIndex;
-                const isCompleted = allCompleted || index < progressIndex;
+                const isCompleted = allCompleted || index > progressIndex;
 
                 return (
                     <div key={step.icon} className="flex items-center flex-1">
