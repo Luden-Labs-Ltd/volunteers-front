@@ -15,7 +15,6 @@ import smsIcon from '@/shared/assets/images/sms.webp';
 import phoneIcon from '@/shared/assets/images/phone.webp';
 import watsappIcon from '@/shared/assets/images/watsapp.webp';
 import successAnimation from '@/shared/assets/animations/confetti.json';
-import { Skill } from '@/entities/category/model';
 
 export const VolunteerViewTaskDetailsPage = () => {
   const { t } = useTranslation();
