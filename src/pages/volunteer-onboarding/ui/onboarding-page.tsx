@@ -128,7 +128,7 @@ export const OnboardingPage: FC = () => {
                         const { id, distance } = nearestCity;
                         if (distance < 50) { // В пределах 50км
                             setData((prev) => ({ ...prev, cityId: id }));
-                            toast.success(t('onboarding.cityDetected') || 'Город определен автоматически');
+                            toast.success(t('onboarding.cityDetected'));
                         }
                     }
                     setIsGeolocating(false);
@@ -236,7 +236,7 @@ export const OnboardingPage: FC = () => {
 
     const handleSubmit = async () => {
         if (!currentUser?.id) {
-            toast.error(t('onboarding.userNotFound') || 'Пользователь не найден');
+            toast.error(t('onboarding.userNotFound'));
             return;
         }
 
@@ -267,12 +267,12 @@ export const OnboardingPage: FC = () => {
                 }),
             });
 
-            toast.success(t('onboarding.profileUpdated') || 'Профиль обновлен');
+            toast.success(t('onboarding.profileUpdated'));
             // После финального экрана благодарности переходим на рейтинг
             navigate('/volunteer/leaderboard');
         } catch (error) {
             console.error('Error updating profile:', error);
-            toast.error(t('onboarding.updateError') || 'Ошибка обновления профиля');
+            toast.error(t('onboarding.updateError'));
         }
     };
 
@@ -282,13 +282,13 @@ export const OnboardingPage: FC = () => {
 
         // Валидация типа файла
         if (!file.type.startsWith('image/')) {
-            toast.error(t('onboarding.invalidImageType') || 'Пожалуйста, выберите изображение');
+            toast.error(t('onboarding.invalidImageType'));
             return;
         }
 
         // Валидация размера (макс 10MB)
         if (file.size > 10 * 1024 * 1024) {
-            toast.error(t('onboarding.imageTooLarge') || 'Размер файла не должен превышать 10MB');
+            toast.error(t('onboarding.imageTooLarge'));
             return;
         }
 
@@ -311,7 +311,7 @@ export const OnboardingPage: FC = () => {
 
             // Обновляем данные с URL загруженного изображения
             setData((prev) => ({ ...prev, photo: uploadedImage.url }));
-            toast.success(t('onboarding.imageUploaded') || 'Изображение загружено');
+            toast.success(t('onboarding.imageUploaded'));
         } catch (error) {
             console.error('Error uploading image:', error);
             const errorMessage = error instanceof Error ? error.message : 'Неизвестная ошибка';
@@ -663,15 +663,15 @@ export const OnboardingPage: FC = () => {
                                     >
                                         <option value="">
                                             {citiesLoading
-                                                ? (t('onboarding.loadingCities') || 'Загрузка городов...')
+                                                ? t('onboarding.loadingCities')
                                                 : isGeolocating
-                                                ? (t('onboarding.detectingLocation') || 'Определение местоположения...')
-                                                : (t('onboarding.cityPlaceholder') || 'Выберите город')
+                                                ? t('onboarding.detectingLocation')
+                                                : t('onboarding.cityPlaceholder')
                                             }
                                         </option>
                                         {cities.length === 0 && !citiesLoading ? (
                                             <option value="" disabled>
-                                                {t('onboarding.noCities') || 'Нет доступных городов'}
+                                                {t('onboarding.noCities')}
                                             </option>
                                         ) : (
                                             cities.map((city) => (
@@ -683,7 +683,7 @@ export const OnboardingPage: FC = () => {
                                     </select>
                                     {isGeolocating && (
                                         <p className="text-sm text-gray-500 mt-1">
-                                            {t('onboarding.geolocating') || 'Определение ближайшего города...'}
+                                            {t('onboarding.geolocating')}
                                         </p>
                                     )}
                                     {fieldErrors.cityId && (
@@ -693,7 +693,7 @@ export const OnboardingPage: FC = () => {
                                     )}
                                     {citiesError && !fieldErrors.cityId && (
                                         <p className="text-sm text-red-500 mt-1">
-                                            {t('onboarding.citiesLoadError') || 'Ошибка загрузки городов. Пожалуйста, обновите страницу.'}
+                                            {t('onboarding.citiesLoadError')}
                                         </p>
                                     )}
                                 </div>

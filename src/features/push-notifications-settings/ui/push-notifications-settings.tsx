@@ -191,11 +191,10 @@ export const PushNotificationsSettings: FC = () => {
             <div className="space-y-3">
               <div>
                 <h3 className="text-sm font-medium text-gray-900 mb-2">
-                  Тестирование
+                  {t('notifications.testing')}
                 </h3>
                 <p className="text-xs text-gray-600 mb-3">
-                  Отправьте тестовое уведомление, чтобы проверить работу системы.
-                  Уведомление придет даже если вы находитесь на странице.
+                  {t('notifications.testNotificationDescription')}
                 </p>
                 <Button
                   onClick={async () => {
@@ -203,19 +202,19 @@ export const PushNotificationsSettings: FC = () => {
                     setIsSendingTest(true);
                     try {
                       await sendTestNotification(
-                        '🧪 Тестовое уведомление',
-                        'Если вы видите это уведомление, значит push-уведомления работают корректно!',
+                        t('notifications.testNotification'),
+                        t('notifications.testNotificationBody'),
                       );
-                      toast.success('Тестовое уведомление отправлено!', {
-                        description: 'Проверьте, появилось ли уведомление',
+                      toast.success(t('notifications.testNotificationSent'), {
+                        description: t('notifications.testNotificationSentDescription'),
                       });
                     } catch (error) {
                       console.error('Error sending test notification:', error);
-                      toast.error('Ошибка отправки тестового уведомления', {
+                      toast.error(t('notifications.testNotificationError'), {
                         description:
                           error instanceof Error
                             ? error.message
-                            : 'Не удалось отправить уведомление',
+                            : t('notifications.testNotificationErrorDescription'),
                       });
                     } finally {
                       setIsSendingTest(false);
@@ -226,7 +225,7 @@ export const PushNotificationsSettings: FC = () => {
                   size="sm"
                   className="w-full"
                 >
-                  {isSendingTest ? 'Отправка...' : '📤 Отправить тестовое уведомление'}
+                  {isSendingTest ? t('common.loading') : t('notifications.sendTest')}
                 </Button>
               </div>
             </div>

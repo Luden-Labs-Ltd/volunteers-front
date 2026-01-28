@@ -34,7 +34,7 @@ export interface Task {
   skillIds?: string[];
   firstResponseMode: boolean;
   assignedVolunteerId?: string;
-  assignedVolunteer: UserWithProfile;
+  assignedVolunteer?: UserWithProfile;
   approveBy: TaskApproveRole[];
   cityId?: string;
   address?: string;

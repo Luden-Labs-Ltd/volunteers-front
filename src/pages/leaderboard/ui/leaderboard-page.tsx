@@ -119,7 +119,7 @@ export const LeaderboardPage: FC = () => {
         <div className="max-w-md mx-auto">
           {isLoading ? (
             <div className="text-center py-8 text-gray-500">
-              {t('common.loading') || 'Загрузка...'}
+              {t('common.loading')}
             </div>
           ) : leaderboardData.length === 0 ? (
             <Card className="p-8 text-center">

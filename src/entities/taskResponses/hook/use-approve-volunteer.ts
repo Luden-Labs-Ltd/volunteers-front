@@ -26,22 +26,22 @@ export const useApproveVolunteer = () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.MY_TASKS] });
       
       toast.success(
-        t('taskResponses.approveSuccess') || 'Волонтер одобрен',
+        t('taskResponses.approveSuccess'),
         {
-          description: t('taskResponses.approveSuccessDescription') || 'Задача назначена волонтеру',
+          description: t('taskResponses.approveSuccessDescription'),
         }
       );
     },
     onError: (error: Error | unknown) => {
-      let message = t('taskResponses.approveError') || 'Ошибка при одобрении волонтера';
+      let message = t('taskResponses.approveError');
       
       if (error instanceof Error && error.message) {
         if (error.message.includes('not active')) {
-          message = t('taskResponses.taskNotActive') || 'Задача больше не активна. Возможно, она уже назначена другому волонтеру или завершена.';
+          message = t('taskResponses.taskNotActive');
         } else if (error.message.includes('not found')) {
-          message = t('taskResponses.responseNotFound') || 'Отклик не найден';
+          message = t('taskResponses.responseNotFound');
         } else if (error.message.includes('forbidden') || error.message.includes('not allowed')) {
-          message = t('taskResponses.approveForbidden') || 'У вас нет прав для одобрения этого волонтера';
+          message = t('taskResponses.approveForbidden');
         } else {
           message = error.message;
         }

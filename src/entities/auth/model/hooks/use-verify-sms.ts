@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { authApi } from '../../api';
 import { VerifySmsRequest, AuthResponse } from '../types';
@@ -9,6 +10,7 @@ import { validateApiResponse, isObject, validateRequiredFields } from '@/shared/
 import { handleApiError } from '@/shared/lib/error-handler';
 
 export function useVerifySms() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -29,12 +31,12 @@ export function useVerifySms() {
     onSuccess: async (data) => {
       // Валидация данных ответа - проверяем что все обязательные поля присутствуют
       if (!data || !data.accessToken || !data.refreshToken || !data.user) {
-        console.error('Некорректные данные ответа:', data);
-        toast.error('Ошибка входа', {
-          description: 'Получены некорректные данные от сервера',
+        console.error('Invalid response data:', data);
+        toast.error(t('auth.loginError'), {
+          description: t('auth.loginErrorDescription'),
           duration: 5000,
         });
-        throw new Error('Некорректные данные ответа от сервера');
+        throw new Error(t('auth.invalidResponse'));
       }
 
       try {
@@ -47,8 +49,9 @@ export function useVerifySms() {
         queryClient.setQueryData(['user', 'me'], data.user);
 
         // Показываем успешное уведомление
-        toast.success('Добро пожаловать!', {
-          description: `Привет, ${data.user.firstName || data.user.phone || 'Пользователь'}! Вы успешно вошли в систему`,
+        const userName = data.user.firstName || data.user.phone || 'User';
+        toast.success(t('auth.welcome'), {
+          description: t('auth.welcomeDescription', { name: userName }),
           duration: 4000,
         });
 
@@ -71,16 +74,16 @@ export function useVerifySms() {
           navigate(redirectPath, { replace: true });
         }
       } catch (error) {
-        console.error('Ошибка при сохранении токенов:', error);
-        toast.error('Ошибка входа', {
-          description: 'Не удалось сохранить данные авторизации',
+        console.error('Error saving tokens:', error);
+        toast.error(t('auth.loginError'), {
+          description: t('auth.loginErrorSaveDescription'),
           duration: 5000,
         });
         throw error;
       }
     },
     onError: (error: unknown) => {
-      console.error('Ошибка верификации SMS:', error);
+      console.error('SMS verification error:', error);
       handleApiError(error);
     },
   });

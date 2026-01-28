@@ -15,7 +15,7 @@ export const usePWAInstall = () => {
 
   useEffect(() => {
     const detectPlatform = (): Platform => {
-      const userAgent = navigator.userAgent || navigator.vendor || (window as Window & { opera?: string }).opera;
+      const userAgent = navigator.userAgent || navigator.vendor || (window as Window & { opera?: string }).opera || '';
       
       const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !(window as Window & { MSStream?: boolean }).MSStream;
       const isAndroid = /android/i.test(userAgent);

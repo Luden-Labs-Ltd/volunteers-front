@@ -124,8 +124,8 @@ self.addEventListener('push', (event: PushEvent) => {
     logWarn('[SW] ⚠️ Push event received without data');
     // Показываем уведомление даже без данных
     event.waitUntil(
-      self.registration.showNotification('Новое уведомление', {
-        body: 'У вас новое уведомление',
+      self.registration.showNotification('New Notification', {
+        body: 'You have a new notification',
         icon: '/pwa-192x192.png',
         badge: '/pwa-192x192.png',
       }).then(() => {
@@ -151,8 +151,8 @@ self.addEventListener('push', (event: PushEvent) => {
         } catch (textError) {
           logError('[SW] ❌ Failed to read push data as text:', textError);
           // Показываем уведомление с дефолтными данными
-          await self.registration.showNotification('Новое уведомление', {
-            body: 'У вас новое уведомление',
+          await self.registration.showNotification('New Notification', {
+            body: 'You have a new notification',
             icon: '/pwa-192x192.png',
             badge: '/pwa-192x192.png',
           });
@@ -178,8 +178,8 @@ self.addEventListener('push', (event: PushEvent) => {
         } catch (parseError) {
           logError('[SW] ❌ Failed to parse JSON:', parseError);
           // Показываем уведомление с текстом данных
-          await self.registration.showNotification('Новое уведомление', {
-            body: text || 'У вас новое уведомление',
+          await self.registration.showNotification('New Notification', {
+            body: text || 'You have a new notification',
             icon: '/pwa-192x192.png',
             badge: '/pwa-192x192.png',
           });
@@ -189,8 +189,8 @@ self.addEventListener('push', (event: PushEvent) => {
         // Валидация обязательных полей
         if (!notificationData.title || !notificationData.body) {
           logError('[SW] ❌ Invalid notification data: missing title or body', notificationData);
-          await self.registration.showNotification('Новое уведомление', {
-            body: notificationData.body || text || 'У вас новое уведомление',
+          await self.registration.showNotification('New Notification', {
+            body: notificationData.body || text || 'You have a new notification',
             icon: notificationData.icon || '/pwa-192x192.png',
             badge: notificationData.badge || '/pwa-192x192.png',
           });
@@ -282,7 +282,7 @@ self.addEventListener('push', (event: PushEvent) => {
         // Показываем уведомление с ошибкой только в dev режиме
         if (isDev) {
           try {
-            await self.registration.showNotification('Ошибка уведомления', {
+            await self.registration.showNotification('Notification Error', {
               body: error instanceof Error ? error.message : String(error),
               icon: '/pwa-192x192.png',
               badge: '/pwa-192x192.png',
@@ -311,15 +311,52 @@ self.addEventListener('notificationclick', (event: NotificationEvent) => {
   let urlToOpen = '/tasks';
   if (notificationData?.taskId) {
     const notificationType = notificationData.type;
-    // task_response - для нуждающихся (когда волонтер откликается)
-    // response_approved/rejected - для волонтеров (когда их одобрили/отклонили)
-    if (notificationType === 'task_response') {
-      urlToOpen = `/needy/tasks/${notificationData.taskId}`;
-    } else if (notificationType === 'response_approved' || notificationType === 'response_rejected') {
-      urlToOpen = `/volunteer/tasks/${notificationData.taskId}`;
-    } else {
-      // Для других типов используем универсальный путь
-      urlToOpen = `/tasks/${notificationData.taskId}`;
+    
+    switch (notificationType) {
+      // Новая задача - для волонтеров
+      case 'new_task':
+        urlToOpen = `/volunteer/tasks/${notificationData.taskId}`;
+        break;
+      
+      // Волонтер откликнулся - для нуждающихся (страница с кандидатами)
+      case 'task_response':
+        urlToOpen = `/needy/tasks/${notificationData.taskId}/assign`;
+        break;
+      
+      // Волонтера одобрили/отклонили - для волонтеров
+      case 'response_approved':
+      case 'response_rejected':
+        urlToOpen = `/volunteer/tasks/${notificationData.taskId}`;
+        break;
+      
+      // Статус задачи обновлен - определяем по роли получателя
+      case 'task_status_updated':
+        // Если есть информация о роли в данных уведомления, используем её
+        // Иначе используем универсальный путь (будет редирект на основе роли пользователя)
+        if (notificationData.role === 'volunteer') {
+          urlToOpen = `/volunteer/tasks/${notificationData.taskId}`;
+        } else if (notificationData.role === 'needy') {
+          urlToOpen = `/needy/tasks/${notificationData.taskId}`;
+        } else {
+          // Fallback: пробуем определить по статусу задачи
+          // Если задача завершена, вероятно это для волонтера (страница завершения)
+          if (notificationData.status === 'COMPLETED') {
+            urlToOpen = `/volunteer/tasks/${notificationData.taskId}`;
+          } else {
+            urlToOpen = `/tasks/${notificationData.taskId}`;
+          }
+        }
+        break;
+      
+      // Отмена назначения - для волонтеров
+      case 'assignment_cancelled':
+        urlToOpen = `/volunteer/tasks/${notificationData.taskId}`;
+        break;
+      
+      // Дефолтный путь для неизвестных типов
+      default:
+        urlToOpen = `/tasks/${notificationData.taskId}`;
+        break;
     }
   }
 

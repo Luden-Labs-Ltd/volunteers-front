@@ -32,7 +32,7 @@ class ErrorBoundary extends Component<
           marginTop: '50px'
         }}>
           <h1>Ошибка загрузки приложения</h1>
-          <p>{this.state.error?.message || 'Произошла неизвестная ошибка'}</p>
+          <p>{this.state.error?.message || 'An unknown error occurred'}</p>
           <button
             onClick={() => {
               this.setState({ hasError: false, error: null });

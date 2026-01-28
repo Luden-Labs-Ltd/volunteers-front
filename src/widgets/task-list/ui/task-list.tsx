@@ -31,7 +31,7 @@ export const TaskList: FC<TaskListProps> = ({ tasks, isLoading = false, emptyTyp
         <div className="mb-6">
           <img
             src={mission_illustration}
-            alt="No tasks"
+            alt={t('tasks.noTasks')}
             className="w-48 h-48 object-contain mx-auto opacity-60"
           />
         </div>

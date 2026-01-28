@@ -25,7 +25,7 @@ export const AuthPage: FC = () => {
   const { data: user, isLoading } = useGetMe();
 
   // Определяем, находимся ли мы в режиме разработки (для отображения кода в консоли)
-  const isDev = import.meta.env.DEV;
+  const isDev = true;
 
   // Редирект на главный экран, если пользователь уже авторизован
   useEffect(() => {
@@ -170,7 +170,7 @@ export const AuthPage: FC = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-xs text-yellow-800 font-medium mb-1">
-                          🔧 DEV MODE: SMS код
+                          🔧 DEV MODE: SMS code
                         </p>
                         <p className="text-lg font-mono font-bold text-yellow-900">
                           {devCode}
@@ -182,7 +182,7 @@ export const AuthPage: FC = () => {
                         onClick={handleCopyDevCode}
                         className="ml-2"
                       >
-                        Копировать
+                        Copy code
                       </Button>
                     </div>
                   </div>
