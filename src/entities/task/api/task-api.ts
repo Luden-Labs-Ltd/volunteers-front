@@ -97,6 +97,22 @@ export const taskApi = {
     );
   },
 
+  getVolunteerSuitableTasks: async (status?: TaskStatus): Promise<Task[]> => {
+    const queryParams = new URLSearchParams();
+    if (status) queryParams.append('status', status);
+    const queryString = queryParams.toString();
+
+    const response = await apiClient.request<Task[]>(
+      `/tasks/volunteer-suitable${queryString ? `?${queryString}` : ''}`,
+    );
+
+    return validateApiResponse(
+      response,
+      (data): data is Task[] => isArray(data),
+      'Invalid volunteer suitable tasks response format',
+    );
+  },
+
   generateTaskFromAi: async (prompt: string): Promise<Partial<CreateTaskDto>> => {
     if (!prompt || prompt.trim().length === 0) {
       throw new Error('Prompt is required');
