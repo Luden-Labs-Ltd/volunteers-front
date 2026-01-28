@@ -27,7 +27,7 @@ export const AssignVolunteerPage = () => {
                             onClick={() => navigate(-1)}
                         />
                     </div>
-                    <h1 className="text-[32px] text-[#004573] font-medium">
+                    <h1 className="text-[32px] leading-[1.2] text-[#004573] font-medium break-words line-clamp-2">
                         {taskTitle}
                     </h1>
                 </div>

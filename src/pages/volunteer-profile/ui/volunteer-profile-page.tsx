@@ -16,7 +16,7 @@ export const VolunteerProfilePage = () => {
 
     return (
         <div className="w-full min-h-screen mx-auto bg-white pb-10">
-            <div className="w-full bg-gradient-to-b from-blue-50 to-white pt-14 pb-4  px-5">
+            <div className="sticky top-0 z-50 w-full bg-gradient-to-b from-blue-50 to-white/95 backdrop-blur-sm pt-14 pb-4 px-5 border-b border-transparent transition-all">
                 <div className="relative w-full flex items-center justify-center min-h-[48px]">
                     <div className="absolute left-0 top-1/2 -translate-y-1/2">
                         <Button
@@ -31,7 +31,6 @@ export const VolunteerProfilePage = () => {
                     </h1>
                 </div>
             </div>
-
             <div className="px-5 mt-4">
                 <UserProfileHeader user={volunteer} />
                 <div className="mt-6">

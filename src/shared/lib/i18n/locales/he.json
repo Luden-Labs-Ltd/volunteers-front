@@ -403,5 +403,15 @@
   "auth": {
     "sessionExpired": "הסשן פג",
     "sessionExpiredDescription": "אנא התחבר שוב"
+  },
+  "taskDetailsApprove": {
+    "volunteerFound": "נמצא מתנדב",
+    "taskCompleted": "המשימה הושלמה!",
+    "cancelVolunteer": "ביטול מתנדב",
+    "viewProfile": "צפייה בפרופיל",
+    "header": "פרטי המשימה",
+    "volunteerDetails": "פרטי המתנדב",
+    "detailsLabel": "פרטים:",
+    "urgent": "דחוף"
   }
 }

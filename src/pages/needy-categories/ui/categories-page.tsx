@@ -42,6 +42,18 @@ export const CategoriesPage = () => {
 
     const handleAiSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        // 1. Скрываем клавиатуру
+        if (document.activeElement instanceof HTMLElement) {
+            document.activeElement.blur();
+        }
+
+        // 2. Ждем завершения анимации клавиатуры (300мс) и принудительно сбрасываем скролл
+        // Это заставит браузер пересчитать положение fixed элементов
+        setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: 'auto' });
+        }, 300);
+
         if (!aiPrompt.trim()) {
             toast.error(t("categoriesNeedy.aiPromptRequired") || "Please enter a description");
             return;
@@ -52,6 +64,7 @@ export const CategoriesPage = () => {
     const handleNext = () => {
         navigate("/needy/skills");
     };
+    const isNextDisabled = isGenerating || !categoryId;
 
     return (
         <div className="pt-[120px] pb-[calc(150px+env(safe-area-inset-bottom))]">
@@ -157,6 +170,7 @@ export const CategoriesPage = () => {
                 <div className="w-full bg-white px-5 py-4 z-[0]">
                     <Button
                         onClick={handleNext}
+                        disabled={isNextDisabled}
                         className="w-full h-[56px] rounded-xl border border-[#162A43] bg-[#004573] text-white shadow-[3px_3px_0_0_#162A43] text-[20px] font-medium focus:ring-0 focus:ring-offset-0 focus:outline-none"
                     >
                         {t("categoriesNeedy.nextButton")}
