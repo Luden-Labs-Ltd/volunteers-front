@@ -35,10 +35,10 @@ export const PopularTaskTile = ({popularTask, place}: PopularTaskTileType) => {
                           paintOrder: 'stroke fill',
                       }}
                 >
-    {place + 1}
-</span>
+                    {place + 1}
+                </span>
             </div>
-            <span className="text-[#5B5B5B] text-[16px] font-normal text-center whitespace-nowrap">
+            <span dir="ltr"  className="text-[#5B5B5B] text-[16px] font-normal text-center truncate max-w-[110px]">
               {popularTask.type}
             </span>
         </button>

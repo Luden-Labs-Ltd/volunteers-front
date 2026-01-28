@@ -396,7 +396,7 @@ export const OnboardingPage: FC = () => {
                                         </p>
                                     </div>
                                 ) : (
-                        <div className="flex flex-col gap-3 overflow-y-scroll h-[500px] mb-[20px]">
+                        <div className="flex flex-col gap-3 h-[500px] mb-[20px]">
                             {skills.map((skill) => {
                                 const isSelected = data.skills.includes(skill.id);
                                 return (
@@ -404,8 +404,8 @@ export const OnboardingPage: FC = () => {
                                       variant="elevated"
                                       key={skill.id}
                                         className={`cursor-pointer transition-all relative ${isSelected
-                                            ? 'ring-2 ring-primary border-2 border-primary'
-                                            : 'border border-gray-200'
+                                            ? 'border-primary ring-2 ring-primary'
+                                            : 'border-transparent'
                                             }`}
                                         onClick={() => {
                                             setData((prev) => ({

@@ -24,7 +24,7 @@ export const CandidatesList = ({ responses }: CandidatesListType) => {
     }
 
     return (
-        <div className="flex flex-col gap-8 pb-10">
+        <div className="flex flex-col gap-8 pt-5 pb-10">
             <div>
                 <h3 className="text-sm uppercase text-[#004573] font-bold tracking-wider mb-3 px-1 flex items-center gap-2">
                     Approved Volunteer
