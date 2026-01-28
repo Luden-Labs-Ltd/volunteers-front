@@ -404,8 +404,8 @@ export const OnboardingPage: FC = () => {
                                       variant="elevated"
                                       key={skill.id}
                                         className={`cursor-pointer transition-all relative ${isSelected
-                                            ? 'ring-2 ring-primary border-2 border-primary'
-                                            : 'border border-gray-200'
+                                            ? 'border-primary ring-2 ring-primary'
+                                            : 'border-transparent'
                                             }`}
                                         onClick={() => {
                                             setData((prev) => ({
