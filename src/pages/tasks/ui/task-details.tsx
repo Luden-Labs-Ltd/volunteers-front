@@ -8,6 +8,7 @@ import { useTaskDetailsPage } from "@/pages/tasks/modal";
 import { VolunteerInfoCard } from "@/entities/user/ui/volunteer-info-card";
 import { TaskInfoCard } from "@/entities/task/ui/task-info-card";
 import {useTranslation} from "react-i18next";
+import {TaskApproveRole} from "@/entities/task";
 
 export const TaskDetailsPage = () => {
     const {
@@ -23,7 +24,7 @@ export const TaskDetailsPage = () => {
         navigate
     } = useTaskDetailsPage();
     const { t } = useTranslation();
-
+    const isApprovedByNeedy = task?.approveBy?.includes(TaskApproveRole.NEEDY);
     return (
         <div className="w-full max-w-[393px] min-h-screen mx-auto relative bg-white flex flex-col">
             <div className="sticky top-0 z-[50] w-full bg-gradient-to-b from-blue-50 to-white/95 backdrop-blur-md pt-14 pb-2 px-5 border-b border-transparent transition-all">
@@ -88,9 +89,9 @@ export const TaskDetailsPage = () => {
                     <Button
                         className="w-full h-[48px] rounded-xl border border-[#162A43] bg-[#004573] text-white shadow-[3px_3px_0_0_#162A43] text-[20px] font-medium active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
                         onClick={handleComplete}
-                        disabled={isProcessing}
+                        disabled={isProcessing || isApprovedByNeedy}
                     >
-                        {t('taskDetailsApprove.taskCompleted')}
+                        {!isApprovedByNeedy ? t('taskDetailsApprove.taskCompleted') : t('taskDetailsApprove.completionConfirmed')}
                     </Button>
                     <Button
                         onClick={() => setIsCancelSheetOpen(true)}

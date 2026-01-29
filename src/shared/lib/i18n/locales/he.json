@@ -420,6 +420,7 @@
     "header": "פרטי המשימה",
     "volunteerDetails": "פרטי המתנדב",
     "detailsLabel": "פרטים:",
-    "urgent": "דחוף"
+    "urgent": "דחוף",
+    "completionConfirmed": "הביצוע אושר"
   }
 }
