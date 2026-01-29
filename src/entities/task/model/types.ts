@@ -18,6 +18,15 @@ export enum TaskApproveRole {
   NEEDY = 'needy',
 }
 
+export interface Skill {
+    id: string;
+    name: string;
+    iconSvg: string;
+    categoryId: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
 export interface Task {
   id: string;
   programId: string;
@@ -32,6 +41,7 @@ export interface Task {
   status: TaskStatus;
   categoryId?: string;
   skillIds?: string[];
+  skills?: Skill[];
   firstResponseMode: boolean;
   assignedVolunteerId?: string;
   assignedVolunteer?: UserWithProfile;
@@ -45,6 +55,7 @@ export interface Task {
   createdAt: Date;
   updatedAt: Date;
 }
+
 
 export interface TaskCategory {
     id: string;

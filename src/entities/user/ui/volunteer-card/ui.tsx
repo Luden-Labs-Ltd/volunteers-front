@@ -2,6 +2,7 @@ import { useState } from "react";
 import { cn } from "@/shared/lib";
 import { Icon } from "@/shared/ui";
 import { UserWithProfile } from "@/entities/user";
+import {useTranslation} from "react-i18next";
 
 type VolunteerCardType = {
     volunteer: UserWithProfile;
@@ -10,8 +11,8 @@ type VolunteerCardType = {
 }
 
 export const VolunteerCard = ({ volunteer, className, onClick }: VolunteerCardType) => {
+    const { t } = useTranslation();
     const [isExpanded, setIsExpanded] = useState(false);
-
     const fullName = [volunteer.firstName, volunteer.lastName].filter(Boolean).join(" ");
     const displayName = fullName || "Unknown Volunteer";
     const isVerified = volunteer.status === "approved";
@@ -86,7 +87,10 @@ export const VolunteerCard = ({ volunteer, className, onClick }: VolunteerCardTy
                         onClick={handleExpandClick}
                         className="text-sm font-normal text-[#004573] self-start mt-1"
                     >
-                        {isExpanded ? "Hide skills" : `+${hiddenCount} more skills...`}
+                        {isExpanded
+                            ? t("common.hideSkills")
+                            : `+${hiddenCount} ${t("common.moreSkills")}`
+                        }
                     </button>
                 )}
             </div>

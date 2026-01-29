@@ -36,7 +36,6 @@ export const TaskDetailsPage = () => {
                             onClick={() => navigate(`/needy/tasks`)}
                         />
                     </div>
-
                     <div className="flex flex-col items-center max-w-[70%] text-center pt-1">
                         <h1 className="text-[24px] text-[#004573] font-medium leading-[1.1] break-words line-clamp-2">
                             {task?.title || "Task Details"}

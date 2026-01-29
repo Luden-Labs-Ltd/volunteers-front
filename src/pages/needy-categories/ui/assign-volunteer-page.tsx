@@ -4,6 +4,7 @@ import { useTaskResponses } from "@/entities/taskResponses/hook";
 import { CandidatesList } from "@/features/task-candidates/ui"; // Путь может отличаться
 import { useGetTaskById } from "@/entities/task/hook/useGetTaskId";
 import { useTranslation } from "react-i18next";
+import {SkillsList} from "@/entities/skills/ui/skill-list";
 
 export const AssignVolunteerPage = () => {
     const { t } = useTranslation();
@@ -16,7 +17,6 @@ export const AssignVolunteerPage = () => {
     if (!id) return <div>{t('taskResponses.taskIdRequired') || 'Task ID is required'}</div>;
 
     const taskTitle = task?.title || t('taskResponses.task');
-
     return (
         <div className="w-full max-w-[393px] min-h-screen m-auto relative bg-white">
             <div className="fixed flex flex-col top-0 left-0 right-0 z-[50] w-[398px] mx-auto bg-gradient-to-b from-blue-50 to-white pt-16 pb-2 px-[20px]">
@@ -41,13 +41,10 @@ export const AssignVolunteerPage = () => {
                 </div>
             </div>
 
-            <div className="pt-[250px] pb-[90px] px-[20px]">
-                {responses && responses.length > 0 ? (
+            <div className="pt-[190px] pb-[90px] px-[20px]">
+                <SkillsList skills={task?.skills}/>
+                {responses && (
                     <CandidatesList responses={responses} />
-                ) : (
-                    <div className="px-4 py-8 text-center text-gray-500">
-                        {t('taskResponses.noResponses') || 'No responses yet'}
-                    </div>
                 )}
             </div>
         </div>

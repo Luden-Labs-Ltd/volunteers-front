@@ -16,8 +16,9 @@
     "filter": "סנן",
     "close": "סגור",
     "settings": "הגדרות",
-    "profile": "פרופיל"
-  },
+    "profile": "פרופיל",
+    "hideSkills": "הסתר מיומנויות"  },
+    "moreSkills": "...עוד מיומנויות",
   "onboarding": {
     "selectProgram": "צריך גלגל?",
     "selectProgramDescription": "אנחנו כאן כדי לעזור למשפחות שכולות בכל מה שהם צריכים. נשמח להכיר אותך יותר.",

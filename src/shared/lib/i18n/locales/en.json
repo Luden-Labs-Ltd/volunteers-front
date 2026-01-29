@@ -16,7 +16,9 @@
     "filter": "Filter",
     "close": "Close",
     "settings": "Settings",
-    "profile": "Profile"
+    "profile": "Profile",
+    "hideSkills": "hide skills",
+    "moreSkills": "more skills..."
   },
   "auth": {
     "title": "Login",

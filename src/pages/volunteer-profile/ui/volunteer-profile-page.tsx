@@ -4,6 +4,7 @@ import { UserProfileHeader } from "@/entities/user/ui/user-profile-header";
 import { ContactActions } from "@/entities/user/ui/contact-actions";
 import { useUserById } from "@/entities/user/model/hooks/use-get-user-by-id.ts";
 import { UserWithProfile } from "@/entities/user";
+import {SkillsList} from "@/entities/skills/ui/skill-list";
 
 export const VolunteerProfilePage = () => {
     const { id } = useParams<{ id: string }>();
@@ -44,18 +45,7 @@ export const VolunteerProfilePage = () => {
                         </p>
                     </div>
                 </div>
-                {user.profile?.skills && user.profile.skills.length > 0 && (
-                    <div className="mt-6">
-                        <h3 className="text-[18px] font-medium text-[#393939] mb-3">Skills</h3>
-                        <div className="flex flex-wrap gap-2">
-                            {user.profile.skills.map(skill => (
-                                <span key={skill.id} className="bg-[#F0F5FA] text-[#004573] px-3 py-1.5 rounded-xl text-[14px] font-medium border border-[#E3F2FD]">
-                                    {skill.name}
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-                )}
+                <SkillsList skills={user.profile.skills} visibleCount={10}/>
             </div>
         </div>
     );
