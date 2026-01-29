@@ -1,7 +1,7 @@
 import { TaskScroll } from "@/features/task-scroll/ui";
 import { useTranslation } from "react-i18next";
 import { CategorySelector } from "@/features/select-categories/ui";
-import { PopularTaskScroll } from "@/features/popular-task-scroll/ui";
+// import { PopularTaskScroll } from "@/features/popular-task-scroll/ui";
 import { Button, Icon } from "@/shared/ui";
 import { useNavigate } from "react-router-dom";
 import { useCreateTaskStore } from "@/features/create-task/model/store.ts";
