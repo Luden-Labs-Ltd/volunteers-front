@@ -66,6 +66,7 @@ export const OnboardingPage: FC = () => {
 
     // Загружаем навыки из API
     const { data: skillsData = [], isLoading: skillsLoading } = useGetSkills();
+    // console.log(skillsData.map(e => e.iconSvg))
 
     // Загружаем данные текущего пользователя
     const { data: currentUser } = useGetMe();
@@ -164,7 +165,7 @@ export const OnboardingPage: FC = () => {
         return {
             id: skill.id, // UUID из API
             name: skill.name,
-            icon: iconData.icon,
+            icon: skill.iconSvg,
             color: iconData.color,
         };
     });
@@ -414,7 +415,6 @@ export const OnboardingPage: FC = () => {
                                                     ? prev.skills.filter((s) => s !== skill.id)
                                                     : [...prev.skills, skill.id],
                                             }));
-                                            console.log(skill.id)
                                         }}
                                     >
                                         <div className="p-4 flex items-center gap-4">
