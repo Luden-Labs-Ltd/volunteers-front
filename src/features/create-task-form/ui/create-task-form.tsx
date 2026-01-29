@@ -8,7 +8,7 @@ import { taskApi } from "@/entities/task/api";
 import { CreateTaskDto, Task } from "@/entities/task/model/types";
 import { useGetMe } from "@/entities/user";
 import { SelectSkills } from "@/features/selected-skills/ui";
-import { createTaskSchema } from "@/pages/needy-categories/model/schema.ts";
+import { createTaskSchema } from "@/entities/task";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { QUERY_KEYS } from "@/shared/api/hook/query-keys.ts";
 import { useMutationWithErrorHandling } from "@/shared/api/hook/use-mutation-with-error-handling";
