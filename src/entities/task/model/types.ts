@@ -1,3 +1,4 @@
+import { Skill } from "@/entities/skills/model";
 import {UserWithProfile} from "@/entities/user";
 
 export enum TaskStatus {
@@ -32,6 +33,7 @@ export interface Task {
   status: TaskStatus;
   categoryId?: string;
   skillIds?: string[];
+  skills?: Skill[];
   firstResponseMode: boolean;
   assignedVolunteerId?: string;
   assignedVolunteer?: UserWithProfile;
@@ -45,6 +47,7 @@ export interface Task {
   createdAt: Date;
   updatedAt: Date;
 }
+
 
 export interface TaskCategory {
     id: string;

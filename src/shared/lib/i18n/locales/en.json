@@ -16,7 +16,9 @@
     "filter": "Filter",
     "close": "Close",
     "settings": "Settings",
-    "profile": "Profile"
+    "profile": "Profile",
+    "hideSkills": "hide skills",
+    "moreSkills": "more skills..."
   },
   "auth": {
     "title": "Login",
@@ -52,7 +54,10 @@
       "all": "No tasks available",
       "allDescription": "There are no tasks available at the moment. Check back later!",
       "my": "You have no tasks",
-      "myDescription": "You haven't responded to any tasks yet. Browse available tasks to get started!"
+      "myDescription": "You haven't responded to any tasks yet. Browse available tasks to get started!",
+      "waiting": "No tasks waiting for volunteers",
+      "active": "No active tasks in progress",
+      "history": "No completed tasks yet"
     },
     "availableTasks": "Available Tasks",
     "createTask": "Create Task",
@@ -397,6 +402,7 @@
     "header": "Task details",
     "volunteerDetails": "Volunteer details",
     "detailsLabel": "Details:",
-    "urgent": "Urgent"
+    "urgent": "Urgent",
+    "completionConfirmed": "Completion confirmed"
   }
 }
