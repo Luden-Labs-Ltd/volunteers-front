@@ -14,7 +14,7 @@ export const Tabs: FC<TabsProps> = ({ tabs, onChange }) => {
   };
 
   return (
-    <div className="flex justify-between border-b border-gray-200 bg-white px-4">
+    <div className="flex justify-between border-b border-gray-200 px-4">
       {tabs.map((tab) => (
         <button
           key={tab}

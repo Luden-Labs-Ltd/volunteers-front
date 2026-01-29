@@ -414,6 +414,7 @@ export const OnboardingPage: FC = () => {
                                                     ? prev.skills.filter((s) => s !== skill.id)
                                                     : [...prev.skills, skill.id],
                                             }));
+                                            console.log(skill.id)
                                         }}
                                     >
                                         <div className="p-4 flex items-center gap-4">
