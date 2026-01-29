@@ -63,14 +63,10 @@ export const OnboardingPage: FC = () => {
 
     // Загружаем города из API
     const { data: cities = [], isLoading: citiesLoading, error: citiesError } = useGetCities();
-
     // Загружаем навыки из API
     const { data: skillsData = [], isLoading: skillsLoading } = useGetSkills();
-    // console.log(skillsData.map(e => e.iconSvg))
-
     // Загружаем данные текущего пользователя
     const { data: currentUser } = useGetMe();
-
     // Проверяем, прошел ли волонтер уже онбординг
     useEffect(() => {
         if (currentUser && currentUser.role === 'volunteer') {
