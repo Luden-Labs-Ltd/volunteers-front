@@ -11,8 +11,15 @@ interface TaskCardProps {
 export const TaskCard: FC<TaskCardProps> = ({task, image}) => {
 
   const navigate = useNavigate()
+
+  const isAssigned = Boolean(task.assignedVolunteerId ?? task.assignedVolunteer);
+
   const handleClick = () => {
-    navigate(`/volunteer/tasks/${task.id}/preview`)
+    if (isAssigned) {
+      navigate(`/volunteer/tasks/${task.id}/preview`);
+    } else {
+      navigate(`/volunteer/tasks/${task.id}`);
+    }
   }
 
   const STATUS_LABELS: Record<Task['status'], string> = {

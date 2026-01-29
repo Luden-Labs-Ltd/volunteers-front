@@ -57,9 +57,13 @@ export const SettingsProfileCard: FC<SettingsProfileCardProps> = ({ user }) => {
           <Badge variant="success" className="text-xs">
             {roleLabel}
           </Badge>
-          <Badge variant="warning" className="text-xs">
-            {statusLabel}
-          </Badge>
+          {
+            user.status && (
+              <Badge variant="warning" className="text-xs">
+                {statusLabel}
+              </Badge>
+            )
+          }
         </div>
       </div>
 
