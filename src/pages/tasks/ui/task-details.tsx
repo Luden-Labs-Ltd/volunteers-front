@@ -33,7 +33,7 @@ export const TaskDetailsPage = () => {
                             icon={<Icon iconId="icon-arrow-back" />}
                             variant="transition"
                             size="sm"
-                            onClick={() => navigate(-1)}
+                            onClick={() => navigate(`/needy/tasks`)}
                         />
                     </div>
 
