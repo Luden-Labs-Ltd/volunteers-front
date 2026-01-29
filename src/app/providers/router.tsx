@@ -7,7 +7,7 @@ import { TaskCompletedPage } from '@/pages/tasks/ui/task-completed';
 import { UIKitPage } from '@/pages/ui-kit/ui';
 import {OnboardingPage, VolunteerViewTaskDetailsPage} from '@/pages/volunteer-onboarding/ui';
 import { LeaderboardPage } from '@/pages/leaderboard/ui';
-import { SettingsPage } from '@/pages/settings/ui';
+import { SettingsPage } from '@/pages/settings';
 import { RoleRedirect } from './role-redirect';
 import { ProtectedLayout } from './protected-layout';
 import { NeedyLayout } from '@/pages/needy-categories';

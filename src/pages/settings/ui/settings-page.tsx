@@ -1,15 +1,23 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Header, Card, Button, Badge } from '@/shared/ui';
-import { LanguageSwitcher } from '@/shared/ui/language-switcher';
-import { PushNotificationsSettings } from '@/features/push-notifications-settings/ui';
+import { Header } from '@/shared/ui';
 import { useGetMe } from '@/entities/user/model/hooks';
+import { useLogout } from '@/entities/auth/model/hooks';
+import { SettingsAvatarCard } from './settings-avatar-card';
+import { SettingsProfileCard } from './settings-profile-card';
+import { SettingsVolunteerSkillsCard } from './settings-volunteer-skills-card';
+import { SettingsLanguageCard } from './settings-language-card';
+import { SettingsPushNotificationsCard } from './settings-push-notifications-card';
+import { SettingsLeaderboardCard } from './settings-leaderboard-card';
+import { SettingsLogoutCard } from './settings-logout-card';
+import { UserWithVolunteerData } from '@/entities/user/model/types';
 
 export const SettingsPage: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { data: user } = useGetMe();
+  const { mutate: logout, isPending: isLoggingOut } = useLogout();
   const isVolunteer = user?.role === 'volunteer';
 
   return (
@@ -20,72 +28,19 @@ export const SettingsPage: FC = () => {
         onBack={() => navigate(-1)}
       />
       <div className="px-4 py-6 space-y-4">
-        {/* Информация о пользователе */}
         {user && (
-          <Card variant="default" className="p-6 space-y-2">
-            <h3 className="text-lg font-semibold text-gray-900">
-              {t('settings.profile')}
-            </h3>
-            {(user.firstName || user.lastName) && (
-              <p className="text-gray-800">
-                {user.firstName} {user.lastName}
-              </p>
-            )}
-            {user.phone && (
-              <p className="text-gray-600 text-sm">
-                {user.phone}
-              </p>
-            )}
-            {/* Город: берем из profile.city (если есть), иначе из user.city */}
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-            {(((user as any).profile?.city?.name) || user.city?.name) && (
-              <p className="text-gray-600 text-sm">
-                {/*eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                {t('onboarding.city')}: {((user as any).profile?.city?.name) || user.city?.name}
-              </p>
-            )}
-          </Card>
+          <>
+            <SettingsAvatarCard user={user} />
+            <SettingsProfileCard user={user} />
+          </>
         )}
-
-        {/* Скиллы волонтера */}
-        {isVolunteer && Array.isArray(user?.profile?.skills) && user.profile.skills.length > 0 && (
-          <Card variant="default" className="p-6 space-y-3">
-            <h3 className="text-lg font-semibold text-gray-900">
-              {t('volunteerDetails.skills')}
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {user.profile.skills.map((skill) => (
-                <Badge key={skill.id} variant="secondary">
-                  {skill.name}
-                </Badge>
-              ))}
-            </div>
-          </Card>
+        {isVolunteer && user && (
+          <SettingsVolunteerSkillsCard user={user as UserWithVolunteerData} />
         )}
-
-        <Card variant="default" className="p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">
-              {t('settings.language')}
-            </h3>
-            <LanguageSwitcher />
-          </div>
-        </Card>
-        <Card variant="default" className="p-6">
-          <PushNotificationsSettings />
-        </Card>
-        {isVolunteer && (
-          <Card variant="default" className="p-6">
-            <Button
-              size="lg"
-              fullWidth
-              variant="secondary"
-              onClick={() => navigate('/volunteer/leaderboard')}
-            >
-              {t('leaderboard.title')}
-            </Button>
-          </Card>
-        )}
+        <SettingsLanguageCard />
+        <SettingsPushNotificationsCard />
+        {isVolunteer && <SettingsLeaderboardCard />}
+        <SettingsLogoutCard onLogout={() => logout()} isLoading={isLoggingOut} />
       </div>
     </div>
   );

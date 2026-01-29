@@ -52,7 +52,7 @@ export const CategorySelector = ({ selectedId, onSelect, searchQuery = "" }: Cat
     }
 
     return (
-        <div className="grid grid-cols-2 gap-3 px-5 mt-3 overflow-y-scroll h-[300px] mb-3">
+        <div className="grid grid-cols-2 gap-3 px-5 mt-3 overflow-y-scroll pb-[20px] h-[300px] mb-3">
             {filteredCategories.map((cat) => (
                 <CategoryCard
                     key={cat.id}

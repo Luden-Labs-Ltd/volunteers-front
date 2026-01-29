@@ -135,7 +135,7 @@ export const CategoriesPage = () => {
             <TaskScroll />
 
             {/* Категории */}
-            <h2 className={"text-[20px] font-normal mt-6 px-[20px]"}>
+            <h2 className={"text-[20px] font-normal mt-2 px-[20px]"}>
                 {t("categoriesNeedy.categoriesTitle")}
             </h2>
             {/* Инпут для поиска категорий */}
@@ -161,10 +161,10 @@ export const CategoriesPage = () => {
             />
 
             {/* Выбор комьюнити */}
-            <h2 className={"text-[20px] font-normal mt-6 px-[20px]"}>
+            {/* <h2 className={"text-[20px] font-normal mt-6 px-[20px]"}>
                 {t("categoriesNeedy.mostRequestedTitle")}
             </h2>
-            <PopularTaskScroll />
+            <PopularTaskScroll /> */}
 
             <div className="fixed bottom-[69px] left-1/2 -translate-x-1/2 z-[50] w-full">
                 <div className="w-full bg-white px-5 py-4 z-[0]">
