@@ -1,7 +1,9 @@
 import { useState } from "react";
 import {useTranslation} from "react-i18next";
+import { Skill } from "@/entities/skills/model";
+
 type SkillsListType = {
-    skills?: { id: string; name: string; iconSvg?: string }[];
+    skills?: Skill[];
     visibleCount?: number;
 }
 

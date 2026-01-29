@@ -1,3 +1,4 @@
+import { Skill } from "@/entities/skills/model";
 import {UserWithProfile} from "@/entities/user";
 
 export enum TaskStatus {
@@ -16,15 +17,6 @@ export enum TaskResponseStatus {
 export enum TaskApproveRole {
   VOLUNTEER = 'volunteer',
   NEEDY = 'needy',
-}
-
-export interface Skill {
-    id: string;
-    name: string;
-    iconSvg: string;
-    categoryId: string;
-    createdAt: string;
-    updatedAt: string;
 }
 
 export interface Task {

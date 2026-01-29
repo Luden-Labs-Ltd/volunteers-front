@@ -17,12 +17,12 @@ export const VolunteerCard = ({ volunteer, className, onClick }: VolunteerCardTy
     const displayName = fullName || "Unknown Volunteer";
     const isVerified = volunteer.status === "approved";
     const photoUrl = (volunteer.photo || "").replace(/^"|"$/g, '');
-    const skills = volunteer.role === 'volunteer' && volunteer.profile && 'skills' in volunteer.profile
-        ? (volunteer.profile.skills || [])
-        : [];
-    const location = volunteer.role === 'volunteer' && volunteer.profile && 'city' in volunteer.profile && volunteer.profile.city
-        ? volunteer.profile.city.name
-        : '';
+
+    const isVolunteer = volunteer.role === 'volunteer';
+    
+    const skills = isVolunteer && volunteer.profile?.skills || [];
+    const location = isVolunteer && volunteer.profile?.city?.name || '';
+
     const VISIBLE_COUNT = 2;
     const hasMore = skills.length > VISIBLE_COUNT;
     const hiddenCount = skills.length - VISIBLE_COUNT;

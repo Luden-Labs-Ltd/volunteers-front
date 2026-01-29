@@ -1,11 +1,4 @@
-export type Skill = {
-    id: string;
-    name: string;
-    iconSvg: string;
-    categoryId:string;
-    createdAt: string;
-    updatedAt: string;
-}
+import { Skill } from "@/entities/skills/model";
 
 export type Category = {
     id: string;

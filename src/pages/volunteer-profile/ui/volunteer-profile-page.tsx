@@ -33,7 +33,7 @@ export const VolunteerProfilePage = () => {
                 </div>
             </div>
             <div className="px-5 mt-4">
-                <UserProfileHeader user={volunteer} />
+                <UserProfileHeader user={volunteer as UserWithProfile} />
                 <div className="mt-6">
                     <ContactActions phone={volunteer.phone} />
                 </div>

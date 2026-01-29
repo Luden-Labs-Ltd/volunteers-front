@@ -1,3 +1,5 @@
+import { Skill } from "@/entities/skills/model";
+
 export type UserRole = 'volunteer' | 'needy' | 'admin';
 export type UserStatus = 'pending' | 'approved' | 'blocked' | 'rejected';
 
@@ -165,15 +167,7 @@ export type UserWithProfile = {
         rating?: number | null;
         createdAt: string | Date;
         updatedAt: string | Date;
-        skills?: Array<{
-            id: string;
-            name: string;
-            iconSvg?: string;
-            categoryId?: string;
-            createdAt?: string | Date;
-            updatedAt?: string | Date;
-            [key: string]: unknown;
-        }>;
+        skills?: Skill[];
         programs?: Array<{
             id: string;
             name: string;
