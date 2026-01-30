@@ -18,6 +18,7 @@ import { categoryApi } from "@/entities/category/api";
 import { useQueryWithErrorHandling } from "@/shared/api/hook/use-query-with-error-handling";
 import { useCreateTaskStore } from "@/features/create-task/model/store.ts";
 import { useEffect } from "react";
+import { DEFAULT_PROGRAM_ID } from "@/shared/config/constants";
 
 type CreateTaskFormProps = {
     skillsIds: string[];
@@ -104,17 +105,12 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
                 return;
             }
 
-            // Получаем programId из профиля (может быть напрямую или через program объект)
-            const programId = user.profile?.programId || user.profile?.program?.id;
+            // Получаем programId из профиля, используем дефолтную программу если отсутствует
+            const programId = user.profile?.programId || user.profile?.program?.id || DEFAULT_PROGRAM_ID;
 
-            if (!programId) {
-                const errorMessage = t('errors.programIdRequired') || 'Program ID is required for needy users. Please contact administrator to assign a program to your account.';
-                console.error('Missing programId for needy user:', {
-                    userId: user.id,
-                    profile: user.profile,
-                });
-                toast.error(errorMessage);
-                return;
+            // Логируем использование дефолтной программы
+            if (!user.profile?.programId && !user.profile?.program?.id) {
+                console.info('Using default program for task creation:', DEFAULT_PROGRAM_ID);
             }
 
             // Формируем details с датой и временем, если они указаны
