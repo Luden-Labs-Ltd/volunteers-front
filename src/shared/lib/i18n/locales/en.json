@@ -18,7 +18,17 @@
     "settings": "Settings",
     "profile": "Profile",
     "hideSkills": "hide skills",
-    "moreSkills": "more skills..."
+    "moreSkills": "more skills...",
+    "noRequests": "No requests yet",
+    "noApproved": "No approved volunteers",
+    "noNewRequests": "No new Requests volunteers",
+    "noDeclined": "No declined volunteers",
+    "approvedVolunteer": "Approved Volunteer",
+    "newRequests": "New Requests",
+    "declined": "Declined",
+    "verified": "Verified",
+    "description": "Description",
+    "title": "Title"
   },
   "auth": {
     "title": "Login",
@@ -404,5 +414,9 @@
     "detailsLabel": "Details:",
     "urgent": "Urgent",
     "completionConfirmed": "Completion confirmed"
+  },
+  "reviewsCard": {
+    "review": "Reviews:",
+    "viewAll": "View all"
   }
 }

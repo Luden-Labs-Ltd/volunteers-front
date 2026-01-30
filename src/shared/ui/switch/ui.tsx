@@ -21,7 +21,9 @@ export const Switch = ({ checked, onChange, className }: SwitchType) => {
                 aria-hidden="true"
                 className={cn(
                     "pointer-events-none inline-block h-[20px] w-[20px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out",
-                    checked ? "translate-x-[12px]" : "translate-x-0"
+                    checked
+                        ? "ltr:translate-x-[12px] rtl:-translate-x-[12px]"
+                        : "translate-x-0"
                 )}
             />
         </button>

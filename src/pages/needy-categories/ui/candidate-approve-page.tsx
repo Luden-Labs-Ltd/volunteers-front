@@ -43,13 +43,12 @@ export const CandidateApprovePage = () => {
         <div className="w-full max-w-[393px] min-h-screen mx-auto relative bg-white overflow-x-hidden">
             <div className="fixed top-0 left-1/2 -translate-x-1/2 z-[50] w-full bg-gradient-to-b from-blue-50 to-white pt-16 pb-2 px-[20px]">
                 <div className="relative w-full flex items-center justify-center min-h-[48px]">
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2">
+                    <div className="absolute start-0 top-0">
                         <Button
-                            className={"mb-5"}
-                            icon={<Icon iconId="icon-arrow-back" />}
+                            icon={<Icon iconId="icon-arrow-back" className="rtl:rotate-180"/>}
                             variant="transition"
                             size="sm"
-                            onClick={() => navigate(-1)}
+                            onClick={() => navigate(`/needy/tasks`)}
                         />
                     </div>
                     <h1 className="text-[24px] text-[#004573] font-bold leading-[1.2] text-center tracking-tight whitespace-pre-line">

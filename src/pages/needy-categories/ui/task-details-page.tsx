@@ -5,7 +5,6 @@ import {CreateTaskForm} from "@/features/create-task-form/ui";
 export const TaskDetailsPage = () => {
     const navigate = useNavigate();
     const { categoryId, skillIds, reset, aiGeneratedData } = useCreateTaskStore();
-    console.log("dasdashidas",aiGeneratedData)
     // Если пользователь пришел через AI, возвращаем на categories, иначе на skills
     const handleBack = () => {
         if (aiGeneratedData) {

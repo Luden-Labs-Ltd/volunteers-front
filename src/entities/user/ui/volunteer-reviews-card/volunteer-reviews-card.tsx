@@ -1,4 +1,5 @@
 import { Icon } from "@/shared/ui";
+import {useTranslation} from "react-i18next";
 
 type Review = {
     id: number;
@@ -13,20 +14,23 @@ type VolunteerReviewsCardType = {
 }
 
 export const VolunteerReviewsCard = ({ reviews, onViewAll }: VolunteerReviewsCardType) => {
+    const { t } = useTranslation();
+
     return (
         <div className="w-full bg-white rounded-3xl p-6 border shadow-[1px_1px_0_0_#F2F2F2,2px_2px_0_0_#F2F2F2] relative mt-3">
             <div className="flex items-center justify-between mb-4">
                 <h3 className="text-[18px] font-medium text-[#393939]">
-                    Reviews:
+                    {t("reviewsCard.review")}
                 </h3>
                 <button onClick={onViewAll} className="text-[14px] font-normal text-[#004573]">
-                    View all
+                    {t("reviewsCard.viewAll")}
                 </button>
             </div>
             <div className="flex flex-col gap-6">
                 {reviews.map((review) => (
                     <div key={review.id} className="relative flex flex-col gap-2">
-                        <div className="flex gap-1 relative bottom-10 left-20">
+                        <div className="flex gap-1 relative bottom-10 left-20 rtl:left-auto rtl:right-20"
+                        >
                             {Array.from({ length: review.rating }).map((_, index) => (
                                 <Icon
                                     key={index}

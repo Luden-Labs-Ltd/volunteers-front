@@ -23,7 +23,7 @@ export const AssignVolunteerPage = () => {
                 <div className="flex gap-2 items-center">
                     <div>
                         <Button
-                            icon={<Icon iconId="icon-arrow-back" />} variant="transition" size="sm"
+                            icon={<Icon iconId="icon-arrow-back" className="rtl:rotate-180"/>} variant="transition" size="sm"
                             onClick={() => navigate(-1)}
                         />
                     </div>
