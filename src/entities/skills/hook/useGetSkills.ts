@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { skillsApi } from '@/entities/skills/api';
-import { Skill } from '@/entities/category/model';
+import { Skill } from '@/entities/skills/model';
 
 export const useGetSkills = () => {
     return useQuery<Skill[]>({

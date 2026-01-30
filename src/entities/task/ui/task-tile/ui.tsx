@@ -7,9 +7,9 @@ type TaskTileType = {
 export const TaskTile = ({task}:TaskTileType)=> {
     return (
         <button
-            className="flex flex-col items-center gap-2 w-[96px]"
+            className="flex flex-col items-center gap-2 w-[64px]"
         >
-            <div className="w-[60px] h-[60px] bg-white rounded-3xl border border-gray-300 flex items-center justify-center overflow-hidden">
+            <div className="w-[64px] h-[64px] bg-white rounded-xl border border-gray-300 flex items-center justify-center overflow-hidden">
                 {task.category?.image?.url ? (
                     <img
                         src={task.category.image.url}
@@ -18,7 +18,7 @@ export const TaskTile = ({task}:TaskTileType)=> {
                     />
                 ) : task.category?.iconSvg ? (
                     <div
-                        className="w-full h-full flex items-center justify-center p-2"
+                        className="w-full h-full flex items-center justify-center"
                         dangerouslySetInnerHTML={{ __html: task.category.iconSvg }}
                     />
                 ) : (

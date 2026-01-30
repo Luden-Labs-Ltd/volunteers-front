@@ -1,5 +1,5 @@
 import {apiClient} from "@/shared/api";
-import {Skill} from "@/entities/category/model";
+import {Skill} from "@/entities/skills/model";
 import { validateApiResponse, isArray, isObject, validateRequiredFields, isValidUUID } from '@/shared/lib/validation';
 
 export const skillsApi = {

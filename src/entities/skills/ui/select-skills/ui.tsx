@@ -1,5 +1,5 @@
 import { cn } from "@/shared/lib";
-import { Skill } from "@/entities/category/model";
+import { Skill } from "@/entities/skills/model";
 
 type SkillCardProps = {
     skill: Skill;
@@ -18,7 +18,7 @@ export const SkillCardItem = ({ skill, className }: SkillCardProps) => {
         >
             <div
                 className="w-10 h-10 flex items-center justify-center bg-[#EBF7FF] rounded-xl [&>svg]:w-6 [&>svg]:h-6"
-                dangerouslySetInnerHTML={{ __html: skill.iconSvg }}
+                dangerouslySetInnerHTML={{ __html: skill.iconSvg ?? '' }}
             />
 
             <span className="text-[18px] font-normal text-[#5B5B5B]">
