@@ -28,7 +28,8 @@
     "declined": "Declined",
     "verified": "Verified",
     "description": "Description",
-    "title": "Title"
+    "title": "Title",
+    "createTask" : "Create a task to see it here"
   },
   "auth": {
     "title": "Login",

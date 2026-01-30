@@ -28,7 +28,8 @@
     "declined": "נדחה",
     "verified": "מאומת",
     "description": "תיאור",
-    "title": "כותרת"
+    "title": "כותרת",
+    "createTask": "צור משימה כדי לראות אותה כאן"
   },
   "onboarding": {
     "selectProgram": "צריך גלגל?",
