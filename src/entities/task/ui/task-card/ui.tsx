@@ -58,7 +58,7 @@ export const TaskCard: FC<TaskCardProps> = ({task, image}) => {
         </p>
 
         <p className="font-sans font-normal text-deepBlue text-[14px]">
-          {formatDate(new Date(task.createdAt).toLocaleDateString())}
+            {formatDate(new Date(task.createdAt))}
         </p>
       </div>
 
