@@ -63,13 +63,10 @@ export const OnboardingPage: FC = () => {
 
     // Загружаем города из API
     const { data: cities = [], isLoading: citiesLoading, error: citiesError } = useGetCities();
-
     // Загружаем навыки из API
     const { data: skillsData = [], isLoading: skillsLoading } = useGetSkills();
-
     // Загружаем данные текущего пользователя
     const { data: currentUser } = useGetMe();
-
     // Проверяем, прошел ли волонтер уже онбординг
     useEffect(() => {
         if (currentUser && currentUser.role === 'volunteer') {
@@ -164,7 +161,7 @@ export const OnboardingPage: FC = () => {
         return {
             id: skill.id, // UUID из API
             name: skill.name,
-            icon: iconData.icon,
+            icon: skill.iconSvg,
             color: iconData.color,
         };
     });
