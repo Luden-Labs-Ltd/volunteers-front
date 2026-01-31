@@ -12,18 +12,22 @@ type CancelVolunteerSheetType = {
 }
 
 export const CancelVolunteerSheet = ({
-                                         isOpen,
-                                         onClose,
-                                         onConfirm,
-                                         volunteer,
-                                         isProcessing
-                                     }: CancelVolunteerSheetType) => {
+isOpen,
+onClose,
+onConfirm,
+volunteer,
+isProcessing
+}: CancelVolunteerSheetType) => {
     useModalControl(isOpen, onClose);
     const { t } = useTranslation();
     if (!volunteer) return null;
-
-    const handleCloseAction = (e: React.MouseEvent<HTMLElement>) => {
+    const handleOverlayClick = (e: React.MouseEvent<HTMLElement>) => {
         if (!isProcessing && e.target === e.currentTarget) {
+            onClose();
+        }
+    };
+    const handleKeepVolunteer = () => {
+        if (!isProcessing) {
             onClose();
         }
     };
@@ -37,7 +41,7 @@ export const CancelVolunteerSheet = ({
             aria-hidden={!isOpen}
         >
             <div
-                onClick={handleCloseAction}
+                onClick={handleOverlayClick}
                 className={[
                     "absolute inset-0 transition-opacity duration-300",
                     isOpen ? "opacity-40 bg-black" : "opacity-0 bg-black",
@@ -70,7 +74,7 @@ export const CancelVolunteerSheet = ({
                         {t("sheet.yesCancel")}
                     </Button>
                     <Button
-                        onClick={handleCloseAction}
+                        onClick={handleKeepVolunteer}
                         disabled={isProcessing}
                         className="w-full h-[56px] bg-transparent border border-[#004573] text-[#004573] text-[20px] font-medium hover:bg-transparent shadow-[1px_1px_0_0_#002640,3px_3px_0_0_#002640]"
                     >
