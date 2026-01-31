@@ -36,7 +36,7 @@ export const SettingsProfileCard: FC<SettingsProfileCardProps> = ({ user }) => {
   const statusLabel = statusLabelMap[user.status] ?? user.status;
 
   return (
-    <Card variant="default" className="p-6 space-y-3">
+    <Card variant="default" className="p-6 space-y-3 border shadow-[1px_1px_0_0_#F2F2F2,2px_2px_0_0_#F2F2F2]">
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-lg font-semibold text-gray-900">

@@ -78,7 +78,7 @@ export const SettingsAvatarCard: FC<SettingsAvatarCardProps> = ({ user }) => {
   const displayName = [user.firstName, user.lastName].filter(Boolean).join(' ') || undefined;
 
   return (
-    <Card variant="default" className="p-6 space-y-3 flex flex-col items-center">
+    <Card variant="default" className="p-6 space-y-3 flex flex-col items-center border shadow-[1px_1px_0_0_#F2F2F2,2px_2px_0_0_#F2F2F2]">
       <div
         className={`cursor-pointer ${isUploading ? 'opacity-50 cursor-wait' : ''}`}
         onClick={handleClick}
