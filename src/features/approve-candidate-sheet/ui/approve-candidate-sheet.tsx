@@ -81,7 +81,7 @@ taskId
                 onClick={handleCloseAction}
                 className={[
                     "absolute inset-0 transition-opacity duration-300",
-                    isOpen ? "opacity-40 bg-black" : "opacity-0 bg-black",
+                    isOpen ? "opacity-60 bg-black" : "opacity-0 bg-black",
                 ].join(" ")}
             />
 
