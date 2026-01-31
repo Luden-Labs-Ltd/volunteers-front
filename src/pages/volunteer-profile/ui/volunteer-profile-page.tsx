@@ -21,7 +21,7 @@ export const VolunteerProfilePage = () => {
                 <div className="relative w-full flex items-center justify-center min-h-[48px]">
                     <div className="absolute left-0 top-1/2 -translate-y-1/2">
                         <Button
-                            icon={<Icon iconId="icon-arrow-back" />}
+                            icon={<Icon iconId="icon-arrow-back" className="rtl:rotate-180"/>}
                             variant="transition"
                             size="sm"
                             onClick={() => navigate(-1)}

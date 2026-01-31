@@ -23,7 +23,7 @@ export const MyTasksList = () => {
         return (
             <div className="flex flex-col items-center justify-center mt-20 text-center px-6">
                 <p className="text-lg text-gray-500">{t('tasks.empty.my')}</p>
-                <p className="text-sm text-gray-400 mt-2">Create a task to see it here</p>
+                <p className="text-sm text-gray-400 mt-2">{t("common.createTask")}</p>
             </div>
         );
     }

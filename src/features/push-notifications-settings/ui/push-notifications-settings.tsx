@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Divider } from '@/shared/ui';
+import {Button, Divider, Switch} from '@/shared/ui';
 import { usePushSubscription } from '@/shared/lib/hooks/use-push-subscription';
 import {
   subscribeToPushNotifications,
@@ -126,45 +126,32 @@ export const PushNotificationsSettings: FC = () => {
               {getStatusText()}
             </div>
           </div>
-          <div className="ml-4">
-            {isSupported && permission !== 'denied' ? (
-              <button
-                onClick={handleToggle}
-                disabled={isProcessing}
-                className={`
-                  relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full
-                  border-2 border-transparent transition-colors duration-200 ease-in-out
-                  focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
-                  ${isSubscribed ? 'bg-primary' : 'bg-gray-200'}
-                  ${isProcessing ? 'opacity-50 cursor-not-allowed' : ''}
-                `}
-                role="switch"
-                aria-checked={isSubscribed}
-                aria-label={t('notifications.toggle')}
-              >
-                <span
-                  className={`
-                    pointer-events-none inline-block h-5 w-5 transform rounded-full
-                    bg-white shadow ring-0 transition duration-200 ease-in-out
-                    ${isSubscribed ? 'translate-x-5' : 'translate-x-0'}
-                  `}
-                />
-              </button>
-            ) : (
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={async () => {
-                  const granted = await requestPermission();
-                  if (!granted) {
-                    toast.error(t('notifications.permissionDenied'));
-                  }
-                }}
-              >
-                {t('notifications.enable')}
-              </Button>
-            )}
-          </div>
+            <div className="ml-4">
+                {isSupported && permission !== 'denied' ? (
+                    <Switch
+                        checked={isSubscribed}
+                        onChange={() => {
+                            if (!isProcessing) {
+                                handleToggle();
+                            }
+                        }}
+                        className={isProcessing ? "opacity-50 cursor-not-allowed pointer-events-none" : ""}
+                    />
+                ) : (
+                    <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={async () => {
+                            const granted = await requestPermission();
+                            if (!granted) {
+                                toast.error(t('notifications.permissionDenied'));
+                            }
+                        }}
+                    >
+                        {t('notifications.enable')}
+                    </Button>
+                )}
+            </div>
         </div>
 
         {error && (

@@ -19,7 +19,7 @@ export const TaskFormCard = ({ register, control, errors }: TaskFormCardType) =>
         <div className="w-full h-[340px] flex flex-col justify-end rounded-2xl mb-5 border border-[#162A43] shadow-[1px_1px_0_0_#162A43,2px_2px_0_0_#162A43] p-4 gap-4">
             <div>
                 <Input
-                    label="Title"
+                    label={t("common.title")}
                     {...register("title")}
                     error={errors.title ? "true" : undefined}
                 />
@@ -81,7 +81,7 @@ export const TaskFormCard = ({ register, control, errors }: TaskFormCardType) =>
 
             <div>
                 <Textarea
-                    label="Description"
+                    label={t("common.description")}
                     {...register("description")}
                     error={errors.title ? "true" : undefined}
                 />

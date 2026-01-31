@@ -18,7 +18,18 @@
     "settings": "Settings",
     "profile": "Profile",
     "hideSkills": "hide skills",
-    "moreSkills": "more skills..."
+    "moreSkills": "more skills...",
+    "noRequests": "No requests yet",
+    "noApproved": "No approved volunteers",
+    "noNewRequests": "No new Requests volunteers",
+    "noDeclined": "No declined volunteers",
+    "approvedVolunteer": "Approved Volunteer",
+    "newRequests": "New Requests",
+    "declined": "Declined",
+    "verified": "Verified",
+    "description": "Description",
+    "title": "Title",
+    "createTask" : "Create a task to see it here"
   },
   "auth": {
     "title": "Login",
@@ -404,5 +415,14 @@
     "detailsLabel": "Details:",
     "urgent": "Urgent",
     "completionConfirmed": "Completion confirmed"
+  },
+  "reviewsCard": {
+    "review": "Reviews:",
+    "viewAll": "View all"
+  },
+  "sheet": {
+    "sure": " Are you sure you want to cancel this volunteer? <br/>\nThe task will become active again for others to apply.",
+    "yesCancel": " Yes, cancel volunteer",
+    "keep": " Keep volunteer"
   }
 }
