@@ -166,7 +166,7 @@ export const CategoriesPage = () => {
             </h2>
             <PopularTaskScroll /> */}
 
-            <div className="fixed bottom-[69px] left-1/2 -translate-x-1/2 z-[50] w-full">
+            <div className="fixed bottom-[50px] left-1/2 -translate-x-1/2 z-[50] w-full">
                 <div className="w-full bg-white px-5 py-4 z-[0]">
                     <Button
                         onClick={handleNext}

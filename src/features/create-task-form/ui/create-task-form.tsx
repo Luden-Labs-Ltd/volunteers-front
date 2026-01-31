@@ -149,21 +149,24 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
             toast.error(errorMessage);
         }
     };
-
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="h-full pt-[180px] pb-[190px] px-[20px]">
-            <TaskFormCard
-                register={register}
-                control={control}
-                errors={errors}
-            />
+        <form onSubmit={handleSubmit(onSubmit)} className="h-full">
+            <div className="px-[20px] pt-[190px] pb-[205px]">
 
-            <h2 className={"text-[20px] font-normal mt-6 mb-3"}>
-                {t("taskDetails.selectedSkills")}
-            </h2>
-            <SelectSkills ids={skillsIds} />
+                <TaskFormCard
+                    register={register}
+                    control={control}
+                    errors={errors}
+                />
+
+                <h2 className={"text-[20px] font-normal mt-6 mb-3"}>
+                    {t("taskDetails.selectedSkills")}
+                </h2>
+                <SelectSkills ids={skillsIds} />
+            </div>
+
             <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-[50] w-full max-w-[393px]">
-                <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-[50] w-full max-w-[393px] bg-white px-5 py-4">
+                <div className="bg-white px-5 py-8 pb-0">
                     <Button
                         type="submit"
                         disabled={isPending}
