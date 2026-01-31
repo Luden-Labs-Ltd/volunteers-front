@@ -11,13 +11,14 @@ export const SettingsLogoutCard: FC<SettingsLogoutCardProps> = ({ onLogout, isLo
   const { t } = useTranslation();
 
   return (
-    <Card variant="default" className="p-6">
+    <Card variant="default" className="pb-5">
       <Button
         size="lg"
         fullWidth
         variant="error"
         onClick={onLogout}
         disabled={isLoading}
+        className={"border border-red-500 shadow-[1px_1px_0_0_#960018,2px_2px_0_0_#960018]"}
       >
         {isLoading ? t('common.loading') : t('auth.logout')}
       </Button>

@@ -35,7 +35,7 @@ export const NeedyTasksPage = () => {
                     />
                 </div>
             </div>
-            <div className="pt-[120px] pb-[90px]">
+            <div className="pt-[120px] pb-[calc(50px+env(safe-area-inset-bottom))]">
                 <MyTasksList />
             </div>
         </div>

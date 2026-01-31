@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {Button, Textarea} from '@/shared/ui';
@@ -8,6 +8,20 @@ export const TaskCompletionFeedbackPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [feedback, setFeedback] = useState('');
+
+    // он тут нужен так как на IOS телефлнах будет снизу полоска белая!
+    useEffect(() => {
+        const originalBodyBg = document.body.style.backgroundColor;
+        const rootElement = document.getElementById('root');
+        const originalRootBg = rootElement ? rootElement.style.backgroundColor : '';
+        document.body.style.backgroundColor = '#F0F5FA';
+        if (rootElement) rootElement.style.backgroundColor = '#F0F5FA';
+
+        return () => {
+            document.body.style.backgroundColor = originalBodyBg;
+            if (rootElement) rootElement.style.backgroundColor = originalRootBg;
+        };
+    }, []);
 
     const handleBack = () => {
         console.log('Feedback:', feedback);
@@ -40,7 +54,7 @@ export const TaskCompletionFeedbackPage = () => {
                         style={{ minHeight: '52px' }}
                     />
                 </div>
-                <div className="w-full pb-[34px] mt-8">
+                <div className="w-full pb-[55px] mt-8">
                     <Button
                         onClick={handleBack}
                         className="w-full h-[56px] rounded-xl bg-[#004573] text-white text-[18px] font-semibold

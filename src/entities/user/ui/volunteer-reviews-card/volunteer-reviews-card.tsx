@@ -28,19 +28,13 @@ export const VolunteerReviewsCard = ({ reviews, onViewAll }: VolunteerReviewsCar
             </div>
             <div className="flex flex-col gap-6">
                 {reviews.map((review) => (
-                    <div key={review.id} className="relative flex flex-col gap-2">
-                        <div className="flex gap-1 relative bottom-10 left-20 rtl:left-auto rtl:right-20"
-                        >
+                    <div key={review.id} className="relative flex flex-col pt-6">
+                        <div className="absolute -top-[38px] right-[120px] flex gap-1 rtl:right-auto rtl:left-[135px]">
                             {Array.from({ length: review.rating }).map((_, index) => (
-                                <Icon
-                                    key={index}
-                                    size={16}
-                                    iconId="icon-star"
-                                    className="mt-0.5"
-                                />
+                                <Icon key={index} size={16} iconId="icon-star" />
                             ))}
                         </div>
-                        <p className="text-[16px] leading-6 text-[#737373] font-normal -mt-10">
+                        <p className="text-[16px] leading-6 text-[#737373] font-normal">
                             "{review.text}"
                         </p>
                     </div>

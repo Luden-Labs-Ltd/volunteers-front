@@ -21,43 +21,45 @@ onConfirm,
 onCancel,
 }: ConfirmationViewProps) => {
     const { t } = useTranslation();
+
     return (
-        <>
-            <p className="mt-2 text-[16px] leading-snug text-[#393939] font-normal text-center">
-                {t('taskResponses.shareContactDetails', { volunteerName })}
-            </p>
+        <div className="flex flex-col">
+            <div>
+                <p className="mt-2 text-[16px] leading-snug text-[#393939] font-normal text-center">
+                    {t('taskResponses.shareContactDetails', { volunteerName })}
+                </p>
 
-            <div className="mt-4 space-y-3 rounded-xl border shadow-[3px_3px_0_0_#F2F2F2] px-2 border-[#F2F2F2]">
-                <div className="w-full px-4 py-3 flex items-center gap-3">
-                    <img
-                        src={requesterAvatar || fallbackAvatar}
-                        alt={requesterName}
-                        className="w-6 h-6 rounded-full object-cover"
-                    />
-                    <span className="text-[16px] text-[#393939]">{requesterName}</span>
-                </div>
+                <div className="mt-6 space-y-3 rounded-xl border shadow-[3px_3px_0_0_#F2F2F2] px-2 border-[#F2F2F2]">
+                    <div className="w-full px-4 py-3 flex items-center gap-3">
+                        <img
+                            src={requesterAvatar || fallbackAvatar}
+                            alt={requesterName}
+                            className="w-6 h-6 rounded-full object-cover"
+                        />
+                        <span className="text-[16px] text-[#393939]">{requesterName}</span>
+                    </div>
 
-                <div className="w-full px-4 py-3 flex items-center gap-3 border-t-[1px] border-[#F2F2F2]">
-                    <span className="text-[18px]">📞</span>
-                    <span className="text-[16px] text-[#393939]">{requesterPhone}</span>
+                    <div className="w-full px-4 py-3 flex items-center gap-3 border-t-[1px] border-[#F2F2F2]">
+                        <span className="text-[18px]">📞</span>
+                        <span className="text-[16px] text-[#393939]">{requesterPhone}</span>
+                    </div>
                 </div>
             </div>
-
-            <div className="mt-5">
+            <div className="mt-8 w-full">
                 <Button
                     onClick={onConfirm}
                     className="w-full h-[56px] rounded-xl border border-[#162A43] bg-[#004573] text-white shadow-[3px_3px_0_0_#162A43] text-[20px] font-medium"
                 >
                     {t('taskResponses.confirmAndShareDetails')}
                 </Button>
-            </div>
 
-            <button
-                onClick={onCancel}
-                className="w-full mt-3 h-[44px] text-[20px] font-medium text-[#004573]"
-            >
-                {t('common.cancel')}
-            </button>
-        </>
+                <button
+                    onClick={onCancel}
+                    className="w-full mt-3 h-[44px] text-[20px] font-medium text-[#004573]"
+                >
+                    {t('common.cancel')}
+                </button>
+            </div>
+        </div>
     );
 };

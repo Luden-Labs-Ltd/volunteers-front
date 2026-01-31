@@ -27,7 +27,7 @@ export const TaskDetailsPage = () => {
     const isApprovedByNeedy = task?.approveBy?.includes(TaskApproveRole.NEEDY);
     return (
         <div className="w-full max-w-[393px] min-h-screen mx-auto relative bg-white flex flex-col">
-            <div className="sticky top-0 z-[50] w-full bg-gradient-to-b from-blue-50 to-white/95 backdrop-blur-md pt-14 pb-2 px-5 border-b border-transparent transition-all">
+            <div className="sticky top-0 z-[50] w-full bg-gradient-to-b from-blue-50 to-white backdrop-blur-md pt-14 pb-2 px-5 transition-all">
                 <div className="relative w-full flex justify-center items-start min-h-[40px]">
                     <div className="absolute left-0 top-0">
                         <Button
@@ -50,7 +50,7 @@ export const TaskDetailsPage = () => {
                 </div>
             </div>
 
-            <div className="px-5 pt-6 pb-[220px] flex flex-col gap-6">
+            <div className="px-5 pt-6 pb-[calc(220px+env(safe-area-inset-bottom))] flex flex-col gap-6">
                 {volunteer ? (
                     <UserProfileHeader user={volunteer} />
                 ) : (
@@ -84,8 +84,8 @@ export const TaskDetailsPage = () => {
                 isProcessing={isProcessing}
             />
 
-            <div className="fixed bottom-[69px] left-1/2 -translate-x-1/2 z-[50] w-full max-w-[393px]">
-                <div className="w-full bg-white/90 backdrop-blur-sm px-5 py-4 border-t border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+            <div className="fixed bottom-[50px] left-1/2 -translate-x-1/2 z-[50] w-full">
+                <div className="w-full bg-white px-5 py-4">
                     <Button
                         className="w-full h-[48px] rounded-xl border border-[#162A43] bg-[#004573] text-white shadow-[3px_3px_0_0_#162A43] text-[20px] font-medium active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
                         onClick={handleComplete}
@@ -96,7 +96,7 @@ export const TaskDetailsPage = () => {
                     <Button
                         onClick={() => setIsCancelSheetOpen(true)}
                         disabled={isProcessing}
-                        className="mt-3 w-full h-[48px] rounded-xl border border-[#162A43] bg-white text-[#004573] shadow-[3px_3px_0_0_#162A43] text-[20px] font-medium active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+                        className="mt-3 w-full h-[48px] rounded-xl border border-[#162A43] bg-white text-[#004573] shadow-[3px_3px_0_0_#162A43] text-[20px] font-medium active:bg-transparent"
                     >
                         {t('taskDetailsApprove.cancelVolunteer')}
                     </Button>

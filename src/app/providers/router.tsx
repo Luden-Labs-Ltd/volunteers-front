@@ -20,6 +20,7 @@ import {
   CandidateApprovePage,
 } from '@/pages/needy-categories/ui';
 import {VolunteerProfilePage} from "@/pages/volunteer-profile/ui";
+import {ScrollToTop} from "@/shared/ui/scrollToTop";
 
 export const Router: FC = () => {
   return (
@@ -29,7 +30,9 @@ export const Router: FC = () => {
         v7_relativeSplatPath: true,
       }}
     >
-      <Routes>
+        <ScrollToTop />
+
+        <Routes>
         {/* Публичные роуты */}
         <Route path="/ui-kit" element={<UIKitPage />} />
         <Route path="/auth" element={<AuthPage />} />
