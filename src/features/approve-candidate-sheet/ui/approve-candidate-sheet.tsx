@@ -7,19 +7,20 @@ import { SuccessView } from "./success-view";
 import { UserProfileHeader } from "@/entities/user/ui/user-profile-header";
 import { ConfirmationView } from "./confirmation-view";
 import { useAssignVolunteer } from "@/entities/task/hook";
+import {useBodyScrollLock} from "@/shared/hook/use-body-scroll-lock";
 
 export const ApproveCandidateSheet = ({
-                                          isOpen,
-                                          onClose,
-                                          volunteer,
-                                          taskId
-                                      }: ApproveCandidateSheetProps) => {
+isOpen,
+onClose,
+volunteer,
+taskId
+}: ApproveCandidateSheetProps) => {
     const { t } = useTranslation();
     const { data: me } = useGetMe();
     const navigate = useNavigate();
     const [isSuccess, setIsSuccess] = useState(false);
     const { mutate: assignVolunteer } = useAssignVolunteer();
-
+    useBodyScrollLock(isOpen);
     useModalControl(isOpen, onClose);
 
     useEffect(() => {
@@ -90,7 +91,7 @@ export const ApproveCandidateSheet = ({
                 className={[
                     "relative w-full max-w-[450px]",
                     "bg-white rounded-t-[28px]",
-                    "px-5 pt-3 pb-[calc(16px+env(safe-area-inset-bottom))]",
+                    "px-5 pt-3",
                     "transition-transform duration-300 ease-out z-10",
                     isOpen ? "translate-y-0" : "translate-y-full",
                 ].join(" ")}
