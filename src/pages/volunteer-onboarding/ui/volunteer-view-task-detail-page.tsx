@@ -376,6 +376,7 @@ export const VolunteerViewTaskDetailsPage = () => {
               </Badge>
             </div>
           )}
+            <div className="h-[20px] w-full shrink-0" />
         </div>
       </section>
     </>

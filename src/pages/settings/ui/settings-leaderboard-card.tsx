@@ -13,6 +13,7 @@ export const SettingsLeaderboardCard: FC = () => {
         size="lg"
         fullWidth
         variant="secondary"
+        className={"border border-[#002640] shadow-[1px_1px_0_0_#002640,2px_2px_0_0_#002640]"}
         onClick={() => navigate('/volunteer/leaderboard')}
       >
         {t('leaderboard.title')}
