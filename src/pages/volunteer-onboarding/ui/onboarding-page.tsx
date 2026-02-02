@@ -834,7 +834,7 @@ export const OnboardingPage: FC = () => {
 
             {/* Navigation Buttons - всегда внизу */}
             <div className="fixed bottom-[0px] left-1/2 -translate-x-1/2 z-[50] w-full">
-                <div className="w-full bg-white px-5 py-4 z-[0]">
+                <div className="w-full bg-red-900 px-5 py-4 z-[0]">
                         <Button
                             fullWidth
                             size="lg"
@@ -849,7 +849,6 @@ export const OnboardingPage: FC = () => {
                                     : t('common.next')}
                         </Button>
                 </div>
-                <div className="absolute top-full left-0 right-0 h-[0px] bg-white" />
             </div>
         </div>
     );

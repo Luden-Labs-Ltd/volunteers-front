@@ -1,28 +1,15 @@
-import {useEffect, useState} from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {Button, Textarea} from '@/shared/ui';
 import crownIllustration from '../assets/taskFeedback/Crown.webp';
+import {usePageBackground} from "@/shared/lib/hooks";
 
 export const TaskCompletionFeedbackPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [feedback, setFeedback] = useState('');
-
-    // он тут нужен так как на IOS телефлнах будет снизу полоска белая!
-    useEffect(() => {
-        const originalBodyBg = document.body.style.backgroundColor;
-        const rootElement = document.getElementById('root');
-        const originalRootBg = rootElement ? rootElement.style.backgroundColor : '';
-        document.body.style.backgroundColor = '#F0F5FA';
-        if (rootElement) rootElement.style.backgroundColor = '#F0F5FA';
-
-        return () => {
-            document.body.style.backgroundColor = originalBodyBg;
-            if (rootElement) rootElement.style.backgroundColor = originalRootBg;
-        };
-    }, []);
-
+    usePageBackground('#F0F5FA');
     const handleBack = () => {
         console.log('Feedback:', feedback);
         navigate('/needy/tasks');

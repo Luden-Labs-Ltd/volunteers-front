@@ -2,27 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/shared/ui';
 import crown from '@/shared/assets/images/crown.webp';
-import {useEffect} from "react";
+import {usePageBackground} from "@/shared/lib/hooks";
 
 export const TaskCompletedPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-
-    // он тут нужен так как на IOS телефлнах будет снизу полоска белая!
-    useEffect(() => {
-        const originalBodyBg = document.body.style.backgroundColor;
-        const rootElement = document.getElementById('root');
-        const originalRootBg = rootElement ? rootElement.style.backgroundColor : '';
-        document.body.style.backgroundColor = '#F0F5FA';
-        if (rootElement) rootElement.style.backgroundColor = '#F0F5FA';
-
-        return () => {
-            document.body.style.backgroundColor = originalBodyBg;
-            if (rootElement) rootElement.style.backgroundColor = originalRootBg;
-        };
-    }, []);
-
-  const onClickHandler = () => {
+    usePageBackground('#F0F5FA');
+    const onClickHandler = () => {
     navigate('/volunteer/tasks');
   };
 
