@@ -19,7 +19,7 @@ export const AssignVolunteerPage = () => {
     const taskTitle = task?.title || t('taskResponses.task');
     return (
         <div className="w-full max-w-[393px] min-h-screen m-auto relative bg-white">
-            <div className="fixed flex flex-col top-0 left-0 right-0 z-[50] w-[398px] mx-auto bg-gradient-to-b from-blue-50 to-white pt-16 pb-2 px-[20px]">
+            <div className="fixed flex flex-col top-0 left-0 right-0 z-[50] w-[398px] mx-auto bg-gradient-to-b from-blue-50 to-white pt-16 se-only:pt-10 pb-2 px-[20px]">
                 <div className="flex gap-2 items-center">
                     <div>
                         <Button
@@ -27,21 +27,21 @@ export const AssignVolunteerPage = () => {
                             onClick={() => navigate(-1)}
                         />
                     </div>
-                    <h1 className="text-[32px] leading-[1.2] text-[#004573] font-medium break-words line-clamp-2">
+                    <h1 className="text-[32px] se-only:text-[28px] leading-[1.2] text-[#004573] font-medium break-words line-clamp-2">
                         {taskTitle}
                     </h1>
                 </div>
                 <div className="flex flex-col mt-7">
-                    <span className={"text-[18px] text-[#004573] font-medium"}>
+                    <span className={"text-[18px] se-only:text-[16px] text-[#004573] font-medium"}>
                         {t('taskResponses.volunteerToHelp') || 'Volunteer to Help'}
                     </span>
-                    <span className={"text-[18px] text-[#5B5B5B] font-normal mt-2"}>
+                    <span className={"text-[18px] se-only:text-[16px] text-[#5B5B5B] font-normal mt-2"}>
                         {t('taskResponses.selectVolunteer') || 'Select a volunteer to fulfill the request'}
                     </span>
                 </div>
             </div>
 
-            <div className="pt-[190px] pb-[90px] px-[20px]">
+            <div className="pt-[190px] se-only:pt-[150px] pb-[90px] px-[20px]">
                 <SkillsList skills={task?.skills}/>
                 {responses && (
                     <CandidatesList responses={responses} />

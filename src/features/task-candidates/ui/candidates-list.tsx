@@ -28,7 +28,7 @@ export const CandidatesList = ({ responses }: CandidatesListType) => {
     return (
         <div className="flex flex-col gap-8 pt-5 pb-10">
             <div>
-                <h3 className="text-sm uppercase text-[#004573] font-bold tracking-wider mb-3 px-1 flex items-center gap-2">
+                <h3 className="text-sm se-only:text-xs uppercase text-[#004573] font-bold tracking-wider mb-3 px-1 flex items-center gap-2">
                         {t("common.approvedVolunteer")}
                     <span className="bg-[#E3F2FD] text-[#004573] text-[14px] rounded-md px-2 py-0.5">
                         {approvedResponses.length}
@@ -49,7 +49,7 @@ export const CandidatesList = ({ responses }: CandidatesListType) => {
             </div>
 
             <div>
-                <h3 className="text-sm uppercase text-[#828282] font-bold tracking-wider mb-3 px-1 flex items-center gap-2">
+                <h3 className="text-sm se-only:text-xs uppercase text-[#828282] font-bold tracking-wider mb-3 px-1 flex items-center gap-2">
                     {t("common.newRequests")}
                     <span className="bg-[#F2F2F2] text-[#828282] text-[14px] rounded-md px-2 py-0.5">
                         {pendingResponses.length}
@@ -70,7 +70,7 @@ export const CandidatesList = ({ responses }: CandidatesListType) => {
             </div>
 
             <div>
-                <h3 className="text-sm uppercase text-[#EB5757] font-bold tracking-wider mb-3 px-1 flex items-center gap-2">
+                <h3 className="text-sm se-only:text-xs uppercase text-[#EB5757] font-bold tracking-wider mb-3 px-1 flex items-center gap-2">
                     {t("common.declined")}
                     <span className="bg-[#FFE5E5] text-[#EB5757] text-[14px] rounded-md px-2 py-0.5">
                         {rejectedResponses.length}
