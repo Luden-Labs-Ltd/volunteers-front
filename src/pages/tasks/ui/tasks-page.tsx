@@ -2,10 +2,11 @@ import {FC, useMemo, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useNavigate} from 'react-router-dom';
 import {TaskList} from '@/widgets/task-list';
-import {Header, Icon, IconButton} from '@/shared/ui';
+import {Header, IconButton} from '@/shared/ui';
 import {useGetMe} from '@/entities/user/model/hooks';
 import {Tabs} from "@/shared/ui/tabs";
 import userIcon from '@/shared/assets/images/userIcon.webp';
+import refreshBtn from '@/shared/assets/images/refreshBtn.webp';
 import {useGetTasks} from "@/entities/task/hook";
 import {taskApi} from "@/entities/task/api";
 import {TaskStatus} from "@/entities/task/model/types";
@@ -80,7 +81,12 @@ export const TasksPage: FC = () => {
               // className="w-8 h-8 rounded-lg drop-shadow-[2px_2px_0_#004573]"
               // size={'md'}
               icon={
-                <Icon iconId={'refresh-btn'} size={60}/>
+                // <Icon iconId={'refresh-btn'} size={60}/>
+                <img
+                  src={refreshBtn}
+                  alt={t('common.profile')}
+                  className={"w-[32px] h-[32px] object-cover"}
+                />
               }
             />
               <IconButton
