@@ -3,8 +3,8 @@ import {Review} from "@/entities/user";
 
 export const ReviewItem = ({ review }: { review: Review }) => {
     return (
-        <div className="relative flex flex-col pt-6">
-            <div className="absolute -top-[38px] right-[120px] flex gap-1 rtl:right-auto rtl:left-[135px]">
+        <div className="relative flex flex-col pt-1">
+            <div className="absolute -top-[38px] right-[120px] se-only:right-[110px] flex gap-1 rtl:right-auto rtl:left-[135px]">
                 {Array.from({ length: review.rating }).map((_, index) => (
                     <Icon key={index} size={16} iconId="icon-star" />
                 ))}
