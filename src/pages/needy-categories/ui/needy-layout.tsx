@@ -1,6 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { TabsForLayout } from "@/pages/needy-categories/components/tab.tsx";
+import {TabBottomNavigation} from "@/widgets/tab-bottom-navigation/ui";
 
 export const NeedyLayout = () => {
     const { t } = useTranslation();
@@ -33,7 +33,7 @@ export const NeedyLayout = () => {
                 )}
             </div>
             <Outlet />
-            <TabsForLayout />
+            <TabBottomNavigation />
         </div>
     );
 };
