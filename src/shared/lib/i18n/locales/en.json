@@ -421,7 +421,7 @@
     "viewAll": "View all"
   },
   "sheet": {
-    "sure": " Are you sure you want to cancel this volunteer? <br/>\nThe task will become active again for others to apply.",
+    "sure": " Are you sure you want to cancel this volunteer?\nThe task will become active again for others to apply.",
     "yesCancel": " Yes, cancel volunteer",
     "keep": " Keep volunteer"
   }
