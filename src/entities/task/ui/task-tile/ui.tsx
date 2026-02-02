@@ -28,7 +28,7 @@ export const TaskTile = ({task}:TaskTileType)=> {
                 )}
             </div>
             <span   dir="ltr"
-                    className="text-[#5B5B5B] text-[14px] font-normal text-center whitespace-nowrap truncate w-full">
+                    className="text-[#5B5B5B] text-[14px] se-only:text-[12px] font-normal text-center whitespace-nowrap truncate w-full">
               {task.type}
             </span>
         </button>

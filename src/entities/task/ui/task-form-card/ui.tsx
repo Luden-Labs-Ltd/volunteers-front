@@ -46,10 +46,10 @@ export const TaskFormCard = ({ register, control, errors }: TaskFormCardType) =>
             </div>
 
             <div className="flex justify-between items-center w-full">
-                <span className={"text-[16px] font-normal text-[#5B5B5B]"}>
+                <span className={"text-[16px] se-only:text-[13px] font-normal text-[#5B5B5B]"}>
                     {t("taskDetails.labelAddTime")}
                 </span>
-                <div className={"flex gap-2 "}>
+                <div className={"flex gap-2"}>
                     <Controller
                         name="scheduledDate"
                         control={control}
@@ -58,7 +58,7 @@ export const TaskFormCard = ({ register, control, errors }: TaskFormCardType) =>
                                 type="date"
                                 value={value || ''}
                                 onChange={(e) => onChange(e.target.value)}
-                                className={`py-2 px-2 w-[120px] bg-[#EBF7FF] rounded-xl text-[#373737] text-[16px] font-normal border border-transparent focus:outline-none focus:ring-2 focus:ring-[#004573] cursor-pointer min-w-[120px] ${value ? 'bg-[#004573]' : ''}`}
+                                className={`py-2 px-2 se-only:px-3 w-[120px] bg-[#EBF7FF] rounded-xl text-[#373737] text-[16px] se-only:text-[14px] font-normal border border-transparent focus:outline-none focus:ring-2 focus:ring-[#004573] cursor-pointer min-w-[120px] ${value ? 'bg-[#004573]' : ''}`}
                                 title={t("taskDetails.labelDate")}
                             />
                         )}
@@ -71,7 +71,7 @@ export const TaskFormCard = ({ register, control, errors }: TaskFormCardType) =>
                                 type="time"
                                 value={value || ''}
                                 onChange={(e) => onChange(e.target.value)}
-                                className={`py-2 px-4 bg-[#EBF7FF] rounded-xl text-[#373737] text-[16px] font-normal border border-transparent focus:outline-none focus:ring-2 focus:ring-[#004573] cursor-pointer min-w-[100px] ${value ? 'bg-[#004573]' : ''}`}
+                                className={`py-2 px-4 bg-[#EBF7FF] rounded-xl text-[#373737] text-[16px] se-only:text-[14px] font-normal border border-transparent focus:outline-none focus:ring-2 focus:ring-[#004573] cursor-pointer min-w-[100px] ${value ? 'bg-[#004573]' : ''}`}
                                 title={t("taskDetails.labelTime")}
                             />
                         )}
