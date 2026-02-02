@@ -194,6 +194,13 @@ export type UserWithProfile = {
     };
 };
 
+export type Review = {
+    id: number;
+    authorName: string;
+    rating: number;
+    text: string;
+};
+
 export type UserWithRoleData =
     | UserWithVolunteerData
     | UserWithNeedyData

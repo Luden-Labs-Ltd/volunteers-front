@@ -833,21 +833,21 @@ export const OnboardingPage: FC = () => {
             </div>
 
             {/* Navigation Buttons - всегда внизу */}
-            <div className="fixed bottom-0 left-0 right-0 px-5 pt-5 pb-11 bg-white border-t border-gray-200 z-20">
-                <div className="max-w-md mx-auto">
-                    <Button
-                      fullWidth
-                      size="lg"
-                      onClick={currentStep === 'thank-you' ? handleSubmit : handleNext}
-                      disabled={!canProceed()}
-                      className="shadow-lg"
-                    >
-                        {currentStep === 'program'
-                          ? t('onboarding.iAmWheelButton')
-                          : currentStep === 'thank-you'
-                            ? t('common.next')
-                            : t('common.next')}
-                    </Button>
+            <div className="fixed bottom-[0px] left-1/2 -translate-x-1/2 z-[50] w-full">
+                <div className="w-full bg-red-900 px-5 py-4 z-[0]">
+                        <Button
+                            fullWidth
+                            size="lg"
+                            onClick={currentStep === 'thank-you' ? handleSubmit : handleNext}
+                            disabled={!canProceed()}
+                            className="w-full h-[56px] rounded-xl border border-[#162A43] bg-[#004573] text-white shadow-[3px_3px_0_0_#162A43] text-[20px] font-medium focus:ring-0 focus:ring-offset-0 focus:outline-none"
+                        >
+                            {currentStep === 'program'
+                                ? t('onboarding.iAmWheelButton')
+                                : currentStep === 'thank-you'
+                                    ? t('common.next')
+                                    : t('common.next')}
+                        </Button>
                 </div>
             </div>
         </div>

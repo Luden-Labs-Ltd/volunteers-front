@@ -1,17 +1,12 @@
-import { Icon } from "@/shared/ui";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
+import {ReviewItem} from "@/entities/user/ui/volunteer-reviews-card/review-item.tsx";
+import {Review} from "@/entities/user";
 
-type Review = {
-    id: number;
-    authorName: string;
-    rating: number;
-    text: string;
-}
 
 type VolunteerReviewsCardType = {
     reviews: Review[];
     onViewAll?: () => void;
-}
+};
 
 export const VolunteerReviewsCard = ({ reviews, onViewAll }: VolunteerReviewsCardType) => {
     const { t } = useTranslation();
@@ -26,24 +21,10 @@ export const VolunteerReviewsCard = ({ reviews, onViewAll }: VolunteerReviewsCar
                     {t("reviewsCard.viewAll")}
                 </button>
             </div>
+
             <div className="flex flex-col gap-6">
                 {reviews.map((review) => (
-                    <div key={review.id} className="relative flex flex-col gap-2">
-                        <div className="flex gap-1 relative bottom-10 left-20 rtl:left-auto rtl:right-20"
-                        >
-                            {Array.from({ length: review.rating }).map((_, index) => (
-                                <Icon
-                                    key={index}
-                                    size={16}
-                                    iconId="icon-star"
-                                    className="mt-0.5"
-                                />
-                            ))}
-                        </div>
-                        <p className="text-[16px] leading-6 text-[#737373] font-normal -mt-10">
-                            "{review.text}"
-                        </p>
-                    </div>
+                    <ReviewItem key={review.id} review={review} />
                 ))}
             </div>
         </div>

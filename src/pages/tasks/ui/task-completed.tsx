@@ -2,12 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/shared/ui';
 import crown from '@/shared/assets/images/crown.webp';
+import {usePageBackground} from "@/shared/lib/hooks";
 
 export const TaskCompletedPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-
-  const onClickHandler = () => {
+    usePageBackground('#F0F5FA');
+    const onClickHandler = () => {
     navigate('/volunteer/tasks');
   };
 

@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+        screens: {
+            'se-only': {'max': '380px'},
+        },
       fontFamily: {
         sans: ['Rubik', 'sans-serif'],
       },
