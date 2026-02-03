@@ -151,7 +151,7 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
     };
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="h-full">
-            <div className="px-[20px] pt-[190px] pb-[calc(175px+env(safe-area-inset-bottom))]">
+            <div className="px-[20px] pt-[190px] se-only:pt-[155px] pb-[calc(175px+env(safe-area-inset-bottom))] se-only:pb-[165px]">
 
                 <TaskFormCard
                     register={register}

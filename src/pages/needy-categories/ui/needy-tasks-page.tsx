@@ -18,7 +18,7 @@ export const NeedyTasksPage = () => {
                 <h1 className="text-[28px] text-[#004573] font-medium">
                     {t("tasks.myTasks")}
                 </h1>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 relative se-only:right-6">
                     {/* <Button icon={<Icon iconId={"icon-plus"} />} variant="transition" size="sm" /> */}
                     <IconButton
                         className="w-8 h-8 rounded-lg drop-shadow-[2px_2px_0_#004573]"
