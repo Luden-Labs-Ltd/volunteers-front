@@ -1,8 +1,7 @@
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { IconButton } from "@/shared/ui";
-import { MyTasksList } from "@/features/my-tasks-list/ui/my-tasks-list.tsx";
-import userIcon from '@/shared/assets/images/userIcon.webp';
+import {useTranslation} from "react-i18next";
+import {useNavigate} from "react-router-dom";
+import {Button, Icon} from "@/shared/ui";
+import {MyTasksList} from "@/features/my-tasks-list/ui/my-tasks-list.tsx";
 
 export const NeedyTasksPage = () => {
     const { t } = useTranslation();
@@ -19,20 +18,16 @@ export const NeedyTasksPage = () => {
                     {t("tasks.myTasks")}
                 </h1>
                 <div className="flex items-center gap-2 relative se-only:right-6">
-                    {/* <Button icon={<Icon iconId={"icon-plus"} />} variant="transition" size="sm" /> */}
-                    <IconButton
-                        className="w-8 h-8 rounded-lg drop-shadow-[2px_2px_0_#004573]"
-                        variant="ghost"
-                        aria-label={t('common.profile')}
-                        icon={
-                            <img
-                                src={userIcon}
-                                alt={t('common.profile')}
-                                className="w-full h-full object-cover"
-                            />
-                        }
-                        onClick={handleSettingsClick}
-                    />
+                     <Button
+                       className="flex items-center justify-center"
+                       icon={<Icon className="w-5 h-5  text-deepBlue" iconId={"refreshBtn"} />}
+                       variant="transition" size="sm"
+                       onClick={()=>{}}/>
+                     <Button
+                       className="flex items-center justify-center"
+                       icon={<Icon className="w-5 h-5  text-deepBlue" iconId={"iconUser"} />}
+                       variant="transition" size="sm"
+                       onClick={handleSettingsClick}/>
                 </div>
             </div>
             <div className="pt-[120px] pb-[calc(50px+env(safe-area-inset-bottom))]">

@@ -2,11 +2,9 @@ import {FC, useMemo, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useNavigate} from 'react-router-dom';
 import {TaskList} from '@/widgets/task-list';
-import {Header, IconButton} from '@/shared/ui';
+import {Button, Header, Icon} from '@/shared/ui';
 import {useGetMe} from '@/entities/user/model/hooks';
 import {Tabs} from "@/shared/ui/tabs";
-import userIcon from '@/shared/assets/images/userIcon.webp';
-import refreshBtn from '@/shared/assets/images/refreshBtn.webp';
 import {useGetTasks} from "@/entities/task/hook";
 import {taskApi} from "@/entities/task/api";
 import {TaskStatus} from "@/entities/task/model/types";
@@ -57,7 +55,7 @@ export const TasksPage: FC = () => {
     }
   };
 
-  const handleRefresh =  () => {
+  const handleRefresh = () => {
     if (isAllTasksTab) {
       void refetchAllTasks()
       console.log('prefetchAllTasks')
@@ -74,34 +72,22 @@ export const TasksPage: FC = () => {
         title={t('tasks.title')}
         rightActions={[
           <div className={'flex justify-center gap-8'}>
-            <IconButton
-              onClick={handleRefresh}
-              aria-label={t('common.refresh')}
-              variant="ghost"
-              // className="w-8 h-8 rounded-lg drop-shadow-[2px_2px_0_#004573]"
-              // size={'md'}
-              icon={
-                // <Icon iconId={'refresh-btn'} size={60}/>
-                <img
-                  src={refreshBtn}
-                  alt={t('common.profile')}
-                  className={"w-[32px] h-[32px] object-cover"}
-                />
-              }
-            />
-              <IconButton
-              // className="w-8 h-8 rounded-lg drop-shadow-[2px_2px_0_#004573]"
-                size={'md'}
-              key="profile"
-              variant="ghost"
-              aria-label={t('common.profile')}
-                        icon={
-                          <img
-                            src={userIcon}
-                            alt={t('common.profile')}
-                            className={"w-[32px] h-[32px] object-cover"}
-                          />}
-                        onClick={handleSettingsClick}/>
+            <Button
+              className="flex items-center justify-center"
+              icon={<Icon
+                className="w-5 h-5  text-deepBlue"
+                iconId={'refreshBtn'}/>}
+              variant="transition"
+              size="sm"
+              onClick={handleRefresh}/>
+            <Button
+              className="flex items-center justify-center"
+              icon={<Icon
+                className="w-5 h-5  text-deepBlue"
+                iconId={'iconUser'}/>}
+              variant="transition"
+              size="sm"
+              onClick={handleSettingsClick}/>
           </div>
         ]}
       />

@@ -1,7 +1,7 @@
 import {FC, useMemo} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useNavigate} from 'react-router-dom';
-import {Card, Header, IconButton, Button} from '@/shared/ui';
+import {Card, Header, IconButton, Button, Icon} from '@/shared/ui';
 import {useGetMe} from '@/entities/user/model/hooks';
 import {useGetLeaderboard} from '@/entities/city/hook/use-get-leaderboard';
 import type {CityLeaderboardStats} from '@/entities/city/api/city-api';
@@ -99,20 +99,31 @@ export const LeaderboardPage: FC = () => {
         className={'pt-15 pb-5 text-center flex-shrink-0'}
         title={t('leaderboard.title')}
         rightActions={[
-          <IconButton
-            className="w-8 h-8 rounded-lg drop-shadow-[2px_2px_0_#004573]"
-            key="profile"
-            variant="ghost"
-            aria-label={t('common.profile')}
+          // <IconButton
+          //   className="w-8 h-8 rounded-lg drop-shadow-[2px_2px_0_#004573]"
+          //   key="profile"
+          //   variant="ghost"
+          //   aria-label={t('common.profile')}
+          //   icon={
+          //     <img
+          //       src={userIcon}
+          //       alt={t('common.profile')}
+          //       className="w-full h-full object-cover"
+          //     />
+          //   }
+          //   onClick={handleSettingsClick}
+          // />
+          <Button
+            className="flex items-center justify-center"
             icon={
-              <img
-                src={userIcon}
-                alt={t('common.profile')}
-                className="w-full h-full object-cover"
-              />
-            }
-            onClick={handleSettingsClick}
-          />
+            <Icon
+              iconId={'iconUser'}
+              className="w-5 h-5  text-deepBlue"
+            />
+          }
+            variant="transition"
+            size="sm"
+            onClick={handleSettingsClick}/>
         ]}
       />
       <div className="flex-1 overflow-y-auto px-4 py-8 pb-40">
