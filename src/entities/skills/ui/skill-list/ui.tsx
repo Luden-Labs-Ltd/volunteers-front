@@ -18,7 +18,7 @@ export const SkillsList = ({ skills, visibleCount = 5 }: SkillsListType) => {
     return (
         <div className="mt-6">
             <div className="flex items-baseline justify-between mb-3">
-                <h3 className="text-[18px] font-medium text-[#393939]">{t("volunteerDetails.skills")}</h3>
+                <h3 className="text-[18px] se-only:text-[16px] font-medium text-[#393939]">{t("volunteerDetails.skills")}</h3>
             </div>
 
             <div className="flex flex-wrap gap-2">
