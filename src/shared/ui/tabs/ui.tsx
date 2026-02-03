@@ -14,13 +14,13 @@ export const Tabs: FC<TabsProps> = ({ tabs, onChange }) => {
   };
 
   return (
-    <div className="flex justify-between border-b border-gray-200 px-4">
+    <div className="flex w-full justify-between border-b border-gray-200">
       {tabs.map((tab) => (
         <button
           key={tab}
           onClick={() => handleClick(tab)}
           className={`
-            py-2 px-[45px] text-[18px] font-sans  transition 
+            flex-1 py-2 px-[45px] text-[clamp(12px, 4vw, 18px)]  font-sans  transition whitespace-nowrap text-center
             ${activeTab === tab
             ? 'text-deepBlue border-b-2 border-deepBlue font-medium'
             : 'text-deepBlue font-light'}
