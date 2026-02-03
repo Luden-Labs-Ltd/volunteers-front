@@ -30,7 +30,7 @@ export const NeedyTasksPage = () => {
                 <h1 className="text-[28px] text-[#004573] font-medium">
                     {t("tasks.myTasks")}
                 </h1>
-                <div className="flex items-center gap-10 relative se-only:right-6">
+                <div className="flex items-center gap-8 relative se-only:right-6">
                     {/*заменить иконку на иконку рефреша*/}
                      <Button icon={<Icon iconId={"icon-plus"} />} variant="transition" size="sm" onClick={handleRefresh}  disabled={isRefetching}/>
                     <IconButton
