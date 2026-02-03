@@ -20,7 +20,7 @@ export const NeedyTasksPage = () => {
                 <div className="flex items-center gap-2 relative se-only:right-6">
                      <Button
                        className="flex items-center justify-center"
-                       icon={<Icon className="w-5 h-5  text-deepBlue" iconId={"refreshBtn"} />}
+                       icon={<Icon className="w-8 h-8 text-deepBlue mb-3 mr-3" iconId={"refreshBtn"} />}
                        variant="transition" size="sm"
                        onClick={()=>{}}/>
                      <Button
