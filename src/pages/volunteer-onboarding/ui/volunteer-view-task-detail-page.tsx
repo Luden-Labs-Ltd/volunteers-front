@@ -303,8 +303,11 @@ export const VolunteerViewTaskDetailsPage = () => {
               size={'lg'}
               fullWidth
               variant={'secondary'}
-              disabled={isCompleting}
+              // disabled={isCompleting}
+              disabled={task?.approveBy?.includes(TaskApproveRole.VOLUNTEER)}
               onClick={() => {
+                console.log('Approve', {approveBy: task?.approveBy?.includes(TaskApproveRole.VOLUNTEER)})
+
                 completeTask(taskId, {
                   onSuccess: () => {
                     setShowAnimation(true);
