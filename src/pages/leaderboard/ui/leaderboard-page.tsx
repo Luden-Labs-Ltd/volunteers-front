@@ -1,12 +1,11 @@
 import {FC, useMemo} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useNavigate} from 'react-router-dom';
-import {Card, Header, IconButton, Button, Icon} from '@/shared/ui';
+import {Button, Card, Header, Icon} from '@/shared/ui';
 import {useGetMe} from '@/entities/user/model/hooks';
 import {useGetLeaderboard} from '@/entities/city/hook/use-get-leaderboard';
 import type {CityLeaderboardStats} from '@/entities/city/api/city-api';
 import {toast} from 'sonner';
-import userIcon from '@/shared/assets/images/userIcon.webp';
 import trophySilver from './assets/trophySilver.webp';
 import trophyGold from './assets/trophyGold.webp';
 import trophyBronze from './assets/trophyBronze.webp';
@@ -99,20 +98,6 @@ export const LeaderboardPage: FC = () => {
         className={'pt-15 pb-5 text-center flex-shrink-0'}
         title={t('leaderboard.title')}
         rightActions={[
-          // <IconButton
-          //   className="w-8 h-8 rounded-lg drop-shadow-[2px_2px_0_#004573]"
-          //   key="profile"
-          //   variant="ghost"
-          //   aria-label={t('common.profile')}
-          //   icon={
-          //     <img
-          //       src={userIcon}
-          //       alt={t('common.profile')}
-          //       className="w-full h-full object-cover"
-          //     />
-          //   }
-          //   onClick={handleSettingsClick}
-          // />
           <Button
             className="flex items-center justify-center"
             icon={
