@@ -1,15 +1,27 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { IconButton } from "@/shared/ui";
+import {Button, Icon, IconButton} from "@/shared/ui";
 import { MyTasksList } from "@/features/my-tasks-list/ui/my-tasks-list.tsx";
 import userIcon from '@/shared/assets/images/userIcon.webp';
+import {useMyTasksGrouped} from "@/entities/task/hook";
+import {QUERY_KEYS} from "@/shared/api/hook/query-keys.ts";
+import {useQueryClient} from "@tanstack/react-query";
 
 export const NeedyTasksPage = () => {
     const { t } = useTranslation();
+    const queryClient = useQueryClient();
     const navigate = useNavigate();
+    const { groupedTasks, isRefetching } = useMyTasksGrouped();
 
     const handleSettingsClick = () => {
         navigate('/needy/settings');
+    };
+    const handleRefresh = async () => {
+        if (isRefetching) return;
+        await Promise.all([
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.MY_TASKS] }),
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.TASK_RESPONSES] })
+        ]);
     };
 
     return (
@@ -18,8 +30,9 @@ export const NeedyTasksPage = () => {
                 <h1 className="text-[28px] text-[#004573] font-medium">
                     {t("tasks.myTasks")}
                 </h1>
-                <div className="flex items-center gap-2 relative se-only:right-6">
-                    {/* <Button icon={<Icon iconId={"icon-plus"} />} variant="transition" size="sm" /> */}
+                <div className="flex items-center gap-10 relative se-only:right-6">
+                    {/*заменить иконку на иконку рефреша*/}
+                     <Button icon={<Icon iconId={"icon-plus"} />} variant="transition" size="sm" onClick={handleRefresh}  disabled={isRefetching}/>
                     <IconButton
                         className="w-8 h-8 rounded-lg drop-shadow-[2px_2px_0_#004573]"
                         variant="ghost"
@@ -36,7 +49,7 @@ export const NeedyTasksPage = () => {
                 </div>
             </div>
             <div className="pt-[120px] pb-[calc(50px+env(safe-area-inset-bottom))]">
-                <MyTasksList />
+                <MyTasksList groupedTasks={groupedTasks}/>
             </div>
         </div>
     )
