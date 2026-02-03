@@ -11,14 +11,14 @@ enum TaskStatus {
     CANCELLED = 'cancelled'
 }
 
-interface GroupedTasks {
+export interface GroupedTasks {
     waiting: Task[];
     active: Task[];
     history: Task[];
 }
 
 export const useMyTasksGrouped = () => {
-    const { data: tasks, isLoading, isError, error, refetch } = useQuery({
+    const { data: tasks, isLoading, isError, error, refetch, isRefetching } = useQuery({
         queryKey: [QUERY_KEYS.MY_TASKS],
         queryFn: taskApi.getMyTasks,
     });
@@ -58,5 +58,5 @@ export const useMyTasksGrouped = () => {
         return result;
     }, [tasks]);
 
-    return { groupedTasks, isLoading, isError, error, refetch };
+    return { groupedTasks, isLoading, isError, error, refetch, isRefetching };
 };

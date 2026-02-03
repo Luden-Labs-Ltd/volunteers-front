@@ -12,6 +12,7 @@ import { toast } from 'sonner';
 import { useGetSkills } from '@/entities/skills/hook';
 import {ProgramPage} from "@/pages/volunteer-onboarding/ui/program-page.tsx";
 import {Container} from "@/shared/ui/container";
+import {onboardingStorage} from "@/shared/lib/onboarding";
 
 type OnboardingStep = 'program' | 'skills' | 'city' | 'profile' | 'contact' | 'photo' | 'thank-you';
 
@@ -265,6 +266,8 @@ export const OnboardingPage: FC = () => {
             });
 
             toast.success(t('onboarding.profileUpdated'));
+            // Помечаем что валантер прошел анбоардинг, и может идти дальше
+            onboardingStorage.setCompleted();
             // После финального экрана благодарности переходим на рейтинг
             navigate('/volunteer/leaderboard');
         } catch (error) {
@@ -834,7 +837,7 @@ export const OnboardingPage: FC = () => {
 
             {/* Navigation Buttons - всегда внизу */}
             <div className="fixed bottom-[0px] left-1/2 -translate-x-1/2 z-[50] w-full">
-                <div className="w-full bg-red-900 px-5 py-4 z-[0]">
+                <div className="w-full bg-white px-5 py-4 z-[0]">
                         <Button
                             fullWidth
                             size="lg"

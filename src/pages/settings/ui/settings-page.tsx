@@ -12,6 +12,7 @@ import { SettingsPushNotificationsCard } from './settings-push-notifications-car
 import { SettingsLeaderboardCard } from './settings-leaderboard-card';
 import { SettingsLogoutCard } from './settings-logout-card';
 import { UserWithVolunteerData } from '@/entities/user/model/types';
+import {onboardingStorage} from "@/shared/lib/onboarding";
 
 export const SettingsPage: FC = () => {
     const { t } = useTranslation();
@@ -19,6 +20,10 @@ export const SettingsPage: FC = () => {
     const { data: user } = useGetMe();
     const { mutate: logout, isPending: isLoggingOut } = useLogout();
     const isVolunteer = user?.role === 'volunteer';
+    const handleLogout = () => {
+        onboardingStorage.clear();
+        logout();
+    };
 
     return (
         <div className="min-h-screen bg-gray-50 pb-[calc(300px+env(safe-area-inset-bottom))]">
@@ -45,7 +50,7 @@ export const SettingsPage: FC = () => {
                 <SettingsPushNotificationsCard />
                 {isVolunteer && <SettingsLeaderboardCard />}
                 <div className="px-5">
-                    <SettingsLogoutCard onLogout={() => logout()} isLoading={isLoggingOut} />
+                    <SettingsLogoutCard onLogout={handleLogout} isLoading={isLoggingOut} />
                 </div>
                 <div className="w-full h-[15px] shrink-0" />
 

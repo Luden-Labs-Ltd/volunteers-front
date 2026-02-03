@@ -2,13 +2,29 @@ import {useTranslation} from "react-i18next";
 import {useNavigate} from "react-router-dom";
 import {Button, Icon} from "@/shared/ui";
 import {MyTasksList} from "@/features/my-tasks-list/ui/my-tasks-list.tsx";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import {Button, Icon } from "@/shared/ui";
+import { MyTasksList } from "@/features/my-tasks-list/ui/my-tasks-list.tsx";
+import {useMyTasksGrouped} from "@/entities/task/hook";
+import {QUERY_KEYS} from "@/shared/api/hook/query-keys.ts";
+import {useQueryClient} from "@tanstack/react-query";
 
 export const NeedyTasksPage = () => {
     const { t } = useTranslation();
+    const queryClient = useQueryClient();
     const navigate = useNavigate();
+    const { groupedTasks, isRefetching } = useMyTasksGrouped();
 
     const handleSettingsClick = () => {
         navigate('/needy/settings');
+    };
+    const handleRefresh = async () => {
+        if (isRefetching) return;
+        await Promise.all([
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.MY_TASKS] }),
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.TASK_RESPONSES] })
+        ]);
     };
 
     return (
@@ -17,12 +33,12 @@ export const NeedyTasksPage = () => {
                 <h1 className="text-[28px] text-[#004573] font-medium">
                     {t("tasks.myTasks")}
                 </h1>
-                <div className="flex items-center gap-2 relative se-only:right-6">
+                <div className="flex items-center gap-8 relative se-only:right-6">
                      <Button
                        className="flex items-center justify-center"
                        icon={<Icon className="w-8 h-8 text-deepBlue mb-3 mr-3" iconId={"refreshBtn"} />}
                        variant="transition" size="sm"
-                       onClick={()=>{}}/>
+                       onClick={handleRefresh}/>
                      <Button
                        className="flex items-center justify-center"
                        icon={<Icon className="w-5 h-5  text-deepBlue" iconId={"iconUser"} />}
@@ -31,7 +47,7 @@ export const NeedyTasksPage = () => {
                 </div>
             </div>
             <div className="pt-[120px] pb-[calc(50px+env(safe-area-inset-bottom))]">
-                <MyTasksList />
+                <MyTasksList groupedTasks={groupedTasks}/>
             </div>
         </div>
     )
