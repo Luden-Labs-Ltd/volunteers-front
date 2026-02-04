@@ -160,7 +160,7 @@ export const VolunteerViewTaskDetailsPage = () => {
                     <p className="text-textGray font-normal text-sm mb-1">
                       {t('volunteerTask.details.descriptionTitle')}
                     </p>
-                    <p className="text-textGray font-medium whitespace-pre-line">
+                    <p className="text-textGray font-medium whitespace-pre-line break-words">
                       {task.description}
                     </p>
                   </div>
