@@ -64,9 +64,11 @@ export const TaskBrief = ({ task, className, onClick }: TaskBriefProps) => {
 
             {isActive && (
                 <div className="w-full -mt-1 border-t-2 border-[#F4F6FF]">
-                    <p className={cn(
-                        "text-[15px] font-normal pt-1 text-[#5B5B5B]"
-                    )}>
+                    <p
+                        className={cn(
+                            "text-[15px] font-normal pt-1 text-[#5B5B5B] break-all whitespace-pre-line"
+                        )}
+                    >
                         Details: {subText}
                     </p>
                 </div>
