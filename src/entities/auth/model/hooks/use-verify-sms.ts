@@ -8,6 +8,7 @@ import { setToken, setRefreshToken } from '@/shared/lib/auth';
 import { useMutationWithErrorHandling } from '@/shared/api/hook/use-mutation-with-error-handling';
 import { validateApiResponse, isObject, validateRequiredFields } from '@/shared/lib/validation';
 import { handleApiError } from '@/shared/lib/error-handler';
+import { QUERY_KEYS } from '@/shared/api/hook/query-keys';
 
 export function useVerifySms() {
   const { t } = useTranslation();
@@ -47,6 +48,30 @@ export function useVerifySms() {
         // Устанавливаем данные пользователя в кэш БЕЗ перезапроса
         // Это предотвращает возможную 401 ошибку при refetch сразу после логина
         queryClient.setQueryData(['user', 'me'], data.user);
+
+        // Ревалидация всех запросов, завязанных на пользователя
+        // Например: профиль, мои задачи, баланс/транзакции поинтов и т.п.
+        await queryClient.invalidateQueries({
+          predicate: (query) => {
+            const key = Array.isArray(query.queryKey) ? query.queryKey[0] : query.queryKey;
+
+            // Все запросы с ключом 'user' (['user','me'], ['user', ...])
+            if (Array.isArray(query.queryKey) && query.queryKey.includes('user')) {
+              return true;
+            }
+
+            // Основные пользовательские ключи из QUERY_KEYS
+            if (
+              key === QUERY_KEYS.MY_TASKS ||
+              key === QUERY_KEYS.POINTS_BALANCE ||
+              key === QUERY_KEYS.POINTS_TRANSACTIONS
+            ) {
+              return true;
+            }
+
+            return false;
+          },
+        });
 
         // Показываем успешное уведомление
         const userName = data.user.firstName || data.user.phone || 'User';
