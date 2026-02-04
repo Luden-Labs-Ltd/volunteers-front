@@ -128,12 +128,6 @@ export const CategoriesPage = () => {
                 </span>
             </form>
 
-            {/* Таски */}
-            <h2 className={"text-[20px] se-only:text-[18px] font-normal mt-6 px-[20px]"}>
-                {t("categoriesNeedy.recentTasksTitle")}
-            </h2>
-            <TaskScroll />
-
             {/* Категории */}
             <h2 className={"text-[20px] se-only:text-[18px] font-normal mt-6 px-[20px]"}>
                 {t("categoriesNeedy.categoriesTitle")}
@@ -159,6 +153,14 @@ export const CategoriesPage = () => {
                 onSelect={setCategoryId}
                 searchQuery={categorySearchQuery}
             />
+
+
+            {/* Мои последние задачи */}
+            <h2 className={"text-[20px] se-only:text-[18px] font-normal mt-6 px-[20px]"}>
+                {t("categoriesNeedy.recentTasksTitle")}
+            </h2>
+            <TaskScroll />
+
 
             {/* Выбор комьюнити */}
             {/* <h2 className={"text-[20px] font-normal mt-6 px-[20px]"}>
