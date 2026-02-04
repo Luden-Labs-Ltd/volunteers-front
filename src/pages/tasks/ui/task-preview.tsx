@@ -19,7 +19,7 @@ export const TaskPreviewPage = () => {
   };
 
   return (
-    <section className="bg-backGround flex flex-col min-h-screen pt-24 pb-12 px-5 text-center">
+    <section className="mx-auto max-w-[390px] bg-backGround flex flex-col min-h-screen pt-24 pb-12 px-5 text-center">
       <div className={'flex flex-col gap-8'}>
         <img src={mission_illustration} alt="mission" />
         <div className={'flex flex-col gap-3'}>

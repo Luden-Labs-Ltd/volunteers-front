@@ -133,12 +133,12 @@ export const VolunteerViewTaskDetailsPage = () => {
       )}
       <div className={"fixed top-0 left-0 w-full z-50"}>
         <Header
-          className={'pt-24'}
+          className={'pt-24 mx-auto max-w-[390px] '}
           backButton
           onBack={() => navigate(backPath)}
         />
       </div>
-      <section className="flex flex-col min-h-screen pt-24 mb-[30px] px-5 text-center gap-4 bg-light-blue-gradient">
+      <section className="mx-auto max-w-[390px] w-full flex flex-col min-h-screen pt-24 mb-[30px] px-5 text-center gap-4 bg-light-blue-gradient">
         <div className={'flex flex-col gap-8'}>
           <img
             src={mission_illustration}

@@ -815,7 +815,7 @@ export const OnboardingPage: FC = () => {
 
 
     return (
-        <div className="min-h-screen bg-light-blue-gradient flex flex-col">
+        <div className="mx-auto w-full min-h-screen bg-light-blue-gradient flex flex-col">
             <div className={`flex-1 px-4 ${currentStep === 'program' ? 'pb-24 pt-8' : 'pb-24 pt-8'}`}>
                 <div className="max-w-md mx-auto">
                     {/* Progress Steps - показываем на всех шагах кроме program */}
@@ -836,7 +836,7 @@ export const OnboardingPage: FC = () => {
             </div>
 
             {/* Navigation Buttons - всегда внизу */}
-            <div className="fixed bottom-[0px] left-1/2 -translate-x-1/2 z-[50] w-full">
+            <div className="mx-auto max-w-[390px] w-full fixed bottom-[0px] left-1/2 -translate-x-1/2 z-[50] w-full">
                 <div className="w-full bg-white px-5 py-4 z-[0]">
                         <Button
                             fullWidth
