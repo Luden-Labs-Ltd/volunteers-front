@@ -38,7 +38,7 @@ export const VolunteerViewTaskDetailsPage = () => {
     user?.role === 'volunteer' ? (taskId || '') : undefined
   );
 
-  const { mutate: completeTask, isPending: isCompleting } = useCompleteTask();
+  const { mutate: completeTask } = useCompleteTask();
   const { mutate: respondToTask, isPending: isResponding } = useRespondToTask();
 
   // Проверяем, назначена ли задача волонтеру
