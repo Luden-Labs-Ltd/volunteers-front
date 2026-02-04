@@ -31,7 +31,7 @@ export const VolunteerInfoCard = ({ task }: { task: Task | undefined }) => {
                 </div>
 
                 <div className={"flex gap-3 py-3 px-5 border-t border-[#F2F2F2]"}>
-                    <span className={"text-[16px] font-normal break-words whitespace-pre-wrap w-full"}>
+                    <span className={"text-[16px] font-normal break-all whitespace-pre-line w-full"}>
                          {t('taskDetailsApprove.detailsLabel')} {task?.description}
                     </span>
                 </div>
