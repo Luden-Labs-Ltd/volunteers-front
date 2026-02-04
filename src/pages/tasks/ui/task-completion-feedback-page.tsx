@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {Button, Textarea} from '@/shared/ui';
 import crownIllustration from '../assets/taskFeedback/Crown.webp';
+import {usePageBackground} from "@/shared/lib/hooks";
 
 export const TaskCompletionFeedbackPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [feedback, setFeedback] = useState('');
-
+    usePageBackground('#F0F5FA');
     const handleBack = () => {
         console.log('Feedback:', feedback);
         navigate('/needy/tasks');
@@ -16,8 +17,8 @@ export const TaskCompletionFeedbackPage = () => {
 
     return (
         <div className="w-full min-h-screen mx-auto relative bg-[#F0F5FA] overflow-x-hidden flex flex-col">
-            <div className="flex-1 flex flex-col items-center px-6 pt-10">
-                <div className="w-full max-w-[327px] aspect-square flex items-center justify-center mb-6">
+            <div className="flex-1 flex flex-col items-center px-6 pt-10 se-only:pt-0">
+                <div className="w-full max-w-[327px] aspect-square flex items-center justify-center mb-6 se-only:mb-0">
                     <img
                         src={crownIllustration}
                         alt={t('taskCompletion.successCrown')}
@@ -40,7 +41,7 @@ export const TaskCompletionFeedbackPage = () => {
                         style={{ minHeight: '52px' }}
                     />
                 </div>
-                <div className="w-full pb-[34px] mt-8">
+                <div className="w-full pb-[55px] mt-8">
                     <Button
                         onClick={handleBack}
                         className="w-full h-[56px] rounded-xl bg-[#004573] text-white text-[18px] font-semibold

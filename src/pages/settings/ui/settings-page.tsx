@@ -12,36 +12,49 @@ import { SettingsPushNotificationsCard } from './settings-push-notifications-car
 import { SettingsLeaderboardCard } from './settings-leaderboard-card';
 import { SettingsLogoutCard } from './settings-logout-card';
 import { UserWithVolunteerData } from '@/entities/user/model/types';
+import {onboardingStorage} from "@/shared/lib/onboarding";
 
 export const SettingsPage: FC = () => {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-  const { data: user } = useGetMe();
-  const { mutate: logout, isPending: isLoggingOut } = useLogout();
-  const isVolunteer = user?.role === 'volunteer';
+    const { t } = useTranslation();
+    const navigate = useNavigate();
+    const { data: user } = useGetMe();
+    const { mutate: logout, isPending: isLoggingOut } = useLogout();
+    const isVolunteer = user?.role === 'volunteer';
+    const handleLogout = () => {
+        onboardingStorage.clear();
+        logout();
+    };
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <Header
-        title={t('settings.title')}
-        backButton
-        onBack={() => navigate(-1)}
-      />
-      <div className="px-4 py-6 space-y-4">
-        {user && (
-          <>
-            <SettingsAvatarCard user={user} />
-            <SettingsProfileCard user={user} />
-          </>
-        )}
-        {isVolunteer && user && (
-          <SettingsVolunteerSkillsCard user={user as UserWithVolunteerData} />
-        )}
-        <SettingsLanguageCard />
-        <SettingsPushNotificationsCard />
-        {isVolunteer && <SettingsLeaderboardCard />}
-        <SettingsLogoutCard onLogout={() => logout()} isLoading={isLoggingOut} />
-      </div>
-    </div>
-  );
+    return (
+        <div className="min-h-screen bg-gray-50 pb-[calc(300px+env(safe-area-inset-bottom))]">
+            <div className="sticky top-0 z-50 bg-gray-50">
+                <Header
+                    className={"pt-16"}
+                    title={t('settings.title')}
+                    backButton
+                    onBack={() => navigate(-1)}
+                />
+            </div>
+
+            <div className="px-4 pt-3 space-y-4 border shadow-[1px_1px_0_0_#F2F2F2,2px_2px_0_0_#F2F2F2]">
+                {user && (
+                    <>
+                        <SettingsAvatarCard user={user} />
+                        <SettingsProfileCard user={user} />
+                    </>
+                )}
+                {isVolunteer && user && (
+                    <SettingsVolunteerSkillsCard user={user as UserWithVolunteerData} />
+                )}
+                <SettingsLanguageCard />
+                <SettingsPushNotificationsCard />
+                {isVolunteer && <SettingsLeaderboardCard />}
+                <div className="px-5">
+                    <SettingsLogoutCard onLogout={handleLogout} isLoading={isLoggingOut} />
+                </div>
+                <div className="w-full h-[15px] shrink-0" />
+
+            </div>
+        </div>
+    );
 };

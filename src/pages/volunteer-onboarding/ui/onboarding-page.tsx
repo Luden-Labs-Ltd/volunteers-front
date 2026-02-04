@@ -12,6 +12,7 @@ import { toast } from 'sonner';
 import { useGetSkills } from '@/entities/skills/hook';
 import {ProgramPage} from "@/pages/volunteer-onboarding/ui/program-page.tsx";
 import {Container} from "@/shared/ui/container";
+import {onboardingStorage} from "@/shared/lib/onboarding";
 
 type OnboardingStep = 'program' | 'skills' | 'city' | 'profile' | 'contact' | 'photo' | 'thank-you';
 
@@ -63,13 +64,10 @@ export const OnboardingPage: FC = () => {
 
     // Загружаем города из API
     const { data: cities = [], isLoading: citiesLoading, error: citiesError } = useGetCities();
-
     // Загружаем навыки из API
     const { data: skillsData = [], isLoading: skillsLoading } = useGetSkills();
-
     // Загружаем данные текущего пользователя
     const { data: currentUser } = useGetMe();
-
     // Проверяем, прошел ли волонтер уже онбординг
     useEffect(() => {
         if (currentUser && currentUser.role === 'volunteer') {
@@ -164,7 +162,7 @@ export const OnboardingPage: FC = () => {
         return {
             id: skill.id, // UUID из API
             name: skill.name,
-            icon: iconData.icon,
+            icon: skill.iconSvg,
             color: iconData.color,
         };
     });
@@ -268,6 +266,8 @@ export const OnboardingPage: FC = () => {
             });
 
             toast.success(t('onboarding.profileUpdated'));
+            // Помечаем что валантер прошел анбоардинг, и может идти дальше
+            onboardingStorage.setCompleted();
             // После финального экрана благодарности переходим на рейтинг
             navigate('/volunteer/leaderboard');
         } catch (error) {
@@ -836,21 +836,21 @@ export const OnboardingPage: FC = () => {
             </div>
 
             {/* Navigation Buttons - всегда внизу */}
-            <div className="fixed bottom-0 left-0 right-0 px-5 pt-5 pb-11 bg-white border-t border-gray-200 z-20">
-                <div className="max-w-md mx-auto">
-                    <Button
-                      fullWidth
-                      size="lg"
-                      onClick={currentStep === 'thank-you' ? handleSubmit : handleNext}
-                      disabled={!canProceed()}
-                      className="shadow-lg"
-                    >
-                        {currentStep === 'program'
-                          ? t('onboarding.iAmWheelButton')
-                          : currentStep === 'thank-you'
-                            ? t('common.next')
-                            : t('common.next')}
-                    </Button>
+            <div className="fixed bottom-[0px] left-1/2 -translate-x-1/2 z-[50] w-full">
+                <div className="w-full bg-white px-5 py-4 z-[0]">
+                        <Button
+                            fullWidth
+                            size="lg"
+                            onClick={currentStep === 'thank-you' ? handleSubmit : handleNext}
+                            disabled={!canProceed()}
+                            className="w-full h-[56px] rounded-xl border border-[#162A43] bg-[#004573] text-white shadow-[3px_3px_0_0_#162A43] text-[20px] font-medium focus:ring-0 focus:ring-offset-0 focus:outline-none"
+                        >
+                            {currentStep === 'program'
+                                ? t('onboarding.iAmWheelButton')
+                                : currentStep === 'thank-you'
+                                    ? t('common.next')
+                                    : t('common.next')}
+                        </Button>
                 </div>
             </div>
         </div>

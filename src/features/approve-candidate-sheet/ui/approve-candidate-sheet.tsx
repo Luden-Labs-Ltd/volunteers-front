@@ -1,13 +1,13 @@
-import {ApproveCandidateSheetProps, useModalControl} from "@/features/approve-candidate-sheet/modal";
-import {useGetMe} from "@/entities/user";
-import {useNavigate} from "react-router-dom";
-import {useEffect, useMemo, useState} from "react";
+import { ApproveCandidateSheetProps, useModalControl } from "@/features/approve-candidate-sheet/modal";
+import { useGetMe } from "@/entities/user";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SuccessView } from "./success-view";
 import { UserProfileHeader } from "@/entities/user/ui/user-profile-header";
 import { ConfirmationView } from "./confirmation-view";
-import {useAssignVolunteer} from "@/entities/task/hook";
-
+import { useAssignVolunteer } from "@/entities/task/hook";
+import {useBodyScrollLock} from "@/shared/hook/use-body-scroll-lock";
 
 export const ApproveCandidateSheet = ({
 isOpen,
@@ -20,7 +20,9 @@ taskId
     const navigate = useNavigate();
     const [isSuccess, setIsSuccess] = useState(false);
     const { mutate: assignVolunteer } = useAssignVolunteer();
+    useBodyScrollLock(isOpen);
     useModalControl(isOpen, onClose);
+
     useEffect(() => {
         if (isOpen) setIsSuccess(false);
     }, [isOpen]);
@@ -38,14 +40,19 @@ taskId
     };
 
     const handleCloseAction = (e: React.MouseEvent<HTMLElement>) => {
-        e.currentTarget.blur();
-        onClose();
+        if (e.target === e.currentTarget) {
+            e.preventDefault();
+            e.stopPropagation();
+            onClose();
+        }
     };
 
     const handleBackToTasks = (e: React.MouseEvent<HTMLButtonElement>) => {
-        handleCloseAction(e);
+        e.preventDefault();
+        onClose();
         navigate("/needy/tasks");
     };
+
     const volunteerName = useMemo(
         () => [volunteer.firstName, volunteer.lastName].filter(Boolean).join(" ") || t('volunteer.title'),
         [volunteer, t]
@@ -65,7 +72,7 @@ taskId
     return (
         <div
             className={[
-                "fixed inset-0 z-[10000] left-1/2 -translate-x-1/2 w-full",
+                "fixed inset-0 z-[10000] w-full h-full flex items-end justify-center",
                 isOpen ? "pointer-events-auto" : "pointer-events-none",
             ].join(" ")}
             aria-hidden={!isOpen}
@@ -74,7 +81,7 @@ taskId
                 onClick={handleCloseAction}
                 className={[
                     "absolute inset-0 transition-opacity duration-300",
-                    isOpen ? "opacity-40 bg-black" : "opacity-0 bg-black",
+                    isOpen ? "opacity-60 bg-black" : "opacity-0 bg-black",
                 ].join(" ")}
             />
 
@@ -82,17 +89,19 @@ taskId
                 role="dialog"
                 aria-modal="true"
                 className={[
-                    "absolute left-0 right-0 bottom-0",
+                    "relative w-full max-w-[450px]",
                     "bg-white rounded-t-[28px]",
-                    "px-5 pt-3 pb-[calc(16px+env(safe-area-inset-bottom))]",
-                    "transition-transform duration-300 ease-out",
+                    "px-5 pt-3",
+                    "transition-transform duration-300 ease-out z-10",
                     isOpen ? "translate-y-0" : "translate-y-full",
                 ].join(" ")}
             >
                 <div className="mx-auto w-12 h-1.5 rounded-full bg-[#D9D9D9]" />
+
                 <div className="mt-4">
                     <UserProfileHeader user={volunteer} />
                 </div>
+
                 {isSuccess ? (
                     <SuccessView onBack={handleBackToTasks} />
                 ) : (
@@ -103,7 +112,7 @@ taskId
                         requesterAvatar={requesterData.avatar}
                         fallbackAvatar={requesterData.fallbackAvatar}
                         onConfirm={handleConfirmClick}
-                        onCancel={handleCloseAction}
+                        onCancel={onClose}
                     />
                 )}
             </div>

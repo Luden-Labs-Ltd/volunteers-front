@@ -1,5 +1,6 @@
 import { cn } from "@/shared/lib";
 import { ReactNode } from "react";
+import {useTranslation} from "react-i18next";
 
 type SkillArea = {
     id: string | number;
@@ -17,6 +18,8 @@ type VolunteerAreasCardType = {
 const BG_COLORS = ["bg-[#FAD9F5]", "bg-[#BFEAFE]", "bg-[#FEF5C7]"];
 
 export const VolunteerAreasCard = ({ areas, title = "Volunteer areas:" }: VolunteerAreasCardType) => {
+    const { t } = useTranslation();
+
     return (
         <div className="w-full bg-white rounded-3xl min-h-[150px] px-3 pt-4 border shadow-[1px_1px_0_0_#F2F2F2,2px_2px_0_0_#F2F2F2] mt-3 pb-4">
             <h3 className="text-[18px] font-medium text-[#393939] mb-3">
@@ -45,7 +48,7 @@ export const VolunteerAreasCard = ({ areas, title = "Volunteer areas:" }: Volunt
                                 )}>
                                     {area.iconSvg ? (
                                         <div
-                                            className="w-full h-full [&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain"
+                                            className="w-full h-full mr-0.5 [&>svg]:w-full [&>svg]:h-full [&>svg]:object-contain"
                                             dangerouslySetInnerHTML={{ __html: area.iconSvg }}
                                         />
                                     ) : (
@@ -58,7 +61,7 @@ export const VolunteerAreasCard = ({ areas, title = "Volunteer areas:" }: Volunt
                             </div>
                             {typeof area.tasksCount === 'number' && (
                                 <span className="text-[16px] text-[#737373] font-normal shrink-0">
-                                    {area.tasksCount} tasks
+                                    {area.tasksCount} {t("taskResponses.tasks")}
                                 </span>
                             )}
                         </div>

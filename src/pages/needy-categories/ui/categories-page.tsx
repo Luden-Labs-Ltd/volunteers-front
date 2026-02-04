@@ -67,7 +67,7 @@ export const CategoriesPage = () => {
     const isNextDisabled = isGenerating || !categoryId;
 
     return (
-        <div className="pt-[120px] pb-[calc(150px+env(safe-area-inset-bottom))]">
+        <div className="pt-[120px] se-only:pt-[90px] pb-[calc(150px+env(safe-area-inset-bottom))]">
             {/* Инпут с ИИ + текст */}
             <form onSubmit={handleAiSubmit} className={"flex flex-col justify-center items-center px-[20px]"}>
                 <div className="relative w-full max-w-[353px]">
@@ -82,7 +82,7 @@ export const CategoriesPage = () => {
                         disabled={isGenerating}
                         className="
               w-full h-[48px] pl-12 pr-14 rounded-2xl ring-1 ring-gray-200 text-gray-600
-              placeholder:text-[#C4C4C4] placeholder:font-normal placeholder:text-[18px]
+              placeholder:text-[#C4C4C4] placeholder:font-normal placeholder:text-[18px] se-only:placeholder:text-[14px]
               focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-200 shadow-sm text-base
               disabled:opacity-50 disabled:cursor-not-wait
             "
@@ -92,7 +92,7 @@ export const CategoriesPage = () => {
                         disabled={isGenerating || !aiPrompt.trim()}
                         className="
               absolute right-2 top-1/2 -translate-y-1/2
-              w-10 h-10 rounded-xl
+              w-9 h-9 se-only:w-8 se-only:h-8 rounded-xl
               bg-[#004573] text-white
               flex items-center justify-center
               hover:bg-[#003a5c] active:bg-[#002d47]
@@ -123,19 +123,19 @@ export const CategoriesPage = () => {
                         )}
                     </button>
                 </div>
-                <span className={"max-w-[353px] text-[#5B5B5B] text-[16px] font-normal mt-4 leading-[22px] text-center"}>
+                <span className={"max-w-[353px] text-[#5B5B5B] text-[16px] se-only:text-[14px] font-normal mt-4 leading-[22px] text-center"}>
                     {t("categoriesNeedy.aiPrompt")}
                 </span>
             </form>
 
             {/* Таски */}
-            <h2 className={"text-[20px] font-normal mt-6 px-[20px]"}>
+            <h2 className={"text-[20px] se-only:text-[18px] font-normal mt-6 px-[20px]"}>
                 {t("categoriesNeedy.recentTasksTitle")}
             </h2>
             <TaskScroll />
 
             {/* Категории */}
-            <h2 className={"text-[20px] font-normal mt-2 px-[20px]"}>
+            <h2 className={"text-[20px] se-only:text-[18px] font-normal mt-6 px-[20px]"}>
                 {t("categoriesNeedy.categoriesTitle")}
             </h2>
             {/* Инпут для поиска категорий */}
@@ -148,7 +148,7 @@ export const CategoriesPage = () => {
                         onChange={(e) => setCategorySearchQuery(e.target.value)}
                         className="
               w-full h-[48px] pl-4 pr-4 rounded-2xl ring-1 ring-gray-200 text-gray-600
-              placeholder:text-[#C4C4C4] placeholder:font-normal placeholder:text-[18px]
+              placeholder:text-[#C4C4C4] placeholder:font-normal placeholder:text-[18px] se-only:placeholder:text-[16px]
               focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-200 shadow-sm text-base
             "
                     />
@@ -165,13 +165,12 @@ export const CategoriesPage = () => {
                 {t("categoriesNeedy.mostRequestedTitle")}
             </h2>
             <PopularTaskScroll /> */}
-
-            <div className="fixed bottom-[69px] left-1/2 -translate-x-1/2 z-[50] w-full">
-                <div className="w-full bg-white px-5 py-4 z-[0]">
+            <div className="fixed bottom-[50px] se-only:bottom-[55px] left-1/2 -translate-x-1/2 z-[50] w-full">
+                <div className="w-full bg-white px-5 py-4 se-only:py-2 z-[0]">
                     <Button
                         onClick={handleNext}
                         disabled={isNextDisabled}
-                        className="w-full h-[56px] rounded-xl border border-[#162A43] bg-[#004573] text-white shadow-[3px_3px_0_0_#162A43] text-[20px] font-medium focus:ring-0 focus:ring-offset-0 focus:outline-none"
+                        className="w-full h-[56px] se-only:h-[45px] rounded-xl border border-[#162A43] bg-[#004573] text-white shadow-[3px_3px_0_0_#162A43] text-[20px] se-only:text-[18px] font-medium focus:ring-0 focus:ring-offset-0 focus:outline-none"
                     >
                         {t("categoriesNeedy.nextButton")}
                     </Button>

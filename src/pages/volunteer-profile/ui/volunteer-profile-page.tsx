@@ -16,12 +16,12 @@ export const VolunteerProfilePage = () => {
     const user = volunteer as UserWithProfile;
 
     return (
-        <div className="w-full min-h-screen mx-auto bg-white pb-10">
+        <div className="w-full mx-auto bg-white">
             <div className="sticky top-0 z-50 w-full bg-gradient-to-b from-blue-50 to-white/95 backdrop-blur-sm pt-14 pb-4 px-5 border-b border-transparent transition-all">
                 <div className="relative w-full flex items-center justify-center min-h-[48px]">
                     <div className="absolute left-0 top-1/2 -translate-y-1/2">
                         <Button
-                            icon={<Icon iconId="icon-arrow-back" />}
+                            icon={<Icon iconId="icon-arrow-back" className="rtl:rotate-180"/>}
                             variant="transition"
                             size="sm"
                             onClick={() => navigate(-1)}
@@ -32,6 +32,7 @@ export const VolunteerProfilePage = () => {
                     </h1>
                 </div>
             </div>
+
             <div className="px-5 mt-4">
                 <UserProfileHeader user={volunteer as UserWithProfile} />
                 <div className="mt-6">
@@ -45,8 +46,11 @@ export const VolunteerProfilePage = () => {
                         </p>
                     </div>
                 </div>
-                <SkillsList skills={user.profile.skills} visibleCount={10}/>
+                <div className="mt-6">
+                    <SkillsList skills={user.profile.skills} visibleCount={10}/>
+                </div>
             </div>
+            <div className="h-[80px] w-full shrink-0" />
         </div>
     );
 };

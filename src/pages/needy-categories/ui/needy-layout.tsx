@@ -1,6 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { TabsForLayout } from "@/pages/needy-categories/components/tab.tsx";
+import {TabBottomNavigation} from "@/widgets/tab-bottom-navigation/ui";
 
 export const NeedyLayout = () => {
     const { t } = useTranslation();
@@ -22,8 +22,8 @@ export const NeedyLayout = () => {
 
     return (
         <div className="w-full max-w-[393px] min-h-screen m-auto relative bg-white">
-            <div className="fixed top-0 left-0 right-0 z-[50] w-[398px] mx-auto bg-gradient-to-b from-blue-50 to-white pt-16 pb-2 px-[20px]">
-                <h1 className="text-[28px] text-[#004573] font-medium">
+            <div className="fixed top-0 left-0 right-0 z-[50] w-[398px] mx-auto bg-gradient-to-b from-blue-50 to-white pt-16 se-only:pt-10 pb-2 px-[20px]">
+                <h1 className="text-[28px] se-only:text-[24px] text-[#004573] font-medium">
                     {header.title}
                 </h1>
                 {header.subtitle && (
@@ -33,7 +33,7 @@ export const NeedyLayout = () => {
                 )}
             </div>
             <Outlet />
-            <TabsForLayout />
+            <TabBottomNavigation />
         </div>
     );
 };

@@ -1,11 +1,7 @@
-export const formatDate = (dateString: string | Date, locale = 'en-US'): string => {
+import {formatter} from "@/shared/modal/formatter.ts";
+
+export const formatDate = (dateString: string | Date): string => {
     if (!dateString) return "";
-
     const date = new Date(dateString);
-
-    return date.toLocaleDateString(locale, {
-        weekday: 'long',
-        month: 'long',
-        day: 'numeric'
-    });
+   return formatter.format(date)
 };

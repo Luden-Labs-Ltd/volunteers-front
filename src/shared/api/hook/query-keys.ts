@@ -6,4 +6,5 @@ export const QUERY_KEYS = {
     CITIES: 'cities',
     POINTS_BALANCE: 'pointsBalance',
     POINTS_TRANSACTIONS: 'pointsTransactions',
+    TASK_RESPONSES :'task-responses'
 }

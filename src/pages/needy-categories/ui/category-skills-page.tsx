@@ -26,13 +26,13 @@ export const CategorySkillsPage = () => {
     };
 
     return (
-        <div className="pt-[calc(170px+env(safe-area-inset-top))] pb-[240px] px-[20px]">
+        <div className="pt-[calc(170px+env(safe-area-inset-top))] se-only:pt-[140px] pb-[250px] se-only:pb-[200px]  px-[20px]">
             <SelectSubcategoryListItems
                 className={"mt-3"}
                 selectedIds={selectedSkills}
                 onToggle={handleToggleSkill}
             />
-            <div className="fixed bottom-[69px] left-1/2 -translate-x-1/2 z-[50] w-full max-w-[393px]">
+            <div className="fixed bottom-[55px] left-1/2 -translate-x-1/2 z-[50] w-full max-w-[393px]">
                 <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-[50] w-full max-w-[393px] bg-white px-5 py-4">
                     <Button
                         onClick={handleFindVolunteer}

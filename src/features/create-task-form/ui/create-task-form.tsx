@@ -18,6 +18,7 @@ import { categoryApi } from "@/entities/category/api";
 import { useQueryWithErrorHandling } from "@/shared/api/hook/use-query-with-error-handling";
 import { useCreateTaskStore } from "@/features/create-task/model/store.ts";
 import { useEffect } from "react";
+import { DEFAULT_PROGRAM_ID } from "@/shared/config/constants";
 
 type CreateTaskFormProps = {
     skillsIds: string[];
@@ -104,17 +105,12 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
                 return;
             }
 
-            // Получаем programId из профиля (может быть напрямую или через program объект)
-            const programId = user.profile?.programId || user.profile?.program?.id;
+            // Получаем programId из профиля, используем дефолтную программу если отсутствует
+            const programId = user.profile?.programId || user.profile?.program?.id || DEFAULT_PROGRAM_ID;
 
-            if (!programId) {
-                const errorMessage = t('errors.programIdRequired') || 'Program ID is required for needy users. Please contact administrator to assign a program to your account.';
-                console.error('Missing programId for needy user:', {
-                    userId: user.id,
-                    profile: user.profile,
-                });
-                toast.error(errorMessage);
-                return;
+            // Логируем использование дефолтной программы
+            if (!user.profile?.programId && !user.profile?.program?.id) {
+                console.info('Using default program for task creation:', DEFAULT_PROGRAM_ID);
             }
 
             // Формируем details с датой и временем, если они указаны
@@ -153,21 +149,24 @@ export const CreateTaskForm = ({ skillsIds, categoryId, onBack, onSuccess }: Cre
             toast.error(errorMessage);
         }
     };
-
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="h-full pt-[180px] pb-[190px] px-[20px]">
-            <TaskFormCard
-                register={register}
-                control={control}
-                errors={errors}
-            />
+        <form onSubmit={handleSubmit(onSubmit)} className="h-full">
+            <div className="px-[20px] pt-[190px] se-only:pt-[155px] pb-[calc(175px+env(safe-area-inset-bottom))] se-only:pb-[165px]">
 
-            <h2 className={"text-[20px] font-normal mt-6 mb-3"}>
-                {t("taskDetails.selectedSkills")}
-            </h2>
-            <SelectSkills ids={skillsIds} />
+                <TaskFormCard
+                    register={register}
+                    control={control}
+                    errors={errors}
+                />
+
+                <h2 className={"text-[20px] font-normal mt-6 mb-3"}>
+                    {t("taskDetails.selectedSkills")}
+                </h2>
+                <SelectSkills ids={skillsIds} />
+            </div>
+
             <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-[50] w-full max-w-[393px]">
-                <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-[50] w-full max-w-[393px] bg-white px-5 py-4">
+                <div className="bg-white px-5 py-8 pb-0">
                     <Button
                         type="submit"
                         disabled={isPending}

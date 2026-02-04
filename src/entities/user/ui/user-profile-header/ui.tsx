@@ -1,11 +1,13 @@
 import {UserWithProfile} from "@/entities/user";
 import {Icon} from "@/shared/ui";
+import {useTranslation} from "react-i18next";
 
 type UserProfileHeaderType = {
     user: UserWithProfile;
 }
 
 export const UserProfileHeader = ({ user }: UserProfileHeaderType) => {
+    const { t } = useTranslation();
     const displayName = [user.firstName, user.lastName].filter(Boolean).join(" ");
     const photoUrl = (user.photo || "").replace(/^"|"$/g, '');
     const isVerified = user.status === "approved";
@@ -30,7 +32,7 @@ export const UserProfileHeader = ({ user }: UserProfileHeaderType) => {
                 <div className="flex items-center gap-1 bg-white rounded-full">
                     <Icon size={16} iconId={"icon-approve"} />
                     <span className="text-[16px] font-normal text-[#00731D]">
-                        Verified
+                        {t("common.verified")}
                     </span>
                 </div>
             )}

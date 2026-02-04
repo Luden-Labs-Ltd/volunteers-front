@@ -1,8 +1,12 @@
 import { TaskBrief } from "@/entities/task/ui/task-brief";
-import { useMyTasksGrouped } from "@/entities/task/hook/useMyTasksGrouped.ts";
-import { TaskBriefWithCandidates } from "@/features/task-brief-with-candidates/ui";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import {GroupedTasks} from "@/entities/task/hook/useMyTasksGrouped.ts";
+import {TaskBriefWithCandidates} from "@/features/task-brief-with-candidates/ui";
+
+type MyTasksListType = {
+    groupedTasks: GroupedTasks;
+}
 
 const EmptySection = ({ text }: { text: string }) => (
     <div className="w-full py-6 px-5 bg-gray-50 rounded-xl flex items-center justify-center">
@@ -12,10 +16,9 @@ const EmptySection = ({ text }: { text: string }) => (
     </div>
 );
 
-export const MyTasksList = () => {
+export const MyTasksList = ({groupedTasks}: MyTasksListType ) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { groupedTasks } = useMyTasksGrouped();
 
     const isTotallyEmpty = !groupedTasks.waiting.length && !groupedTasks.active.length && !groupedTasks.history.length;
 
@@ -23,7 +26,7 @@ export const MyTasksList = () => {
         return (
             <div className="flex flex-col items-center justify-center mt-20 text-center px-6">
                 <p className="text-lg text-gray-500">{t('tasks.empty.my')}</p>
-                <p className="text-sm text-gray-400 mt-2">Create a task to see it here</p>
+                <p className="text-sm text-gray-400 mt-2">{t("common.createTask")}</p>
             </div>
         );
     }

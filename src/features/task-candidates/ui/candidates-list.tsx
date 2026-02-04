@@ -1,5 +1,6 @@
 import { TaskResponse } from "@/entities/task/model/types";
 import { CandidateItem } from "@/features/task-candidates/ui/candidate-item.tsx";
+import {useTranslation} from "react-i18next";
 
 type CandidatesListType = {
     responses: TaskResponse[];
@@ -9,6 +10,7 @@ export const CandidatesList = ({ responses }: CandidatesListType) => {
     const pendingResponses = responses.filter((r) => r.status === 'pending');
     const approvedResponses = responses.filter((r) => r.status === 'approved');
     const rejectedResponses = responses.filter((r) => r.status === 'rejected');
+    const { t } = useTranslation();
 
     if (responses.length === 0) {
         return (
@@ -17,7 +19,7 @@ export const CandidatesList = ({ responses }: CandidatesListType) => {
                     <span className="text-3xl">📭</span>
                 </div>
                 <h3 className="text-[18px] font-medium text-[#393939] mb-1">
-                    No requests yet
+                    {t("common.noRequests")}
                 </h3>
             </div>
         );
@@ -26,8 +28,8 @@ export const CandidatesList = ({ responses }: CandidatesListType) => {
     return (
         <div className="flex flex-col gap-8 pt-5 pb-10">
             <div>
-                <h3 className="text-sm uppercase text-[#004573] font-bold tracking-wider mb-3 px-1 flex items-center gap-2">
-                    Approved Volunteer
+                <h3 className="text-sm se-only:text-xs uppercase text-[#004573] font-bold tracking-wider mb-3 px-1 flex items-center gap-2">
+                        {t("common.approvedVolunteer")}
                     <span className="bg-[#E3F2FD] text-[#004573] text-[14px] rounded-md px-2 py-0.5">
                         {approvedResponses.length}
                     </span>
@@ -41,14 +43,14 @@ export const CandidatesList = ({ responses }: CandidatesListType) => {
                             />
                         ))
                     ) : (
-                        <span className="text-xs pl-1">No approved volunteers</span>
+                        <span className="text-xs pl-1">{t("common.noApproved")}</span>
                     )}
                 </div>
             </div>
 
             <div>
-                <h3 className="text-sm uppercase text-[#828282] font-bold tracking-wider mb-3 px-1 flex items-center gap-2">
-                    New Requests
+                <h3 className="text-sm se-only:text-xs uppercase text-[#828282] font-bold tracking-wider mb-3 px-1 flex items-center gap-2">
+                    {t("common.newRequests")}
                     <span className="bg-[#F2F2F2] text-[#828282] text-[14px] rounded-md px-2 py-0.5">
                         {pendingResponses.length}
                     </span>
@@ -62,14 +64,14 @@ export const CandidatesList = ({ responses }: CandidatesListType) => {
                             />
                         ))
                     ) : (
-                        <span className="text-xs pl-1">No new Requests volunteers</span>
+                        <span className="text-xs pl-1">{t("common.noNewRequests")}</span>
                     )}
                 </div>
             </div>
 
             <div>
-                <h3 className="text-sm uppercase text-[#EB5757] font-bold tracking-wider mb-3 px-1 flex items-center gap-2">
-                    Declined
+                <h3 className="text-sm se-only:text-xs uppercase text-[#EB5757] font-bold tracking-wider mb-3 px-1 flex items-center gap-2">
+                    {t("common.declined")}
                     <span className="bg-[#FFE5E5] text-[#EB5757] text-[14px] rounded-md px-2 py-0.5">
                         {rejectedResponses.length}
                     </span>
@@ -83,7 +85,7 @@ export const CandidatesList = ({ responses }: CandidatesListType) => {
                             />
                         ))
                     ) : (
-                        <span className="text-xs pl-1">No declined volunteers</span>
+                        <span className="text-xs pl-1">{t("common.noDeclined")}</span>
                     )}
                 </div>
             </div>

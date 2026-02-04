@@ -17,8 +17,20 @@
     "close": "סגור",
     "settings": "הגדרות",
     "profile": "פרופיל",
-    "hideSkills": "הסתר מיומנויות"  },
+    "hideSkills": "הסתר מיומנויות",
     "moreSkills": "...עוד מיומנויות",
+    "noRequests": "עדיין אין בקשות",
+    "noApproved": "אין מתנדבים מאושרים",
+    "noNewRequests": "אין בקשות מתנדבים חדשות",
+    "noDeclined": "אין מתנדבים שנדחו",
+    "approvedVolunteer": "מתנדב מאושר",
+    "newRequests": "בקשות חדשות",
+    "declined": "נדחה",
+    "verified": "מאומת",
+    "description": "תיאור",
+    "title": "כותרת",
+    "createTask": "צור משימה כדי לראות אותה כאן"
+  },
   "onboarding": {
     "selectProgram": "צריך גלגל?",
     "selectProgramDescription": "אנחנו כאן כדי לעזור למשפחות שכולות בכל מה שהם צריכים. נשמח להכיר אותך יותר.",
@@ -107,7 +119,9 @@
     "loginError": "שגיאת התחברות",
     "loginErrorDescription": "נתונים לא תקינים מהשרת",
     "loginErrorSaveDescription": "נכשל בשמירת נתוני ההרשאה",
-    "invalidResponse": "נתוני תגובה לא תקינים מהשרת"
+    "invalidResponse": "נתוני תגובה לא תקינים מהשרת",
+    "sessionExpired": "הסשן פג",
+    "sessionExpiredDescription": "אנא התחבר שוב"
   },
   "tasks": {
     "title": "משימות",
@@ -408,10 +422,6 @@
     "network": "שגיאת רשת",
     "networkDescription": "לא ניתן להתחבר לשרת. אנא בדוק את חיבור האינטרנט שלך"
   },
-  "auth": {
-    "sessionExpired": "הסשן פג",
-    "sessionExpiredDescription": "אנא התחבר שוב"
-  },
   "taskDetailsApprove": {
     "volunteerFound": "נמצא מתנדב",
     "taskCompleted": "המשימה הושלמה!",
@@ -422,5 +432,14 @@
     "detailsLabel": "פרטים:",
     "urgent": "דחוף",
     "completionConfirmed": "הביצוע אושר"
+  },
+  "reviewsCard": {
+    "review": "ביקורות:",
+    "viewAll": "הצג הכל"
+  },
+  "sheet": {
+    "sure": "האם אתה בטוח שברצונך לבטל את המתנדב? <\nהמשימה תחזור להיות זמינה למתנדבים אחרים.",
+    "yesCancel": "כן, לבטל את המתנדב",
+    "keep": "להשאיר את המתנדב"
   }
 }

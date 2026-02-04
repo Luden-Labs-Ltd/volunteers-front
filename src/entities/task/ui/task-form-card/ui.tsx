@@ -19,7 +19,7 @@ export const TaskFormCard = ({ register, control, errors }: TaskFormCardType) =>
         <div className="w-full h-[340px] flex flex-col justify-end rounded-2xl mb-5 border border-[#162A43] shadow-[1px_1px_0_0_#162A43,2px_2px_0_0_#162A43] p-4 gap-4">
             <div>
                 <Input
-                    label="Title"
+                    label={t("common.title")}
                     {...register("title")}
                     error={errors.title ? "true" : undefined}
                 />
@@ -46,10 +46,10 @@ export const TaskFormCard = ({ register, control, errors }: TaskFormCardType) =>
             </div>
 
             <div className="flex justify-between items-center w-full">
-                <span className={"text-[16px] font-normal text-[#5B5B5B]"}>
+                <span className={"text-[16px] se-only:text-[13px] font-normal text-[#5B5B5B]"}>
                     {t("taskDetails.labelAddTime")}
                 </span>
-                <div className={"flex gap-2 "}>
+                <div className={"flex gap-2"}>
                     <Controller
                         name="scheduledDate"
                         control={control}
@@ -58,7 +58,7 @@ export const TaskFormCard = ({ register, control, errors }: TaskFormCardType) =>
                                 type="date"
                                 value={value || ''}
                                 onChange={(e) => onChange(e.target.value)}
-                                className={`py-2 px-2 w-[120px] bg-[#EBF7FF] rounded-xl text-[#373737] text-[16px] font-normal border border-transparent focus:outline-none focus:ring-2 focus:ring-[#004573] cursor-pointer min-w-[120px] ${value ? 'bg-[#004573]' : ''}`}
+                                className={`py-2 px-2 se-only:px-3 w-[120px] bg-[#EBF7FF] rounded-xl text-[#373737] text-[16px] se-only:text-[14px] font-normal border border-transparent focus:outline-none focus:ring-2 focus:ring-[#004573] cursor-pointer min-w-[120px] ${value ? 'bg-[#004573]' : ''}`}
                                 title={t("taskDetails.labelDate")}
                             />
                         )}
@@ -71,7 +71,7 @@ export const TaskFormCard = ({ register, control, errors }: TaskFormCardType) =>
                                 type="time"
                                 value={value || ''}
                                 onChange={(e) => onChange(e.target.value)}
-                                className={`py-2 px-4 bg-[#EBF7FF] rounded-xl text-[#373737] text-[16px] font-normal border border-transparent focus:outline-none focus:ring-2 focus:ring-[#004573] cursor-pointer min-w-[100px] ${value ? 'bg-[#004573]' : ''}`}
+                                className={`py-2 px-4 bg-[#EBF7FF] rounded-xl text-[#373737] text-[16px] se-only:text-[14px] font-normal border border-transparent focus:outline-none focus:ring-2 focus:ring-[#004573] cursor-pointer min-w-[100px] ${value ? 'bg-[#004573]' : ''}`}
                                 title={t("taskDetails.labelTime")}
                             />
                         )}
@@ -81,7 +81,7 @@ export const TaskFormCard = ({ register, control, errors }: TaskFormCardType) =>
 
             <div>
                 <Textarea
-                    label="Description"
+                    label={t("common.description")}
                     {...register("description")}
                     error={errors.title ? "true" : undefined}
                 />
