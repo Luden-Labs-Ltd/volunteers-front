@@ -1,8 +1,7 @@
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import {Button, Icon, IconButton} from "@/shared/ui";
-import { MyTasksList } from "@/features/my-tasks-list/ui/my-tasks-list.tsx";
-import userIcon from '@/shared/assets/images/userIcon.webp';
+import {useTranslation} from "react-i18next";
+import {useNavigate} from "react-router-dom";
+import {Button, Icon} from "@/shared/ui";
+import {MyTasksList} from "@/features/my-tasks-list/ui/my-tasks-list.tsx";
 import {useMyTasksGrouped} from "@/entities/task/hook";
 import {QUERY_KEYS} from "@/shared/api/hook/query-keys.ts";
 import {useQueryClient} from "@tanstack/react-query";
@@ -31,21 +30,16 @@ export const NeedyTasksPage = () => {
                     {t("tasks.myTasks")}
                 </h1>
                 <div className="flex items-center gap-8 relative se-only:right-6">
-                    {/*заменить иконку на иконку рефреша*/}
-                     <Button icon={<Icon iconId={"icon-plus"} />} variant="transition" size="sm" onClick={handleRefresh}  disabled={isRefetching}/>
-                    <IconButton
-                        className="w-8 h-8 rounded-lg drop-shadow-[2px_2px_0_#004573]"
-                        variant="ghost"
-                        aria-label={t('common.profile')}
-                        icon={
-                            <img
-                                src={userIcon}
-                                alt={t('common.profile')}
-                                className="w-full h-full object-cover"
-                            />
-                        }
-                        onClick={handleSettingsClick}
-                    />
+                     <Button
+                       className="flex items-center justify-center"
+                       icon={<Icon className="w-8 h-8 text-deepBlue mb-3 mr-3" iconId={"refreshBtn"} />}
+                       variant="transition" size="sm"
+                       onClick={handleRefresh}/>
+                     <Button
+                       className="flex items-center justify-center"
+                       icon={<Icon className="w-5 h-5  text-deepBlue" iconId={"iconUser"} />}
+                       variant="transition" size="sm"
+                       onClick={handleSettingsClick}/>
                 </div>
             </div>
             <div className="pt-[120px] pb-[calc(50px+env(safe-area-inset-bottom))]">
