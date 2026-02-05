@@ -2,6 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button, Card, Header } from '@/shared/ui';
 import mission_illustration from '@/shared/assets/images/mission_illustration.webp';
+import {Container} from "@/shared/ui/container";
 
 export const TaskPreviewPage = () => {
   const { t } = useTranslation();
@@ -19,7 +20,7 @@ export const TaskPreviewPage = () => {
   };
 
   return (
-    <section className="mx-auto max-w-[390px] bg-backGround flex flex-col min-h-screen pt-24 pb-12 px-5 text-center">
+    <Container className="flex bg-backGround min-h-screen pt-24 pb-12 px-5 text-center">
       <div className={'flex flex-col gap-8'}>
         <img src={mission_illustration} alt="mission" />
         <div className={'flex flex-col gap-3'}>
@@ -52,6 +53,6 @@ export const TaskPreviewPage = () => {
           {t('volunteerTask.preview.later')}
         </Button>
       </div>
-    </section>
+    </Container>
   );
 };

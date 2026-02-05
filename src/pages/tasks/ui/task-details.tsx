@@ -9,6 +9,7 @@ import { VolunteerInfoCard } from "@/entities/user/ui/volunteer-info-card";
 import { TaskInfoCard } from "@/entities/task/ui/task-info-card";
 import {useTranslation} from "react-i18next";
 import {TaskApproveRole} from "@/entities/task";
+import {Container} from "@/shared/ui/container";
 
 export const TaskDetailsPage = () => {
     const {
@@ -26,7 +27,7 @@ export const TaskDetailsPage = () => {
     const { t } = useTranslation();
     const isApprovedByNeedy = task?.approveBy?.includes(TaskApproveRole.NEEDY);
     return (
-        <div className="w-full max-w-[393px] min-h-screen mx-auto relative bg-white flex flex-col">
+        <Container className="relative bg-white flex flex-col">
             <div className="sticky top-0 z-[50] w-full bg-gradient-to-b from-blue-50 to-white backdrop-blur-md pt-14 pb-2 px-5 transition-all">
                 <div className="relative w-full flex justify-center items-start min-h-[40px]">
                     <div className="absolute left-0 top-0">
@@ -102,6 +103,6 @@ export const TaskDetailsPage = () => {
                     </Button>
                 </div>
             </div>
-        </div>
+        </Container>
     )
 }

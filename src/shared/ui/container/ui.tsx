@@ -11,7 +11,7 @@ export const Container:FC<ContainerProps> = ({children, className=""}) => {
     <section
       className={`flex flex-col items-center px-5 ${className}`}
     >
-      <div className={'mx-auto w-full max-w-[390px] '}>
+      <div className={'flex flex-col mx-auto w-full max-w-[390px] flex-1'}>
         {children}
       </div>
     </section>
