@@ -1,15 +1,14 @@
 import Lottie from "lottie-react";
-import { Button, Icon } from '@/shared/ui';
-import { UserProfileHeader } from "@/entities/user/ui/user-profile-header";
+import {Button, Icon} from '@/shared/ui';
+import {UserProfileHeader} from "@/entities/user/ui/user-profile-header";
 import successAnimation from '@/shared/assets/animations/confetti.json';
-import { ContactActions } from "@/entities/user/ui/contact-actions";
-import { CancelVolunteerSheet } from "@/features/cancel-volunteer-sheet/ui";
-import { useTaskDetailsPage } from "@/pages/tasks/modal";
-import { VolunteerInfoCard } from "@/entities/user/ui/volunteer-info-card";
-import { TaskInfoCard } from "@/entities/task/ui/task-info-card";
+import {ContactActions} from "@/entities/user/ui/contact-actions";
+import {CancelVolunteerSheet} from "@/features/cancel-volunteer-sheet/ui";
+import {useTaskDetailsPage} from "@/pages/tasks/modal";
+import {VolunteerInfoCard} from "@/entities/user/ui/volunteer-info-card";
+import {TaskInfoCard} from "@/entities/task/ui/task-info-card";
 import {useTranslation} from "react-i18next";
 import {TaskApproveRole} from "@/entities/task";
-import {Container} from "@/shared/ui/container";
 
 export const TaskDetailsPage = () => {
     const {
@@ -27,8 +26,8 @@ export const TaskDetailsPage = () => {
     const { t } = useTranslation();
     const isApprovedByNeedy = task?.approveBy?.includes(TaskApproveRole.NEEDY);
     return (
-        <Container className="relative bg-white flex flex-col">
-            <div className="sticky top-0 z-[50] w-full bg-gradient-to-b from-blue-50 to-white backdrop-blur-md pt-14 pb-2 px-5 transition-all">
+        <div className="relative bg-gradient-to-b from-blue-50 to-white">
+            <div className="sticky top-0 z-[50] w-full backdrop-blur-md pt-14 pb-2 px-5 transition-all">
                 <div className="relative w-full flex justify-center items-start min-h-[40px]">
                     <div className="absolute left-0 top-0">
                         <Button
@@ -103,6 +102,6 @@ export const TaskDetailsPage = () => {
                     </Button>
                 </div>
             </div>
-        </Container>
+        </div>
     )
 }

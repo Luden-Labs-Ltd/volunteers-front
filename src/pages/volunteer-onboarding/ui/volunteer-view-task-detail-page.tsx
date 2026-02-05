@@ -15,6 +15,7 @@ import smsIcon from '@/shared/assets/images/sms.webp';
 import phoneIcon from '@/shared/assets/images/phone.webp';
 import watsappIcon from '@/shared/assets/images/watsapp.webp';
 import successAnimation from '@/shared/assets/animations/confetti.json';
+import {Container} from "@/shared/ui/container";
 
 export const VolunteerViewTaskDetailsPage = () => {
   const { t } = useTranslation();
@@ -138,7 +139,7 @@ export const VolunteerViewTaskDetailsPage = () => {
           onBack={() => navigate(backPath)}
         />
       </div>
-      <section className="mx-auto max-w-[390px] w-full flex flex-col min-h-screen pt-24 mb-[30px] px-5 text-center gap-4 bg-light-blue-gradient">
+      <Container className="w-full flex flex-col min-h-screen pt-24 mb-[30px] px-5 text-center gap-4 bg-light-blue-gradient">
         <div className={'flex flex-col gap-8'}>
           <img
             src={mission_illustration}
@@ -381,7 +382,7 @@ export const VolunteerViewTaskDetailsPage = () => {
           )}
             <div className="h-[50px] w-full shrink-0" />
         </div>
-      </section>
+      </Container>
     </>
   )
 }
