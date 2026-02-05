@@ -327,6 +327,7 @@ export const VolunteerViewTaskDetailsPage = () => {
               fullWidth
               variant={'secondary'}
               disabled={isResponding}
+              className={'mt-3'}
               onClick={() => {
                 respondToTask(taskId, {
                   onSuccess: () => {
