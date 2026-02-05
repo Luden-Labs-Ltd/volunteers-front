@@ -27,7 +27,7 @@ export const SettingsPage: FC = () => {
     };
 
     return (
-        <Container className="min-h-screen bg-gray-50 pb-[calc(300px+env(safe-area-inset-bottom))]">
+        <Container className="bg-gray-50 pb-[calc(300px+env(safe-area-inset-bottom))]">
             <div className="sticky top-0 z-50 bg-gray-50">
                 <Header
                     className={"pt-16"}
