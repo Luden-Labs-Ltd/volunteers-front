@@ -9,9 +9,11 @@ interface ContainerProps {
 export const Container:FC<ContainerProps> = ({children, className=""}) => {
   return (
     <section
-      className={`mx-auto max-w-[390px] w-full flex flex-col items-center px-5 ${className}`}
+      className={`mx-auto w-full flex flex-col items-center px-5 ${className}`}
     >
-      {children}
+      <div className={'max-w-[390px] '}>
+        {children}
+      </div>
     </section>
   )
 }
