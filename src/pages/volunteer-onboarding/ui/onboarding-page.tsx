@@ -836,22 +836,22 @@ export const OnboardingPage: FC = () => {
             </div>
 
             {/* Navigation Buttons - всегда внизу */}
-            <div className="mx-auto max-w-[390px] w-full fixed bottom-[0px] left-1/2 -translate-x-1/2 z-[50] w-full">
-                <div className="w-full bg-white px-5 py-4 z-[0]">
-                        <Button
-                            fullWidth
-                            size="lg"
-                            onClick={currentStep === 'thank-you' ? handleSubmit : handleNext}
-                            disabled={!canProceed()}
-                            className="w-full h-[56px] rounded-xl border border-[#162A43] bg-[#004573] text-white shadow-[3px_3px_0_0_#162A43] text-[20px] font-medium focus:ring-0 focus:ring-offset-0 focus:outline-none"
-                        >
-                            {currentStep === 'program'
-                                ? t('onboarding.iAmWheelButton')
-                                : currentStep === 'thank-you'
-                                    ? t('common.next')
-                                    : t('common.next')}
-                        </Button>
-                </div>
+            <div className="max-w-[390px] w-full fixed bottom-[0px] left-1/2 -translate-x-1/2 z-[50] px-5 pt-5 pb-12 bg-white">
+
+                <Button
+                  fullWidth
+                  size="lg"
+                  onClick={currentStep === 'thank-you' ? handleSubmit : handleNext}
+                  disabled={!canProceed()}
+                  className="w-full h-[56px] rounded-xl border border-[#162A43] bg-[#004573] text-white shadow-[3px_3px_0_0_#162A43] text-[20px] font-medium focus:ring-0 focus:ring-offset-0 focus:outline-none"
+                >
+                    {currentStep === 'program'
+                      ? t('onboarding.iAmWheelButton')
+                      : currentStep === 'thank-you'
+                        ? t('common.next')
+                        : t('common.next')}
+                </Button>
+
             </div>
         </div>
     );
