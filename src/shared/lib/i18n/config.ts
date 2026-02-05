@@ -16,14 +16,14 @@ i18n
         translation: heTranslations,
       },
     },
-    fallbackLng: 'en',
+    fallbackLng: 'he',
     defaultNS: 'translation',
-    lng: 'en',
+    lng: 'he',
     interpolation: {
       escapeValue: false,
     },
     detection: {
-      order: ['localStorage', 'navigator'],
+      order: ['localStorage'],
       caches: ['localStorage'],
     },
   });
@@ -36,7 +36,7 @@ i18n.on('languageChanged', (lng) => {
 });
 
 // Set initial direction
-const initialLang = i18n.language || 'en';
+const initialLang = i18n.language || 'he';
 document.documentElement.setAttribute('dir', initialLang === 'he' ? 'rtl' : 'ltr');
 document.documentElement.setAttribute('lang', initialLang);
 

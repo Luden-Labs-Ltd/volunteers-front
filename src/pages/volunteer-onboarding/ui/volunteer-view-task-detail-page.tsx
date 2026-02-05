@@ -39,7 +39,7 @@ export const VolunteerViewTaskDetailsPage = () => {
     user?.role === 'volunteer' ? (taskId || '') : undefined
   );
 
-  const { mutate: completeTask, isPending: isCompleting } = useCompleteTask();
+  const { mutate: completeTask } = useCompleteTask();
   const { mutate: respondToTask, isPending: isResponding } = useRespondToTask();
 
   // Проверяем, назначена ли задача волонтеру
@@ -161,7 +161,7 @@ export const VolunteerViewTaskDetailsPage = () => {
                     <p className="text-textGray font-normal text-sm mb-1">
                       {t('volunteerTask.details.descriptionTitle')}
                     </p>
-                    <p className="text-textGray font-medium whitespace-pre-line">
+                    <p className="text-textGray font-medium whitespace-pre-line break-all">
                       {task.description}
                     </p>
                   </div>
