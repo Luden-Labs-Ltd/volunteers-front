@@ -18,8 +18,8 @@ export const AssignVolunteerPage = () => {
 
     const taskTitle = task?.title || t('taskResponses.task');
     return (
-        <div className="w-full max-w-[393px] min-h-screen m-auto relative bg-white">
-            <div className="fixed flex flex-col top-0 left-0 right-0 z-[50] w-[398px] mx-auto bg-gradient-to-b from-blue-50 to-white pt-16 se-only:pt-10 pb-2 px-[20px]">
+        <div className="w-full max-w-[430px] min-h-screen m-auto relative bg-white">
+            <div className="fixed flex flex-col top-0 left-0 right-0 z-[50] w-[430px] mx-auto bg-gradient-to-b from-blue-50 to-white pt-16 se-only:pt-10 pb-2 px-[20px]">
                 <div className="flex gap-2 items-center">
                     <div>
                         <Button

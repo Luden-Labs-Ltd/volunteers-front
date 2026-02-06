@@ -52,7 +52,7 @@ isProcessing
                 role="dialog"
                 aria-modal="true"
                 className={[
-                    "relative w-full max-w-[420px]",
+                    "relative w-full max-w-[430px]",
                     "bg-white rounded-t-[28px]",
                     "px-5 pt-3 pb-1",
                     "transition-transform duration-300 ease-out z-10",

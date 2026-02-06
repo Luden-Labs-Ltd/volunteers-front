@@ -26,31 +26,35 @@ export const TaskDetailsPage = () => {
     const { t } = useTranslation();
     const isApprovedByNeedy = task?.approveBy?.includes(TaskApproveRole.NEEDY);
     return (
-        <div className="relative bg-gradient-to-b from-blue-50 to-white">
-            <div className="sticky top-0 z-[50] w-full backdrop-blur-md pt-14 pb-2 px-5 transition-all">
-                <div className="relative w-full flex justify-center items-start min-h-[40px]">
-                    <div className="absolute left-0 top-0">
-                        <Button
-                            icon={<Icon iconId="icon-arrow-back" />}
-                            variant="transition"
-                            size="sm"
-                            onClick={() => navigate(`/needy/tasks`)}
-                        />
-                    </div>
-                    <div className="flex flex-col items-center max-w-[70%] text-center pt-1">
-                        <h1 className="text-[24px] text-[#004573] font-medium leading-[1.1] break-words line-clamp-2">
-                            {task?.title || "Task Details"}
-                        </h1>
-                        <div className="mt-2">
-                            <span className="bg-[#D8FFD6] text-[#00731D] px-2 py-0.5 rounded-lg text-[14px] font-normal">
-                                {t('taskDetailsApprove.volunteerFound')}
-                            </span>
+        <div className="relative">
+            <div className="sticky top-0 z-[50] w-full pt-14 pb-2 px-5 transition-all bg-white">
+                <div className="fixed top-0 left-1/2 -translate-x-1/2 z-[50] w-full max-w-[430px] bg-gradient-to-b from-blue-50 to-white pt-[calc(30px+env(safe-area-inset-top))] pb-4 px-[20px]">
+                    <div className="relative w-full flex justify-center items-start min-h-[40px]">
+
+                        <div className="absolute left-0 top-0">
+                            <Button
+                                icon={<Icon iconId="icon-arrow-back" />}
+                                variant="transition"
+                                size="sm"
+                                onClick={() => navigate(`/needy/tasks`)}
+                            />
                         </div>
+                        <div className="flex flex-col items-center max-w-[70%] text-center pt-1">
+                            <h1 className="text-[24px] text-[#004573] font-medium leading-[1.1] break-words line-clamp-2">
+                                {task?.title || "Task Details"}
+                            </h1>
+                            <div className="mt-2">
+                <span className="bg-[#D8FFD6] text-[#00731D] px-2 py-0.5 rounded-lg text-[14px] font-normal">
+                    {t('taskDetailsApprove.volunteerFound')}
+                </span>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
 
-            <div className="px-5 pt-6 pb-[calc(220px+env(safe-area-inset-bottom))] flex flex-col gap-6">
+            <div className="px-5 pt-16 pb-[calc(220px+env(safe-area-inset-bottom))] flex flex-col gap-6">
                 {volunteer ? (
                     <UserProfileHeader user={volunteer} />
                 ) : (

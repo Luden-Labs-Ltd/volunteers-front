@@ -41,7 +41,7 @@ export const CandidateApprovePage = () => {
     const handleCloseSheet = () => setIsSheetOpen(false);
     return (
         <div className="w-full max-w-[393px] min-h-screen mx-auto relative bg-white">
-            <div className="fixed top-0 left-1/2 -translate-x-1/2 z-[50] w-full bg-gradient-to-b from-blue-50 to-white pt-[calc(30px+env(safe-area-inset-top))] pb-4 px-[20px]">
+            <div className="fixed top-0 left-1/2 -translate-x-1/2 z-[50] w-full max-w-[430px] bg-gradient-to-b from-blue-50 to-white pt-[calc(30px+env(safe-area-inset-top))] pb-4 px-[20px]">
                 <div className="relative w-full flex items-center justify-center">
                     <div className="absolute start-0 top-0">
                         <Button

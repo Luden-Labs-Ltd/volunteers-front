@@ -16,7 +16,7 @@ export const VolunteerProfilePage = () => {
     const user = volunteer as UserWithProfile;
 
     return (
-        <div className="w-full mx-auto bg-white">
+        <div className="w-[430px] mx-auto bg-white">
             <div className="sticky top-0 z-50 w-full bg-gradient-to-b from-blue-50 to-white/95 backdrop-blur-sm pt-14 pb-4 px-5 border-b border-transparent transition-all">
                 <div className="relative w-full flex items-center justify-center min-h-[48px]">
                     <div className="absolute left-0 top-1/2 -translate-y-1/2">
