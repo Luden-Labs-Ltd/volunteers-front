@@ -24,12 +24,12 @@ export const NeedyTasksPage = () => {
     };
 
     return (
-        <div className="w-full min-h-screen m-auto relative bg-white">
-            <div className="fixed flex justify-between items-center top-0 left-0 right-0 z-[50] w-[398px] mx-auto bg-gradient-to-b from-blue-50 to-white pt-16 pb-2 px-[20px]">
+        <div className="w-full max-w-[430px] min-h-screen relative bg-white">
+            <div className="fixed flex justify-between items-center top-0 left-0 right-0 z-[50] w-[430px] mx-auto bg-gradient-to-b from-blue-50 to-white pt-16 pb-2 px-[20px]">
                 <h1 className="text-[28px] text-[#004573] font-medium">
                     {t("tasks.myTasks")}
                 </h1>
-                <div className="flex items-center gap-8 relative se-only:right-6">
+                <div className="flex items-center gap-8 relative se-only:right-[-50px]">
                      <Button
                        className="flex items-center justify-center"
                        icon={<Icon className="w-8 h-8 text-deepBlue mb-3 mr-3" iconId={"refreshBtn"} />}
