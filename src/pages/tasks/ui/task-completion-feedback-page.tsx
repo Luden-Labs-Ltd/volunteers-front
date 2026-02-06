@@ -16,7 +16,7 @@ export const TaskCompletionFeedbackPage = () => {
     };
 
     return (
-        <div className="w-full min-h-screen mx-auto relative bg-[#F0F5FA] overflow-x-hidden flex flex-col">
+        <div className="mx-auto max-w-[390px] w-full min-h-screen mx-auto relative bg-[#F0F5FA] overflow-x-hidden flex flex-col">
             <div className="flex-1 flex flex-col items-center px-6 pt-10 se-only:pt-0">
                 <div className="w-full max-w-[327px] aspect-square flex items-center justify-center mb-6 se-only:mb-0">
                     <img

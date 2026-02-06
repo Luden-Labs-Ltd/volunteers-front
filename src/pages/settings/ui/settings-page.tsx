@@ -13,6 +13,7 @@ import { SettingsLeaderboardCard } from './settings-leaderboard-card';
 import { SettingsLogoutCard } from './settings-logout-card';
 import { UserWithVolunteerData } from '@/entities/user/model/types';
 import {onboardingStorage} from "@/shared/lib/onboarding";
+import {Container} from "@/shared/ui/container";
 
 export const SettingsPage: FC = () => {
     const { t } = useTranslation();
@@ -26,7 +27,7 @@ export const SettingsPage: FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-[calc(300px+env(safe-area-inset-bottom))]">
+        <Container className="bg-gray-50 pb-[calc(300px+env(safe-area-inset-bottom))]">
             <div className="sticky top-0 z-50 bg-gray-50">
                 <Header
                     className={"pt-16"}
@@ -55,6 +56,6 @@ export const SettingsPage: FC = () => {
                 <div className="w-full h-[15px] shrink-0" />
 
             </div>
-        </div>
+        </Container>
     );
 };

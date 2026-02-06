@@ -315,7 +315,7 @@ export const LeaderboardPage: FC = () => {
           )}
         </div>
       </div>
-      <div className="fixed bottom-0 left-0 right-0 px-5 pt-5 pb-11 bg-white border-t border-gray-200 z-20">
+      <div className="mx-auto max-w-[390px] fixed bottom-0 left-0 right-0 px-5 pt-5 pb-11 bg-white border-t border-gray-200 z-20">
         <div className="max-w-md mx-auto">
           <Button
             size="lg"
