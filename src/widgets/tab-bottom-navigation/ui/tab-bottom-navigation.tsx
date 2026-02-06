@@ -27,7 +27,7 @@ export const TabBottomNavigation = () => {
     };
 
     return (
-        <div className="max-w-[393px] fixed z-[9999] bottom-0 left-0 right-0 w-full mx-auto pointer-events-none">
+        <div className="max-w-[430px] fixed z-[9999] bottom-0 left-0 right-0 w-full mx-auto pointer-events-none">
             <div className="bg-white border-t border-blue-50 pointer-events-auto pb-safe">
                 <div className="px-16 pt-2 pb-2 flex items-center justify-between">
 

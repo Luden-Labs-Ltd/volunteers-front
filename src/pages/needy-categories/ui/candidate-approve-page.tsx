@@ -57,7 +57,7 @@ export const CandidateApprovePage = () => {
                 </div>
             </div>
 
-            <div className="pt-[calc(170px+env(safe-area-inset-top))] pb-[calc(140px+env(safe-area-inset-top))] px-[20px]">
+            <div className="pt-[calc(160px+env(safe-area-inset-top))] pb-[calc(140px+env(safe-area-inset-top))] px-[20px]">
                 <UserProfileHeader user={volunteer} />
 
                 <div className="flex justify-between items-center p-3 rounded-xl border shadow-[1px_1px_0_0_#F2F2F2,2px_2px_0_0_#F2F2F2] mb-3 mt-3 bg-white">
@@ -68,8 +68,8 @@ export const CandidateApprovePage = () => {
                 <VolunteerAreasCard areas={realSkills} />
                 <VolunteerReviewsCard reviews={reviews} />
             </div>
-            <div className="fixed bottom-[50px] se-only:bottom-[55px] left-1/2 -translate-x-1/2 z-[50] w-full px-1">
-                <div className="w-full bg-white px-5 py-4 se-only:py-2 z-[0]">
+            <div className="fixed bottom-[50px] se-only:bottom-[55px] left-1/2 -translate-x-1/2 z-[50] w-full max-w-[430px] px-4">
+                <div className="w-full bg-white py-4 se-only:py-2 z-[0] pointer-events-auto">
                     <Button
                         onClick={handleOpenSheet}
                         className="w-full h-[56px] se-only:h-[45px] rounded-xl border border-[#162A43] bg-[#004573] text-white shadow-[3px_3px_0_0_#162A43] text-[20px] se-only:text-[18px] font-medium focus:ring-0 focus:ring-offset-0 focus:outline-none"

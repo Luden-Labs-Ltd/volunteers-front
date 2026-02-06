@@ -167,12 +167,12 @@ export const CategoriesPage = () => {
                 {t("categoriesNeedy.mostRequestedTitle")}
             </h2>
             <PopularTaskScroll /> */}
-            <div className="fixed bottom-[50px] se-only:bottom-[55px] left-1/2 -translate-x-1/2 z-[50] w-full px-1">
-                <div className="w-full bg-white px-5 py-4 se-only:py-2 z-[0]">
+            <div className="fixed bottom-[50px] se-only:bottom-[55px] left-1/2 -translate-x-1/2 z-[50] w-full max-w-[430px] pointer-events-none">
+                <div className="flex justify-center w-full bg-white py-4 se-only:py-2 z-[0] pointer-events-auto">
                     <Button
                         onClick={handleNext}
                         disabled={isNextDisabled}
-                        className="w-full h-[56px] se-only:h-[45px] rounded-xl border border-[#162A43] bg-[#004573] text-white shadow-[3px_3px_0_0_#162A43] text-[20px] se-only:text-[18px] font-medium focus:ring-0 focus:ring-offset-0 focus:outline-none"
+                        className="w-full max-w-[340px] h-[56px] se-only:h-[45px] rounded-xl border border-[#162A43] bg-[#004573] text-white shadow-[3px_3px_0_0_#162A43] text-[20px] se-only:text-[18px] font-medium focus:ring-0 focus:ring-offset-0 focus:outline-none"
                     >
                         {t("categoriesNeedy.nextButton")}
                     </Button>
