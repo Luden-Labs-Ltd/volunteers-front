@@ -167,7 +167,7 @@ export const CategoriesPage = () => {
                 {t("categoriesNeedy.mostRequestedTitle")}
             </h2>
             <PopularTaskScroll /> */}
-            <div className="fixed bottom-[50px] se-only:bottom-[55px] left-1/2 -translate-x-1/2 z-[50] w-full">
+            <div className="fixed bottom-[50px] se-only:bottom-[55px] left-1/2 -translate-x-1/2 z-[50] w-full px-1">
                 <div className="w-full bg-white px-5 py-4 se-only:py-2 z-[0]">
                     <Button
                         onClick={handleNext}

@@ -54,7 +54,7 @@ export const TaskDetailsPage = () => {
                 </div>
             </div>
 
-            <div className="px-5 pt-16 pb-[calc(220px+env(safe-area-inset-bottom))] flex flex-col gap-6">
+            <div className="px-5 pt-[calc(70px+env(safe-area-inset-top))] pb-[calc(220px+env(safe-area-inset-bottom))] flex flex-col gap-6">
                 {volunteer ? (
                     <UserProfileHeader user={volunteer} />
                 ) : (
