@@ -25,21 +25,34 @@ export const NeedyTasksPage = () => {
 
     return (
         <div className="w-full max-w-[430px] min-h-screen relative bg-white">
-            <div className="fixed flex justify-between items-center top-0 left-0 right-0 z-[50] w-[430px] mx-auto bg-gradient-to-b from-blue-50 to-white pt-16 pb-2 px-[20px]">
-                <h1 className="text-[28px] text-[#004573] font-medium">
+            <div className="
+    fixed top-0 z-[50]
+    w-full max-w-[430px]
+    left-1/2 -translate-x-1/2
+    flex justify-between items-center
+    bg-gradient-to-b from-blue-50 to-white
+    pt-16 pb-2 px-[20px]
+    overflow-hidden
+">
+                <h1 className="text-[28px] text-[#004573] font-medium z-10">
                     {t("tasks.myTasks")}
                 </h1>
-                <div className="flex items-center gap-8 relative se-only:right-[-50px]">
-                     <Button
-                       className="flex items-center justify-center"
-                       icon={<Icon className="w-8 h-8 text-deepBlue mb-3 mr-3" iconId={"refreshBtn"} />}
-                       variant="transition" size="sm"
-                       onClick={handleRefresh}/>
-                     <Button
-                       className="flex items-center justify-center"
-                       icon={<Icon className="w-5 h-5  text-deepBlue" iconId={"iconUser"} />}
-                       variant="transition" size="sm"
-                       onClick={handleSettingsClick}/>
+
+                <div className="flex items-center gap-8 relative right-[10px] se-only:right-[-10px]">
+                    <Button
+                        className="flex items-center justify-center"
+                        icon={<Icon className="w-8 h-8 text-deepBlue mb-3 mr-3" iconId={"refreshBtn"} />}
+                        variant="transition"
+                        size="sm"
+                        onClick={handleRefresh}
+                    />
+                    <Button
+                        className="flex items-center justify-center"
+                        icon={<Icon className="w-5 h-5 text-deepBlue" iconId={"iconUser"} />}
+                        variant="transition"
+                        size="sm"
+                        onClick={handleSettingsClick}
+                    />
                 </div>
             </div>
             <div className="pt-[120px] pb-[calc(50px+env(safe-area-inset-bottom))] max-w-[393px] ">
